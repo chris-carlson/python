@@ -46,3 +46,6 @@ class Str(str):
         str_ = str_.replace('\r', '')
         str_ = str_.replace('\n', '')
         return Str(str_)
+
+    def insert_text(self, index, text):
+        return Str(self._rep[:index] + text + self._rep[index:])

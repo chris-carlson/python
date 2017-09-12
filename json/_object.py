@@ -1,6 +1,6 @@
-from dict_.ordered_dict import OrderedDict
-from list_.list_ import List
-from json_._pair import Pair
+from custom.dict_.ordered_dict import OrderedDict
+from custom.list_.list_ import List
+from custom.json_._pair import Pair
 
 class Object:
 

@@ -1,4 +1,4 @@
-from list_.list_ import List
+from custom.list_.list_ import List
 
 _HEADER = '***'
 

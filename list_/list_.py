@@ -1,6 +1,6 @@
-from regex import Regex
-from set_.multi_set import MultiSet
-from set_.ordered_set import OrderedSet
+from custom.regex import Regex
+from custom.set_.multi_set import MultiSet
+from custom.set_.ordered_set import OrderedSet
 
 class List(list):
 

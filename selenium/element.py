@@ -1,4 +1,4 @@
-from selenium_.by import By
+from custom.selenium.by import By
 
 class Element:
 
@@ -30,6 +30,8 @@ class Element:
             return Element._get_elements(self._rep.find_elements_by_link_text(search))
         elif by == By.TAG:
             return Element._get_elements(self._rep.find_elements_by_tag_name(search))
+        elif by == By.CLASS:
+            return Element._get_elements(self._rep.find_elements_by_class_name(search))
         elif by == By.CSS:
             return Element._get_elements(self._rep.find_elements_by_css_selector(search))
         raise ValueError('Invalid by value \'' + str(by) + '\'')

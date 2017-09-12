@@ -1,4 +1,4 @@
-from xml_._attribute import Attribute
+from custom.xml_._attribute import Attribute
 
 class Element:
 

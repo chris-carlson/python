@@ -1,10 +1,10 @@
-from file_.read_file import ReadFile
+from custom.file_.read_file import ReadFile
 
 class CsvReadFile:
 
     def __init__(self, file_name):
+        self._file = ReadFile(file_name)
         self._rows = []
-        self._read_values(file_name)
 
     def __str__(self):
         str_ = '['
@@ -48,9 +48,9 @@ class CsvReadFile:
             column.append(row[num])
         return column
 
-    def _read_values(self, file_name):
-        file_ = ReadFile(file_name)
-        for line in file_.get_stripped_lines():
+    def read_values(self):
+        self._file.read_lines()
+        for line in self._file.get_stripped_lines():
             line_values = []
             split_values = line.split(',')
             for split_value in split_values:

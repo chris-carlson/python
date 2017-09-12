@@ -1,5 +1,5 @@
-from list_.list_ import List
-from json_._value import Value
+from custom.list_.list_ import List
+from custom.json_._value import Value
 
 class Array:
 

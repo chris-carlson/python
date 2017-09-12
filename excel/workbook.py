@@ -1,14 +1,12 @@
-from excel.worksheet import Worksheet
-from openpyxl import load_workbook
+from custom.excel.worksheet import Worksheet
+from openpyxl import Workbook as OpenpyxlWorkbook, load_workbook
 
 class Workbook:
 
-    def __init__(self, file_name):
+    def __init__(self, file_name=None):
         self._file_name = file_name
-        self._rep = load_workbook(filename=file_name)
         self._worksheets = []
-        for worksheet in self._rep:
-            self._worksheets.append(Worksheet(worksheet))
+        self._rep = OpenpyxlWorkbook()
 
     def __str__(self):
         str_ = '['
@@ -33,12 +31,19 @@ class Workbook:
     def __getitem__(self, index):
         return self._worksheets[index]
 
+    def load_data(self):
+        self._rep = load_workbook(filename=self._file_name)
+        for worksheet in self._rep:
+            self._worksheets.append(Worksheet(worksheet))
+
     def get_worksheet(self, title):
         for worksheet in self._worksheets:
             if worksheet.title == title:
                 return worksheet
 
     def create_worksheet(self, title, position=None):
+        if position == None:
+            position = len(self._worksheets)
         worksheet = self._rep.create_sheet(title, position)
         self._worksheets.insert(position, Worksheet(worksheet))
         return self._worksheets[position]

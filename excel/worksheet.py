@@ -1,4 +1,4 @@
-from excel.row import Row
+from custom.excel.row import Row
 
 class Worksheet:
 
@@ -63,3 +63,10 @@ class Worksheet:
             column_index += 1
         row = self._rep[str(row_index + 1)]
         self._rows.insert(row_index, Row(row))
+
+    def clear_rows(self, start_index, end_index=None):
+        if end_index == None:
+            end_index = len(self._rows)
+        for index in range(start_index, end_index):
+            for cell in self._rows[index]:
+                cell.value = None

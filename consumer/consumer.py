@@ -1,5 +1,5 @@
-from consumer import _matcher
-from regex import Regex
+from custom.consumer import _matcher
+from custom.regex import Regex
 
 WHITESPACE_REGEX = Regex(r'\s')
 

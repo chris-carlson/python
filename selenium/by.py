@@ -22,6 +22,8 @@ class By:
             return SeleniumBy.LINK_TEXT
         elif package_by == By.TAG:
             return SeleniumBy.TAG_NAME
+        elif package_by == By.CLASS:
+            return SeleniumBy.CLASS_NAME
         elif package_by == By.CSS:
             return SeleniumBy.CSS_SELECTOR
         raise ValueError('Invalid by value \'' + str(package_by) + '\'')

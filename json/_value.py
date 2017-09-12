@@ -1,4 +1,4 @@
-from regex import Regex
+from custom.regex import Regex
 
 class Value:
 
