@@ -49,3 +49,11 @@ class Str(str):
 
     def insert_text(self, index, text):
         return Str(self._rep[:index] + text + self._rep[index:])
+
+    def insert_text_before(self, char, text):
+        index = self._rep.find(char)
+        return self.insert_text(index, text)
+
+    def insert_text_after(self, char, text):
+        index = self._rep.find(char) + 1
+        return self.insert_text(index, text)

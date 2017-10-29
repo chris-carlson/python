@@ -5,9 +5,12 @@ from custom.selenium.element import Element
 
 class Driver:
 
-    def __init__(self):
+    def __init__(self, options=[]):
         chromedriver_path = os.environ['CHROMEDRIVER']
-        self._rep = webdriver.Chrome(chromedriver_path)
+        chrome_options = webdriver.ChromeOptions()
+        for option in options:
+            chrome_options.add_argument(option)
+        self._rep = webdriver.Chrome(chromedriver_path, chrome_options=chrome_options)
 
     def navigate(self, url):
         self._rep.get(url)

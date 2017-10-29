@@ -4,23 +4,13 @@ class Cell:
         self._rep = cell
 
     def __str__(self):
-        return self._rep.value
+        return str(self._rep.value)
 
     def __repr__(self):
         return self.__str__()
 
-    @property
-    def value(self):
+    def get_value(self):
         return self._rep.value
 
-    @value.setter
-    def value(self, value):
+    def set_value(self, value):
         self._rep.value = value
-
-    @property
-    def font(self):
-        return self._rep.font
-
-    @font.setter
-    def font(self, font):
-        self._rep.font = font

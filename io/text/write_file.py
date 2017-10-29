@@ -8,3 +8,6 @@ class WriteFile():
 
     def write_line(self, str_=''):
         self._file.write(str(str_) + '\n')
+
+    def close(self):
+        self._file.close()

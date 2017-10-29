@@ -9,14 +9,7 @@ class Workbook:
         self._rep = OpenpyxlWorkbook()
 
     def __str__(self):
-        str_ = '['
-        for i in range(0, len(self._worksheets)):
-            worksheet = self._worksheets[i]
-            str_ += worksheet.title
-            if i < len(self._worksheets) - 1:
-                str_ += ', '
-        str_ += ']'
-        return str_
+        return '[' + ', '.join(self._worksheets) + ']'
 
     def __repr__(self):
         return self.__str__()
@@ -32,20 +25,23 @@ class Workbook:
         return self._worksheets[index]
 
     def load_data(self):
+        if self._file_name == None:
+            raise ValueError('No file name given')
         self._rep = load_workbook(filename=self._file_name)
         for worksheet in self._rep:
             self._worksheets.append(Worksheet(worksheet))
 
     def get_worksheet(self, title):
         for worksheet in self._worksheets:
-            if worksheet.title == title:
+            if worksheet.get_title() == title:
                 return worksheet
+        return None
 
     def create_worksheet(self, title, position=None):
         if position == None:
             position = len(self._worksheets)
-        worksheet = self._rep.create_sheet(title, position)
-        self._worksheets.insert(position, Worksheet(worksheet))
+        openpyxl_worksheet = self._rep.create_sheet(title, position)
+        self._worksheets.insert(position, Worksheet(openpyxl_worksheet))
         return self._worksheets[position]
 
     def save(self):

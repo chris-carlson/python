@@ -2,15 +2,14 @@ from custom.excel.row import Row
 
 class Worksheet:
 
-    def __init__(self, worksheet):
-        self._rep = worksheet
+    def __init__(self, rep):
+        self._rep = rep
         self._rows = []
-        if len(worksheet.get_cell_collection()) > 0:
-            for row in worksheet:
-                self._rows.append(Row(row))
+        for row in self._rep.rows:
+            self._rows.append(Row(row))
 
     def __str__(self):
-        return self.title
+        return self.get_title()
 
     def __repr__(self):
         return self.__str__()
@@ -25,13 +24,18 @@ class Worksheet:
     def __getitem__(self, index):
         return self._rows[index]
 
-    @property
-    def title(self):
+    def get_title(self):
         return self._rep.title
 
-    @title.setter
-    def title(self, title):
+    def set_title(self, title):
         self._rep.title = title
+
+    def num_columns(self):
+        length = -1
+        for row in self._rows:
+            if len(row) > length:
+                length = len(row)
+        return length
 
     def get_column_by_header(self, header):
         column_index = self.get_column_index(header)
@@ -54,19 +58,48 @@ class Worksheet:
                 return column_index
         return -1
 
-    def write_row(self, values, row_index=None):
-        if row_index == None:
-            row_index = len(self._rows)
-        column_index = 0
-        for value in values:
-            self._rep.cell(row=row_index + 1, column=column_index + 1, value=value)
-            column_index += 1
-        row = self._rep[str(row_index + 1)]
-        self._rows.insert(row_index, Row(row))
+    def add_row(self, values):
+        row = self._create_row()
+        row.set_values(values)
+
+    def insert_row(self, insert_index, values):
+        self._create_row()
+        for index in range(len(self._rows) - 2, insert_index - 1, -1):
+            self._shift_row(index, 1)
+        row = self._rows[insert_index]
+        row.set_values(values)
+
+    def replace_row(self, index, values):
+        self._rows[index].set_values(values)
+
+    def delete_row(self, delete_index):
+        for index in range(delete_index + 1, len(self._rows)):
+            self._shift_row(index, -1)
+        self._rows.pop()
+
+    def delete_rows(self, start_index, end_index=None):
+        if end_index == None:
+            end_index = len(self._rows)
+        for index in range(start_index, end_index):
+            self.delete_row(start_index)
+
+    def clear_row(self, index):
+        self._rows[index].clear_values()
 
     def clear_rows(self, start_index, end_index=None):
         if end_index == None:
             end_index = len(self._rows)
         for index in range(start_index, end_index):
-            for cell in self._rows[index]:
-                cell.value = None
+            self.clear_row(index)
+
+    def _create_row(self):
+        cells = []
+        for column_index in range(0, self.num_columns()):
+            cells.append(self._rep.cell(row=len(self._rows) + 1, column=column_index + 1))
+        row = Row(cells)
+        self._rows.append(row)
+        return row
+
+    def _shift_row(self, index, offset):
+        self._rows[index + offset].set_values(self._rows[index].get_values())
+        self._rows[index].clear_values()

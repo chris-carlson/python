@@ -39,9 +39,19 @@ class Time:
 
     def add_minute(self):
         self._minute += 1
-        if self._minute > self.MINUTES_IN_HOUR:
+        if self._minute == self.MINUTES_IN_HOUR:
             self._minute = 0
             self.add_hour()
+
+    def subtract_minutes(self, minutes):
+        for i in range(0, minutes):
+            self.subtract_minute()
+
+    def subtract_minute(self):
+        self._minute -= 1
+        if self._minute == -1:
+            self._minute = self.MINUTES_IN_HOUR - 1
+            self.subtract_hour()
 
     def add_hours(self, hours):
         for i in range(0, hours):
@@ -53,6 +63,17 @@ class Time:
             self._toggle_meridiem()
         if self._hour > self.HOURS_IN_DAY / 2:
             self._hour = 1
+
+    def subtract_hours(self, hours):
+        for i in range(0, hours):
+            self.subtract_hour()
+
+    def subtract_hour(self):
+        self._hour -= 1
+        if self._hour == self.HOURS_IN_DAY / 2 - 1:
+            self._toggle_meridiem()
+        if self._hour == 0:
+            self._hour = self.HOURS_IN_DAY // 2
 
     def get_military_hour(self):
         if self._meridiem == self.MERIDIEM['PM']:

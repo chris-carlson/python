@@ -1,6 +1,6 @@
 from custom.file_.read_file import ReadFile
 
-class CsvReadFile:
+class ReadFile:
 
     def __init__(self, file_name):
         self._file = ReadFile(file_name)

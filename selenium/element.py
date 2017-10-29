@@ -1,9 +1,19 @@
+from selenium.webdriver.common.keys import Keys
+
 from custom.selenium.by import By
 
 class Element:
 
     def __init__(self, element):
         self._rep = element
+
+    @property
+    def html(self):
+        return self._rep.get_attribute('outerHTML')
+
+    @property
+    def tag_name(self):
+        return self._rep.tag_name
 
     @property
     def text(self):
@@ -44,7 +54,10 @@ class Element:
         return elements
 
     def click(self):
-        self._rep.click()
+        if self._rep.tag_name == 'input':
+            self._rep.send_keys(Keys.RETURN)
+        else:
+            self._rep.click()
 
     def clear_text(self):
         self._rep.clear()

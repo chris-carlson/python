@@ -43,3 +43,6 @@ class ReadFile:
 
     def get_filtered_lines(self, regex):
         return self.get_stripped_lines().filter_text(regex)
+
+    def close(self):
+        self._file.close()
