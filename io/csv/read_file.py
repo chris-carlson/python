@@ -1,4 +1,4 @@
-from custom.file_.read_file import ReadFile
+from custom.io.text.read_file import ReadFile
 
 class ReadFile:
 
