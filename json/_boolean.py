@@ -1,23 +1,20 @@
-TRUE = 'true'
-FALSE = 'false'
-
 class Boolean:
 
-    def __init__(self, consumer):
-        value = consumer.consume_to(',', '}', ']').strip()
-        if value == TRUE:
-            self._value = True
-        elif value == FALSE:
-            self._value = False
-        else:
-            raise ValueError('\'' + value + '\' is an invalid boolean value')
+    TRUE = 'true'
+    FALSE = 'false'
 
-    def __str__(self):
-        return str(self._value).lower()
-
-    def __repr__(self):
-        return self.__str__()
+    def __init__(self):
+        self._value = None
 
     @property
     def value(self):
         return self._value
+
+    def parse(self, consumer):
+        value = consumer.consume_to_one_of([',', '}', ']']).strip()
+        if value == self.TRUE:
+            self._value = True
+        elif value == self.FALSE:
+            self._value = False
+        else:
+            raise ValueError('\'' + value + '\' is an invalid boolean value')

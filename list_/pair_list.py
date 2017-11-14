@@ -1,3 +1,5 @@
+from custom.list_.list_ import List
+
 class PairList:
 
     def __init__(self):
@@ -34,19 +36,19 @@ class PairList:
 
     def get(self, key):
         if key not in self:
-            raise AssertionError('Key \'' + str(key) + '\' is not in here')
+            raise AssertionError('Key \'' + str(key) + '\' is not in the list')
         for item in self._rep:
             if item[0] == key:
                 return item[1]
 
     def keys(self):
-        keys = []
+        keys = List()
         for item in self._rep:
             keys.append(item[0])
         return keys
 
     def values(self):
-        values = []
+        values = List()
         for item in self._rep:
             values.append(item[1])
         return values
@@ -56,7 +58,7 @@ class PairList:
 
     def remove(self, key):
         if key not in self:
-            raise AssertionError('Key \'' + str(key) + '\' is not in here')
+            raise AssertionError('Key \'' + str(key) + '\' is not in the list')
         for item in self._rep:
             if item[0] == key:
                 item_to_remove = item
@@ -70,7 +72,3 @@ class PairList:
 
     def reverse(self):
         self._rep.reverse()
-
-    def write(self, file_):
-        for pair in self._rep:
-            file_.write(str(pair[0]) + ': ' + str(pair[1]) + '\n')

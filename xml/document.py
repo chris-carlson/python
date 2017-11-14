@@ -1,28 +1,25 @@
 from custom.consumer.consumer import Consumer
-from custom.file_.read_file import ReadFile
-from custom.str_ import Str
-from custom.xml_._element import Element
+from custom.io.text.read_file import ReadFile
+from custom.xml._element import Element
 
 class Document:
 
     def __init__(self, file_name):
         self._file = ReadFile(file_name)
-
-    def __str__(self):
-        return str(self._root)
-
-    def __repr__(self):
-        return self.__str__()
+        self._root = None
 
     @property
     def root(self):
+        assert self._root != None, 'Document has not been parsed yet'
         return self._root
 
-    def parse_file(self):
+    def parse(self):
+        assert self._root == None, 'Document has already been parsed'
         self._file.read_lines()
-        parse_line = Str(xml_file.get_parse_line())
-        parse_line = parse_line.remove_whitespace()
+        parse_line = xml_file.get_parse_line()
         consumer = Consumer(parse_line)
         if consumer.starts_with('<?'):
             consumer.consume_through('>')
-        self._root = Element(consumer)
+        consumer.consume_whitespace()
+        self._root = Element()
+        self._root.parse(consumer)

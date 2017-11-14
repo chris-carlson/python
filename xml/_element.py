@@ -1,43 +1,10 @@
-from custom.xml_._attribute import Attribute
+from custom.xml._attribute import Attribute
 
 class Element:
 
-    def __init__(self, consumer):
-        consumer.consume_char('<')
-        self._name = consumer.consume_to('>', ' ')
-        self._attributes = []
-        while consumer.peek() == ' ':
-            consumer.consume_whitespace()
-            attribute = Attribute(consumer)
-            self._attributes.append(attribute)
-        consumer.consume_char('>')
-        consumer.consume_whitespace()
-        self._children = []
-        while consumer.peek() == '<' and not consumer.starts_with('</'):
-            child = Element(consumer)
-            self._children.append(child)
-            consumer.consume_whitespace()
-        self._body = consumer.consume_to('<')
-        consumer.consume_char('<')
-        consumer.consume_char('/')
-        closing_tag_name = consumer.consume_to('>')
-        assert closing_tag_name == self._name, 'Closing tag name ' + closing_tag_name + ' does not match opening tag name ' + self._name
-        consumer.consume_char('>')
-        consumer.consume_whitespace()
-
-    def __str__(self):
-        str_ = '<' + self._name
-        for attribute in self._attributes:
-            str_ += ' ' + str(attribute)
-        str_ += '>'
-        for child in self._children:
-            str_ += str(child)
-        str_ += self._body
-        str_ += '</' + self._name + '>'
-        return str_
-
-    def __repr__(self):
-        return self.__str__()
+    def __init__(self):
+        self._name = None
+        self._body = None
 
     @property
     def name(self):
@@ -65,3 +32,28 @@ class Element:
             if child.name == child_name:
                 children.append(child)
         return children
+
+    def parse(self, consumer):
+        consumer.consume_char('<')
+        self._name = consumer.consume_to_one_of(['>', ' '])
+        self._attributes = []
+        while consumer.peek() == ' ':
+            consumer.consume_whitespace()
+            attribute = Attribute()
+            attribute.parse(consumer)
+            self._attributes.append(attribute)
+        consumer.consume_char('>')
+        consumer.consume_whitespace()
+        self._children = []
+        while consumer.peek() == '<' and not consumer.starts_with('</'):
+            child = Element()
+            child.parse(consumer)
+            self._children.append(child)
+            consumer.consume_whitespace()
+        self._body = consumer.consume_to('<')
+        consumer.consume_char('<')
+        consumer.consume_char('/')
+        closing_tag_name = consumer.consume_to('>')
+        assert closing_tag_name == self._name, 'Closing tag name ' + closing_tag_name + ' does not match opening tag name ' + self._name
+        consumer.consume_char('>')
+        consumer.consume_whitespace()

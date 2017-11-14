@@ -28,16 +28,3 @@ class List(list):
         index = self.index(old_item)
         self.remove(old_item)
         self.insert(index, new_item)
-
-    def write(self, file_):
-        for item in self:
-            file_.write(str(item) + '\n')
-
-    def to_string(self):
-        str_ = ''
-        for itemIndex in range(0, len(self)):
-            item = self[itemIndex]
-            str_ += str(item)
-            if itemIndex < len(self) - 1:
-                str_ += ','
-        return str_

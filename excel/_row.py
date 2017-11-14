@@ -1,18 +1,10 @@
-from custom.excel.cell import Cell
+from custom.excel._cell import Cell
 
 class Row:
 
     def __init__(self, rep=None):
         self._rep = rep
         self._cells = []
-        for cell in self._rep:
-            self._cells.append(Cell(cell))
-
-    def __str__(self):
-        return '[' + ', '.join(self._cells) + ']'
-
-    def __repr__(self):
-        return self.__str__()
 
     def __len__(self):
         return len(self._cells)
@@ -22,7 +14,17 @@ class Row:
             yield cell
 
     def __getitem__(self, index):
+        if not type(index) == int:
+            raise TypeError('Index \'' + index + '\' must be of integer type')
+        if index < 0:
+            raise IndexError('Index \'' + index + '\' must be positive')
+        if index >= len(self._cells):
+            raise IndexError('Index \'' + index + '\' must be less than the number of cells')
         return self._cells[index]
+
+    def load_data(self):
+        for cell in self._rep:
+            self._cells.append(Cell(cell))
 
     def is_blank(self):
         is_blank = True

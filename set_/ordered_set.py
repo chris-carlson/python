@@ -43,7 +43,3 @@ class OrderedSet:
 
     def sort(self):
         self._rep.sort()
-
-    def write(file_):
-        for item in self._rep:
-            file_.write(str(item) + '\n')

@@ -29,6 +29,3 @@ class File:
 
     def join(self, path):
         self._rep.joinpath(path)
-
-    def get_renamed_name(self, old_str, new_str):
-        return self._rep.parts[0] + '\\'.join(self._rep.parts[1:len(self._rep.parts) - 1]) + '\\' + self._rep.name.replace(old_str, new_str)

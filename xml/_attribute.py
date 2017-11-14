@@ -1,17 +1,8 @@
 class Attribute:
 
-    def __init__(self, consumer):
-        self._name = consumer.consume_to('=')
-        consumer.consume_char('=')
-        consumer.consume_char('\'', '\"')
-        self._value = consumer.consume_to('\'', '\"')
-        consumer.consume_char('\'', '\"')
-
-    def __str__(self):
-        return self._name + '=\"' + self._value + '\"'
-
-    def __repr__(self):
-        return self.__str__()
+    def __init__(self):
+        self._name = None
+        self._value = None
 
     @property
     def name(self):
@@ -20,3 +11,10 @@ class Attribute:
     @property
     def value(self):
         return self._value
+
+    def parse(self, consumer):
+        self._name = consumer.consume_to('=')
+        consumer.consume_char('=')
+        consumer.consume_one_of(['\'', '\"'])
+        self._value = consumer.consume_to_one_of(['\'', '\"'])
+        consumer.consume_one_of(['\'', '\"'])

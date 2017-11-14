@@ -1,18 +1,10 @@
-from custom.excel.row import Row
+from custom.excel._row import Row
 
 class Worksheet:
 
     def __init__(self, rep):
         self._rep = rep
         self._rows = []
-        for row in self._rep.rows:
-            self._rows.append(Row(row))
-
-    def __str__(self):
-        return self.get_title()
-
-    def __repr__(self):
-        return self.__str__()
 
     def __len__(self):
         return len(self._rows)
@@ -22,7 +14,19 @@ class Worksheet:
             yield row
 
     def __getitem__(self, index):
+        if not type(index) == int:
+            raise TypeError('Index \'' + index + '\' must be of integer type')
+        if index < 0:
+            raise IndexError('Index \'' + index + '\' must be positive')
+        if index >= len(self._rows):
+            raise IndexError('Index \'' + index + '\' must be less than the number of rows')
         return self._rows[index]
+
+    def load_data(self):
+        for row in self._rep.rows:
+            row = Row(row)
+            row.load_data()
+            self._rows.append(row)
 
     def get_title(self):
         return self._rep.title

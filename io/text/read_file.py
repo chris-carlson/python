@@ -1,13 +1,11 @@
-from custom.list_.list_ import List
 from custom.set_.multi_set import MultiSet
 from custom.set_.ordered_set import OrderedSet
-from custom.str_ import Str
 
 class ReadFile:
 
     def __init__(self, file_name):
         self._file = open(file_name, 'r')
-        self._lines = List()
+        self._lines = []
 
     @property
     def lines(self):
@@ -15,7 +13,7 @@ class ReadFile:
 
     def read_lines(self):
         for line in self._file:
-            self._lines.append(Str(line))
+            self._lines.append(line)
 
     def get_parse_line(self):
         parse_line = ''
@@ -24,7 +22,7 @@ class ReadFile:
         return parse_line
 
     def get_stripped_lines(self):
-        stripped_lines = List()
+        stripped_lines = []
         for line in self._lines:
             stripped_lines.append(line.strip())
         return stripped_lines

@@ -3,6 +3,7 @@ from pathlib import Path
 from custom.file_.file_ import File
 
 class Directory(File):
+
     def get_file(self, name):
         files = self.get_files()
         for file_ in files:

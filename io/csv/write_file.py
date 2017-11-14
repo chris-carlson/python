@@ -1,4 +1,4 @@
-from custom.file_.write_file import WriteFile
+from custom.io.text.write_file import WriteFile
 
 class WriteFile:
 

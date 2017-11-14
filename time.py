@@ -5,12 +5,12 @@ class Time:
     MERIDIEM = {'AM': 'AM', 'PM': 'PM'}
 
     def __init__(self, hour, minute, meridiem):
-        self._hour = hour
-        self._minute = minute
-        self._meridiem = meridiem
         assert 0 < hour <= self.HOURS_IN_DAY / 2
         assert 0 <= minute < self.MINUTES_IN_HOUR
         assert meridiem in self.MERIDIEM
+        self._hour = hour
+        self._minute = minute
+        self._meridiem = meridiem
 
     def __eq__(self, other):
         return self._hour == other.hour and self._minute == other.minute and self._meridiem == other.meridiem

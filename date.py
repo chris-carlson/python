@@ -1,3 +1,7 @@
+from custom.regex import Regex
+
+DATE_REGEX = Regex('\d{4}-\d{2}-\d{2}')
+
 class Date:
 
     NUM_MONTHS = 12
@@ -7,6 +11,8 @@ class Date:
 
     @staticmethod
     def parse_date(date_str):
+        if not DATE_REGEX.matches(date_str):
+            raise ValueError('Date must match the format ####-##-##')
         first_dash = date_str.find('-')
         second_dash = date_str.find('-', first_dash + 1)
         year = int(date_str[:first_dash])
@@ -79,6 +85,9 @@ class Date:
     def day(self):
         return self._day
 
+    def clone(self):
+        return Date(self.year, self.month, self.day)
+
     def add_day(self):
         self._day += 1
         if self._day > self._get_days_in_current_month():
@@ -104,6 +113,17 @@ class Date:
     def subtract_days(self, days):
         for i in range(0, days):
             self.subtract_day()
+
+    def get_days_to(self, date):
+        copied_date = date.clone()
+        num_days = 0
+        while self < copied_date:
+            copied_date.subtract_day()
+            num_days += 1
+        while self > copied_date:
+            copied_date.add_day()
+            num_days -= 1
+        return num_days
 
     def _get_days_in_current_month(self):
         if self._month == self.LEAP_MONTH and self._is_leap_year():

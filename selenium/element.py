@@ -46,13 +46,6 @@ class Element:
             return Element._get_elements(self._rep.find_elements_by_css_selector(search))
         raise ValueError('Invalid by value \'' + str(by) + '\'')
 
-    @staticmethod
-    def _get_elements(results):
-        elements = []
-        for result in results:
-            elements.append(Element(result))
-        return elements
-
     def click(self):
         if self._rep.tag_name == 'input':
             self._rep.send_keys(Keys.RETURN)
@@ -67,3 +60,10 @@ class Element:
 
     def get_attribute(self, attribute):
         return self._rep.get_attribute(attribute)
+
+    @staticmethod
+    def _get_elements(results):
+        elements = []
+        for result in results:
+            elements.append(Element(result))
+        return elements

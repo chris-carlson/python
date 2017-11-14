@@ -16,16 +16,19 @@ class Driver:
         self._rep.get(url)
 
     def has_element(self, by, search):
-        root = Element(self._rep.find_element_by_tag_name('html'))
+        root = self._get_root()
         return root.has_element(by, search)
 
     def find_element(self, by, search):
-        root = Element(self._rep.find_element_by_tag_name('html'))
+        root = self._get_root()
         return root.find_element(by, search)
 
     def find_elements(self, by, search):
-        root = Element(self._rep.find_element_by_tag_name('html'))
+        root = self._get_root()
         return root.find_elements(by, search)
 
     def quit(self):
         self._rep.quit()
+
+    def _get_root(self):
+        return Element(self._rep.find_element_by_tag_name('html'))

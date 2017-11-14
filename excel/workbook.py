@@ -1,4 +1,4 @@
-from custom.excel.worksheet import Worksheet
+from custom.excel._worksheet import Worksheet
 from openpyxl import Workbook as OpenpyxlWorkbook, load_workbook
 
 class Workbook:
@@ -8,12 +8,6 @@ class Workbook:
         self._worksheets = []
         self._rep = OpenpyxlWorkbook()
 
-    def __str__(self):
-        return '[' + ', '.join(self._worksheets) + ']'
-
-    def __repr__(self):
-        return self.__str__()
-
     def __len__(self):
         return len(self._worksheets)
 
@@ -22,6 +16,12 @@ class Workbook:
             yield worksheet
 
     def __getitem__(self, index):
+        if not type(index) == int:
+            raise TypeError('Index \'' + index + '\' must be of integer type')
+        if index < 0:
+            raise IndexError('Index \'' + index + '\' must be positive')
+        if index >= len(self._worksheets):
+            raise IndexError('Index \'' + index + '\' must be less than the number of worksheets')
         return self._worksheets[index]
 
     def load_data(self):
@@ -29,7 +29,9 @@ class Workbook:
             raise ValueError('No file name given')
         self._rep = load_workbook(filename=self._file_name)
         for worksheet in self._rep:
-            self._worksheets.append(Worksheet(worksheet))
+            worksheet = Worksheet(worksheet)
+            worksheet.load_data()
+            self._worksheets.append(worksheet)
 
     def get_worksheet(self, title):
         for worksheet in self._worksheets:
