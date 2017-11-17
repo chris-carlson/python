@@ -1,5 +1,3 @@
-from custom.list_.list_ import List
-
 class PairList:
 
     def __init__(self):
@@ -42,13 +40,13 @@ class PairList:
                 return item[1]
 
     def keys(self):
-        keys = List()
+        keys = []
         for item in self._rep:
             keys.append(item[0])
         return keys
 
     def values(self):
-        values = List()
+        values = []
         for item in self._rep:
             values.append(item[1])
         return values

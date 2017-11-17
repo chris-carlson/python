@@ -1,7 +1,7 @@
 class WriteFile():
 
     def __init__(self, file_name):
-        self._file = open(file_name, 'w')
+        self._file = open(file_name, mode='w', newline='\n')
 
     def write(self, str_):
         self._file.write(str(str_))

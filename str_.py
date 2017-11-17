@@ -3,6 +3,9 @@ class Str(str):
     def __init__(self, str_):
         self._rep = str_
 
+    def contains(self, substring):
+        return self._rep.find(substring) != -1
+
     def find_between(self, char):
         index1 = self._rep.find(char)
         index2 = self._rep.find(char, index1 + 1)
@@ -32,11 +35,11 @@ class Str(str):
     def capitalize_first(self):
         return Str(self._rep[0].upper() + self._rep[1:])
 
-    def remove(self, char):
+    def remove(self, sequence):
         str_ = self._rep
-        while contains(char):
-            index = self._rep.find(char)
-            str_ = str_[:index] + str_[index + 1:]
+        while str_.find(sequence) != -1:
+            index = self._rep.find(sequence)
+            str_ = str_[:index] + str_[index + len(sequence):]
         return Str(str_)
 
     def remove_whitespace(self):
