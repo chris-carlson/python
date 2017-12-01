@@ -34,10 +34,7 @@ class Row:
         return is_blank
 
     def get_values(self):
-        values = []
-        for cell in self._cells:
-            values.append(cell.get_value())
-        return values
+        return [cell.get_value() for cell in self._cells]
 
     def set_values(self, values):
         for index in range(0, len(values)):

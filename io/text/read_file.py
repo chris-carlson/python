@@ -12,20 +12,13 @@ class ReadFile:
         return self._lines
 
     def read_lines(self):
-        for line in self._file:
-            self._lines.append(line)
+        self._lines = [line for line in self._file]
 
     def get_parse_line(self):
-        parse_line = ''
-        for line in self._lines:
-            parse_line += line
-        return parse_line
+        return ''.join(self._lines)
 
     def get_stripped_lines(self):
-        stripped_lines = []
-        for line in self._lines:
-            stripped_lines.append(line.strip())
-        return stripped_lines
+        return [line.strip() for line in self._lines]
 
     def get_unique_lines(self):
         ordered_set = OrderedSet()
@@ -38,9 +31,6 @@ class ReadFile:
         for line in self.get_stripped_lines():
             multi_set.add(line)
         return multi_set
-
-    def get_filtered_lines(self, regex):
-        return self.get_stripped_lines().filter_text(regex)
 
     def close(self):
         self._file.close()

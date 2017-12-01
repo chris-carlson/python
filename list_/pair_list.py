@@ -40,16 +40,10 @@ class PairList:
                 return item[1]
 
     def keys(self):
-        keys = []
-        for item in self._rep:
-            keys.append(item[0])
-        return keys
+        return [item[0] for item in self._rep]
 
     def values(self):
-        values = []
-        for item in self._rep:
-            values.append(item[1])
-        return values
+        return [item[1] for item in self._rep]
 
     def add(self, key, value):
         self._rep.append((key, value))
@@ -60,6 +54,7 @@ class PairList:
         for item in self._rep:
             if item[0] == key:
                 item_to_remove = item
+                break
         self._rep.remove(item_to_remove)
 
     def sort_keys(self):

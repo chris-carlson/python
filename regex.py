@@ -14,7 +14,4 @@ class Regex:
         return matches[0]
 
     def find_matches(self, str_):
-        matches = []
-        for match in self._rep.finditer(str_):
-            matches.append(match.group())
-        return matches
+        return [match.group() for match in self._rep.finditer(str_)]

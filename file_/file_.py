@@ -27,5 +27,8 @@ class File:
     def suffix(self):
         return self._rep.suffix
 
+    def contains_directory(self, directory_name):
+        return directory_name in self._rep.parts
+
     def join(self, path):
         self._rep.joinpath(path)

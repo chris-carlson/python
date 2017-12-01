@@ -24,6 +24,6 @@ class Document:
             self._root = Object()
         elif consumer.peek() == '[':
             self._root = Array()
-        self._root.parse(consumer)
+            self._root.parse(consumer)
         else:
             raise ValueError('\"' + consumer.peek() + '\" is not a valid starting character')

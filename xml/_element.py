@@ -27,11 +27,7 @@ class Element:
         raise ValueError('Child ' + child_name + ' does not exist on this element')
 
     def get_children(self, child_name):
-        children = []
-        for child in self._children:
-            if child.name == child_name:
-                children.append(child)
-        return children
+        return [child for child in self._children if child.name == child_name]
 
     def parse(self, consumer):
         consumer.consume_char('<')

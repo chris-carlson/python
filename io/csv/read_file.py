@@ -24,12 +24,7 @@ class ReadFile:
 
     def read_values(self):
         self._file.read_lines()
-        for line in self._file.get_stripped_lines():
-            line_values = []
-            split_values = line.split(',')
-            for split_value in split_values:
-                line_values.append(split_value)
-            self._rows.append(line_values)
+        self._rows = [[value for value in line.split(',')] for line in self._file.get_stripped_lines()]
 
     def get_row(self, num):
         if num >= len(self._rows):
