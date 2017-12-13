@@ -1,9 +1,9 @@
-from custom.io.text.read_file import ReadFile
+from custom.io.text.read_file import ReadFile as TextReadFile
 
 class ReadFile:
 
     def __init__(self, file_name):
-        self._file = ReadFile(file_name)
+        self._file = TextReadFile(file_name)
         self._rows = []
 
     def __len__(self):
@@ -22,7 +22,7 @@ class ReadFile:
             raise IndexError('Index \'' + index + '\' must be less than the number of rows')
         return self._rows[num]
 
-    def read_values(self):
+    def read_data(self):
         self._file.read_lines()
         self._rows = [[value for value in line.split(',')] for line in self._file.get_stripped_lines()]
 
