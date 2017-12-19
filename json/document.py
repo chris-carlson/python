@@ -17,11 +17,12 @@ class Document:
     def parse(self):
         assert self._root == None, 'Document has already been parsed'
         self._file.read_lines()
-        parse_line = json_file.get_parse_line()
+        parse_line = self._file.get_parse_line()
         consumer = Consumer(parse_line)
         consumer.consume_whitespace()
         if consumer.peek() == '{':
             self._root = Object()
+            self._root.parse(consumer)
         elif consumer.peek() == '[':
             self._root = Array()
             self._root.parse(consumer)

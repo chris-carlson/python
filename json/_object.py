@@ -2,7 +2,7 @@ from custom.json._pair import Pair
 
 class Object:
 
-    def __init__(self, consumer):
+    def __init__(self):
         self._pairs = []
 
     def __contains__(self, key):

@@ -15,7 +15,12 @@ class ReadFile:
         self._lines = [line for line in self._file]
 
     def get_parse_line(self):
-        return ''.join(self._lines)
+        parse_line = ''.join(self._lines)
+        parse_line = parse_line.replace(' ', '')
+        parse_line = parse_line.replace('\t', '')
+        parse_line = parse_line.replace('\r', '')
+        parse_line = parse_line.replace('\n', '')
+        return parse_line
 
     def get_stripped_lines(self):
         return [line.strip() for line in self._lines]

@@ -1,8 +1,3 @@
-from custom.json._array import Array
-from custom.json._boolean import Boolean
-from custom.json._number import Number
-from custom.json._object import Object
-from custom.json._string import String
 from custom.regex import Regex
 
 class Value:
@@ -15,6 +10,8 @@ class Value:
 
     @property
     def value(self):
+        from custom.json._object import Object
+        from custom.json._array import Array
         if type(self._value) == Object or type(self._value) == Array:
             return self._value
         else:
@@ -22,14 +19,24 @@ class Value:
 
     def parse(self, consumer):
         if consumer.peek() == '{':
-            self._value = Object(consumer)
+            from custom.json._object import Object
+            self._value = Object()
+            self._value.parse(consumer)
         elif consumer.peek() == '[':
-            self._value = Array(consumer)
+            from custom.json._array import Array
+            self._value = Array()
+            self._value.parse(consumer)
         elif consumer.peek() == '\"':
-            self._value = String(consumer)
+            from custom.json._string import String
+            self._value = String()
+            self._value.parse(consumer)
         elif self.NUMBER_REGEX.matches(consumer.peek()):
-            self._value = Number(consumer)
+            from custom.json._number import Number
+            self._value = Number()
+            self._value.parse(consumer)
         elif self.BOOLEAN_REGEX.matches(consumer.peek()):
-            self._value = Boolean(consumer)
+            from custom.json._boolean import Boolean
+            self._value = Boolean()
+            self._value.parse(consumer)
         else:
             self._value = None
