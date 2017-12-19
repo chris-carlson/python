@@ -16,7 +16,6 @@ class ReadFile:
 
     def get_parse_line(self):
         parse_line = ''.join(self._lines)
-        parse_line = parse_line.replace(' ', '')
         parse_line = parse_line.replace('\t', '')
         parse_line = parse_line.replace('\r', '')
         parse_line = parse_line.replace('\n', '')

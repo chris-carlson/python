@@ -5,6 +5,8 @@ class Element:
     def __init__(self):
         self._name = None
         self._body = None
+        self._attributes = []
+        self._children = []
 
     @property
     def name(self):
@@ -32,7 +34,6 @@ class Element:
     def parse(self, consumer):
         consumer.consume_char('<')
         self._name = consumer.consume_to_one_of(['>', ' '])
-        self._attributes = []
         while consumer.peek() == ' ':
             consumer.consume_whitespace()
             attribute = Attribute()
@@ -40,7 +41,6 @@ class Element:
             self._attributes.append(attribute)
         consumer.consume_char('>')
         consumer.consume_whitespace()
-        self._children = []
         while consumer.peek() == '<' and not consumer.starts_with('</'):
             child = Element()
             child.parse(consumer)

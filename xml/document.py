@@ -1,4 +1,4 @@
-from custom.consumer.consumer import Consumer
+from custom.consumer import Consumer
 from custom.io.text.read_file import ReadFile
 from custom.xml._element import Element
 
@@ -16,7 +16,7 @@ class Document:
     def parse(self):
         assert self._root == None, 'Document has already been parsed'
         self._file.read_lines()
-        parse_line = xml_file.get_parse_line()
+        parse_line = self._file.get_parse_line()
         consumer = Consumer(parse_line)
         if consumer.starts_with('<?'):
             consumer.consume_through('>')
