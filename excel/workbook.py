@@ -24,6 +24,10 @@ class Workbook:
             raise IndexError('Index \'' + index + '\' must be less than the number of worksheets')
         return self._worksheets[index]
 
+    @property
+    def worksheets(self):
+        return self._worksheets
+
     def load_data(self):
         if self._file_name == None:
             raise ValueError('No file name given')

@@ -22,6 +22,10 @@ class Row:
             raise IndexError('Index \'' + index + '\' must be less than the number of cells')
         return self._cells[index]
 
+    @property
+    def cells(self):
+        return self._cells
+
     def load_data(self):
         for cell in self._rep:
             self._cells.append(Cell(cell))

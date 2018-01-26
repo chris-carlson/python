@@ -24,7 +24,7 @@ class PairList:
 
     def __iter__(self):
         for item in self._rep:
-            yield item[0]
+            yield item
 
     def __getitem__(self, key):
         return self.get(key)

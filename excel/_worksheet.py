@@ -22,6 +22,10 @@ class Worksheet:
             raise IndexError('Index \'' + index + '\' must be less than the number of rows')
         return self._rows[index]
 
+    @property
+    def rows(self):
+        return self._rows
+
     def load_data(self):
         for row in self._rep.rows:
             row = Row(row)
@@ -63,11 +67,13 @@ class Worksheet:
         return -1
 
     def add_row(self, values):
-        row = self._create_row()
+        row = self._create_row(len(values))
+        row.load_data()
         row.set_values(values)
 
     def insert_row(self, insert_index, values):
-        self._create_row()
+        new_row = self._create_row(len(values))
+        new_row.load_data()
         for index in range(len(self._rows) - 2, insert_index - 1, -1):
             self._shift_row(index, 1)
         row = self._rows[insert_index]
@@ -96,9 +102,9 @@ class Worksheet:
         for index in range(start_index, end_index):
             self.clear_row(index)
 
-    def _create_row(self):
+    def _create_row(self, length):
         cells = []
-        for column_index in range(0, self.num_columns()):
+        for column_index in range(0, length):
             cells.append(self._rep.cell(row=len(self._rows) + 1, column=column_index + 1))
         row = Row(cells)
         self._rows.append(row)
