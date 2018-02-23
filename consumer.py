@@ -1,8 +1,8 @@
 from custom.regex import Regex
 
-class Consumer:
+WHITESPACE_REGEX = Regex(r'\s')
 
-    WHITESPACE_REGEX = Regex('\s')
+class Consumer:
 
     def __init__(self, rep):
         self._rep = rep
@@ -17,25 +17,27 @@ class Consumer:
         return self._rep.find(sequence) != -1
 
     def peek(self):
-        assert len(self._rep) > 0, 'Consumer does not have any input left'
+        assert self.has_input(), 'Consumer does not have any input left'
         return self._rep[0]
 
-    def consume_char(self, check_char=None):
-        if check_char != None:
-            assert self.peek() == check_char, 'Expected ' + check_char + ', got \'' + self.peek() + '\''
-        return self.consume_chars(1)
+    def matches(self, regex):
+        return regex.matches(self._rep)
 
-    def consume_one_of(self, check_chars):
-        if len(check_chars) > 0:
-            assert self.peek() in check_chars, 'Expected one of ' + str(check_chars) + ', got \'' + self.peek() + '\''
-        return self.consume_chars(1)
+    def consume_char(self, char=None):
+        assert self.has_input(), 'Consumer does not have any input left'
+        if char != None:
+            assert self.peek() == char, 'Expected \'' + char + '\', got \'' + self.peek() + '\''
+        return self._remove_char()
 
-    def consume_chars(self, num):
-        assert num <= len(self._rep), 'Expected to consume ' + str(num) + ' chars, only found ' + str(len(self._rep)) + ' chars'
+    def consume_one_of(self, chars):
+        if len(chars) > 0:
+            assert self.peek() in chars, 'Expected one of ' + str(chars) + ', got \'' + self.peek() + '\''
+        return self.consume_char()
+
+    def consume_chars(self, chars):
         consumed = ''
-        for i in range(0, num):
-            consumed += self._rep[i]
-        self._rep = self._rep[num:]
+        for char in chars:
+            consumed += self.consume_char(char)
         return consumed
 
     def consume_to(self, char):
@@ -45,17 +47,15 @@ class Consumer:
     def consume_to_one_of(self, chars):
         assert self._contains_one_of(chars), 'Could not find one of \'' + str(chars) + '\''
         consumed = ''
-        while self._rep[0] not in chars:
-            consumed += self._rep[0]
-            self._remove_char()
+        while self.peek() not in chars:
+            consumed += self._remove_char()
         return consumed
 
     def consume_to_sequence(self, sequence):
         assert self.contains(sequence), 'Could not find \'' + sequence + '\''
         consumed = ''
         while not self.starts_with(sequence):
-            consumed += self._rep[0]
-            self._remove_char()
+            consumed += self._remove_char()
         return consumed
 
     def consume_through(self, char):
@@ -69,18 +69,18 @@ class Consumer:
 
     def consume_through_sequence(self, sequence):
         consumed = self.consume_to_sequence(sequence)
-        consumed += self.consume_chars(len(sequence))
+        consumed += self._remove_chars(len(sequence))
         return consumed
 
     def consume_whitespace(self):
         consumed = ''
-        while self.has_input() and self.WHITESPACE_REGEX.matches(self.peek()):
+        while self.has_input() and WHITESPACE_REGEX.matches(self.peek()):
             consumed += self.consume_char()
         return consumed
 
     def consume_to_whitespace(self):
         consumed = ''
-        while self.has_input() and not self.WHITESPACE_REGEX.matches(self.peek()):
+        while self.has_input() and not WHITESPACE_REGEX.matches(self.peek()):
             consumed += self.consume_char()
         return consumed
 
@@ -98,4 +98,9 @@ class Consumer:
         return contains
 
     def _remove_char(self):
-        self._rep = self._rep[1:]
+        return self._remove_chars(1)
+
+    def _remove_chars(self, num_chars):
+        consumed = self._rep[:num_chars]
+        self._rep = self._rep[num_chars:]
+        return consumed

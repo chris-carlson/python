@@ -1,55 +1,59 @@
-from custom.xml._attribute import Attribute
+from custom.xml._element_list import ElementList
 
 class Element:
 
     def __init__(self):
-        self._name = None
-        self._body = None
-        self._attributes = []
-        self._children = []
+        self._name = ''
+        self._attributes = {}
+        self._children = ElementList()
+        self._data = None
 
     @property
     def name(self):
         return self._name
 
     @property
-    def body(self):
-        return self._body
+    def attributes(self):
+        return self._attributes
 
-    def get_attribute(self, attribute_name):
-        for attribute in self._attributes:
-            if attribute.name == attribute_name:
-                return attribute.value
-        raise ValueError('Attribute ' + attribute_name + ' does not exist on this element')
+    @property
+    def children(self):
+        assert self._data == None, 'Element \'' + self._name + '\' has no children'
+        return self._children
 
-    def get_child(self, child_name):
-        for child in self._children:
-            if child.name == child_name:
-                return child
-        raise ValueError('Child ' + child_name + ' does not exist on this element')
+    @property
+    def data(self):
+        assert self._data != None, 'Element \'' + self._name + '\' has no data'
+        return self._data
 
-    def get_children(self, child_name):
-        return [child for child in self._children if child.name == child_name]
-
-    def parse(self, consumer):
+    def _parse(self, consumer):
         consumer.consume_char('<')
-        self._name = consumer.consume_to_one_of(['>', ' '])
+        self._name = consumer.consume_to_one_of(['>', ' ', '/'])
         while consumer.peek() == ' ':
             consumer.consume_whitespace()
-            attribute = Attribute()
-            attribute.parse(consumer)
-            self._attributes.append(attribute)
-        consumer.consume_char('>')
-        consumer.consume_whitespace()
-        while consumer.peek() == '<' and not consumer.starts_with('</'):
-            child = Element()
-            child.parse(consumer)
-            self._children.append(child)
+            attribute_name = consumer.consume_to('=')
+            consumer.consume_char('=')
+            consumer.consume_one_of(['\'', '\"'])
+            attribute_value = consumer.consume_to_one_of(['\'', '\"'])
+            consumer.consume_one_of(['\'', '\"'])
+            self._attributes[attribute_name] = attribute_value
+        if consumer.peek() == '/':
+            consumer.consume_char('/')
+            consumer.consume_char('>')
+            self._data = ''
+        else:
+            consumer.consume_char('>')
             consumer.consume_whitespace()
-        self._body = consumer.consume_to('<')
-        consumer.consume_char('<')
-        consumer.consume_char('/')
-        closing_tag_name = consumer.consume_to('>')
-        assert closing_tag_name == self._name, 'Closing tag name ' + closing_tag_name + ' does not match opening tag name ' + self._name
-        consumer.consume_char('>')
-        consumer.consume_whitespace()
+            if consumer.peek() == '<':
+                while consumer.peek() == '<' and not consumer.starts_with('</'):
+                    child = Element()
+                    child._parse(consumer)
+                    self._children.append(child)
+            else:
+                self._data = consumer.consume_to('<')
+            consumer.consume_char('<')
+            consumer.consume_char('/')
+            closing_tag_name = consumer.consume_to('>')
+            assert closing_tag_name == self._name, 'Closing tag name \'' + closing_tag_name + '\' does not match opening tag name \'' + self._name + '\''
+            consumer.consume_char('>')
+            consumer.consume_whitespace()

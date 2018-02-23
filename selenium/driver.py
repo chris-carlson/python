@@ -1,7 +1,7 @@
 import os
 
 from selenium import webdriver
-from custom.selenium.element import Element
+from custom.selenium._element import Element
 
 class Driver:
 

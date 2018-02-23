@@ -3,18 +3,26 @@ class Str(str):
     def __init__(self, str_):
         self._rep = str_
 
-    def contains(self, substring):
-        return self._rep.find(substring) != -1
+    def find_between(self, char1, char2, pair_num=1):
+        indices = ()
+        current_pair = 0
+        start_index = 0
+        while current_pair < pair_num:
+            indices = self._find_pair_indices(char1, char2, start_index)
+            current_pair += 1
+            start_index = indices[1] + 1
+        return Str(self._rep[indices[0] + 1 : indices[1]].strip())
 
-    def find_between(self, char):
-        index1 = self._rep.find(char)
-        index2 = self._rep.find(char, index1 + 1)
-        if index1 == -1 or index2 == -1:
-            return ''
-        return Str(self._rep[index1 + 1 : index2].strip())
-
-    def find_after(self, find_str, after_str):
-        after_index = self._rep.find(after_str)
+    def find_after(self, find_str, after_str, num=1):
+        after_index = -1
+        current_num = 0
+        start_index = 0
+        while current_num < num:
+            after_index = self._rep.find(after_str, start_index)
+            if after_index == -1:
+                raise ValueError('String \'' + after_str + '\' not found')
+            current_num += 1
+            start_index = after_index + 1
         return Str(self._rep.find(find_str, after_index + 1))
 
     def substring_to(self, substring):
@@ -60,3 +68,10 @@ class Str(str):
     def insert_text_after(self, char, text):
         index = self._rep.find(char) + 1
         return self.insert_text(index, text)
+
+    def _find_pair_indices(self, char1, char2, index=0):
+        index1 = self._rep.find(char1, index + 1)
+        index2 = self._rep.find(char2, index1 + 1)
+        if index1 == -1 or index2 == -1:
+            raise ValueError('Could not find a pair of (\'' + char1 + '\', \'' + char2 + '\') in string starting at index ' + str(index))
+        return (index1, index2)

@@ -10,33 +10,33 @@ class Value:
 
     @property
     def value(self):
-        from custom.json._object import Object
-        from custom.json._array import Array
-        if type(self._value) == Object or type(self._value) == Array:
-            return self._value
-        else:
-            return self._value.value
+        return self._value
 
     def parse(self, consumer):
         if consumer.peek() == '{':
             from custom.json._object import Object
-            self._value = Object()
-            self._value.parse(consumer)
+            object_ = Object()
+            object_.parse(consumer)
+            self._value = object_.pairs
         elif consumer.peek() == '[':
             from custom.json._array import Array
-            self._value = Array()
-            self._value.parse(consumer)
+            array = Array()
+            array.parse(consumer)
+            self._value = array.elements
         elif consumer.peek() == '\"':
             from custom.json._string import String
-            self._value = String()
-            self._value.parse(consumer)
+            string = String()
+            string.parse(consumer)
+            self._value = string.value
         elif self.NUMBER_REGEX.matches(consumer.peek()):
             from custom.json._number import Number
-            self._value = Number()
-            self._value.parse(consumer)
+            number = Number()
+            number.parse(consumer)
+            self._value = number.value
         elif self.BOOLEAN_REGEX.matches(consumer.peek()):
             from custom.json._boolean import Boolean
-            self._value = Boolean()
-            self._value.parse(consumer)
+            boolean = Boolean()
+            boolean.parse(consumer)
+            self._value = boolean.value
         else:
             self._value = None

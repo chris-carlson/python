@@ -1,7 +1,7 @@
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.ui import WebDriverWait
 from custom.selenium.by import By
-from custom.selenium.element import Element
+from custom.selenium._element import Element
 
 class Wait:
 

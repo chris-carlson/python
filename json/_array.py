@@ -22,7 +22,7 @@ class Array:
         return self._elements[index].value
 
     @property
-    def value(self):
+    def elements(self):
         return self._elements
 
     def parse(self, consumer):
@@ -31,7 +31,7 @@ class Array:
         while consumer.peek() != ']':
             value = Value()
             value.parse(consumer)
-            self._elements.append(value)
+            self._elements.append(value.value)
             consumer.consume_whitespace()
             if consumer.peek() == ',':
                 consumer.consume_char(',')

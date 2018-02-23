@@ -1,7 +1,6 @@
 from custom.consumer import Consumer
 from custom.io.text.read_file import ReadFile
-from custom.json._array import Array
-from custom.json._object import Object
+from custom.json._value import Value
 
 class Document:
 
@@ -20,11 +19,8 @@ class Document:
         parse_line = self._file.get_parse_line()
         consumer = Consumer(parse_line)
         consumer.consume_whitespace()
-        if consumer.peek() == '{':
-            self._root = Object()
-            self._root.parse(consumer)
-        elif consumer.peek() == '[':
-            self._root = Array()
-            self._root.parse(consumer)
-        else:
-            raise ValueError('\"' + consumer.peek() + '\" is not a valid starting character')
+        if not consumer.starts_with('{') or not consumer.starts_with('['):
+            consumer.consume_to_one_of(['{', '['])
+        value = Value()
+        value.parse(consumer)
+        self._root = value.value

@@ -3,7 +3,7 @@ from custom.json._pair import Pair
 class Object:
 
     def __init__(self):
-        self._pairs = []
+        self._pairs = {}
 
     def __contains__(self, key):
         for pair in self._pairs:
@@ -24,7 +24,7 @@ class Object:
         raise KeyError('Key \'' + key + '\' does not exist in the object')
 
     @property
-    def value(self):
+    def pairs(self):
         return self._pairs
 
     def parse(self, consumer):
@@ -33,7 +33,7 @@ class Object:
         while consumer.peek() != '}':
             pair = Pair()
             pair.parse(consumer)
-            self._pairs.append(pair)
+            self._pairs[pair.key] = pair.value
             consumer.consume_whitespace()
             if consumer.peek() == ',':
                 consumer.consume_char(',')
