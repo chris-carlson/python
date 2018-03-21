@@ -19,8 +19,6 @@ class Document:
         parse_line = self._file.get_parse_line()
         consumer = Consumer(parse_line)
         consumer.consume_whitespace()
-        if not consumer.starts_with('{') or not consumer.starts_with('['):
-            consumer.consume_to_one_of(['{', '['])
         value = Value()
         value.parse(consumer)
         self._root = value.value

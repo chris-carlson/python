@@ -58,10 +58,18 @@ class PairList:
         self._rep.remove(item_to_remove)
 
     def sort_keys(self):
-        self._rep.sort(key=lambda pair: pair[0])
+        if len(self._rep) > 0:
+            if type(self._rep[0][0]) == str:
+                self._rep.sort(key=lambda pair: pair[0].lower())
+            else:
+                self._rep.sort(key=lambda pair: pair[0])
 
     def sort_values(self):
-        self._rep.sort(key=lambda pair: pair[1])
+        if len(self._rep) > 0:
+            if type(self._rep[0][1]) == str:
+                self._rep.sort(key=lambda pair: pair[1].lower())
+            else:
+                self._rep.sort(key=lambda pair: pair[1])
 
     def reverse(self):
         self._rep.reverse()

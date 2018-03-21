@@ -20,8 +20,6 @@ class Document:
         consumer = Consumer(parse_line)
         if consumer.starts_with('<?'):
             consumer.consume_through('>')
-        if not consumer.starts_with('<'):
-            consumer.consume_to('<')
         consumer.consume_whitespace()
         self._root = Element()
         self._root._parse(consumer)
