@@ -5,27 +5,24 @@ from custom.selenium._element import Element
 
 class Driver:
 
-    def __init__(self, options=[]):
-        chromedriver_path = os.environ['CHROMEDRIVER']
+    def __init__(self, headless=False):
         chrome_options = webdriver.ChromeOptions()
-        for option in options:
-            chrome_options.add_argument(option)
-        self._rep = webdriver.Chrome(chromedriver_path, chrome_options=chrome_options)
+        if headless:
+            chrome_options.add_argument('headless')
+            chrome_options.add_argument('disable-gpu')
+        self._rep = webdriver.Chrome(os.environ['CHROMEDRIVER'], chrome_options=chrome_options)
 
     def navigate(self, url):
         self._rep.get(url)
 
     def has_element(self, by, search):
-        root = self._get_root()
-        return root.has_element(by, search)
+        return self._get_root().has_element(by, search)
 
     def find_element(self, by, search):
-        root = self._get_root()
-        return root.find_element(by, search)
+        return self._get_root().find_element(by, search)
 
     def find_elements(self, by, search):
-        root = self._get_root()
-        return root.find_elements(by, search)
+        return self._get_root().find_elements(by, search)
 
     def quit(self):
         self._rep.quit()

@@ -8,11 +8,7 @@ class Element:
         self._rep = element
 
     @property
-    def html(self):
-        return self._rep.get_attribute('outerHTML')
-
-    @property
-    def tag_name(self):
+    def name(self):
         return self._rep.tag_name
 
     @property
@@ -24,10 +20,11 @@ class Element:
 
     def find_element(self, by, search):
         results = self.find_elements(by, search)
-        if len(results) > 0:
-            return results[0]
-        else:
-            return None
+        if len(results) > 1:
+            raise ValueError('Found ' + str(len(results)) + ' elements for search \'' + search + '\'')
+        elif len(results) == 0:
+            raise ValueError('Found no elements for search \'' + search + '\'')
+        return results[0]
 
     def find_elements(self, by, search):
         if by == By.ID:
@@ -63,7 +60,4 @@ class Element:
 
     @staticmethod
     def _get_elements(results):
-        elements = []
-        for result in results:
-            elements.append(Element(result))
-        return elements
+        return [Element(result) for result in results]

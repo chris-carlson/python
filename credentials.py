@@ -2,8 +2,8 @@ import getpass
 
 class Credentials:
 
-    def __init__(self):
-        self._username = ''
+    def __init__(self, username=''):
+        self._username = username
         self._password = ''
 
     @property
@@ -14,6 +14,8 @@ class Credentials:
     def password(self):
         return self._password
 
-    def prompt_user(self, first_prompt='Username'):
-        self._username = input(first_prompt + ': ')
+    def prompt_username(self):
+        self._username = input('Username: ')
+
+    def prompt_password(self):
         self._password = getpass.getpass()

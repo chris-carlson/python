@@ -11,6 +11,8 @@ class Regex:
 
     def find_match(self, str_):
         matches = self.find_matches(str_)
+        if len(matches) == 0:
+            raise ValueError('Found no matches for str \'' + str_ + '\'')
         return matches[0]
 
     def find_matches(self, str_):

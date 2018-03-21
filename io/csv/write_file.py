@@ -6,4 +6,4 @@ class WriteFile:
         self._file = TextWriteFile(file_name)
 
     def write_row(self, values):
-        self._file.write_line(','.join(values))
+        self._file.write_line(','.join(['\"' + value + '\"' for value in values]))
