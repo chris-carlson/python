@@ -29,7 +29,7 @@ class Date:
         assert self._day_is_valid()
 
     def __eq__(self, other):
-        return self._year == other.year and self._month == other.month and self._day_of_month == other.day
+        return self._year == other.year and self._month == other.month and self._day_of_month == other.day_of_month
 
     def __str__(self):
         return self._day_of_week.name.capitalize() + ' ' + str(self._year) + '/' + self._pad_num(self._month) + '/' + self._pad_num(self._day_of_month)
@@ -40,36 +40,36 @@ class Date:
     def __lt__(self, other):
         if self.year == other.year:
             if self.month == other.month:
-                if self.day == other.day:
+                if self.day_of_month == other.day_of_month:
                     return False
-                return self.day < other.day
+                return self.day_of_month < other.day_of_month
             return self.month < other.month
         return self.year < other.year
 
     def __le__(self, other):
         if self.year == other.year:
             if self.month == other.month:
-                if self.day == other.day:
+                if self.day_of_month == other.day_of_month:
                     return True
-                return self.day <= other.day
+                return self.day_of_month <= other.day_of_month
             return self.month <= other.month
         return self.year <= other.year
 
     def __gt__(self, other):
         if self.year == other.year:
             if self.month == other.month:
-                if self.day == other.day:
+                if self.day_of_month == other.day_of_month:
                     return False
-                return self.day > other.day
+                return self.day_of_month > other.day_of_month
             return self.month > other.month
         return self.year > other.year
 
     def __ge__(self, other):
         if self.year == other.year:
             if self.month == other.month:
-                if self.day == other.day:
+                if self.day_of_month == other.day_of_month:
                     return True
-                return self.day >= other.day
+                return self.day_of_month >= other.day_of_month
             return self.month >= other.month
         return self.year >= other.year
 

@@ -6,21 +6,9 @@ class ReadFile:
         self._file = TextReadFile(file_name)
         self._rows = []
 
-    def __len__(self):
-        return len(self._rows)
-
-    def __iter__(self):
-        for row in self._rows:
-            yield row
-
-    def __getitem__(self, index):
-        if not type(index) == int:
-            raise TypeError('Index \'' + index + '\' must be of integer type')
-        if index < 0:
-            raise IndexError('Index \'' + index + '\' must be positive')
-        if index >= len(self._rows):
-            raise IndexError('Index \'' + index + '\' must be less than the number of rows')
-        return self._rows[num]
+    @property
+    def rows(self):
+        return self._rows
 
     def read_data(self):
         self._file.read_lines()
