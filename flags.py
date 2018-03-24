@@ -2,8 +2,7 @@ class Flags:
 
     def __init__(self, args):
         self._flags = []
-        for index in range(1, len(args)):
-            arg = args[index]
+        for arg in args[1:]:
             if arg.startswith('--'):
                 self._flags.append(arg[2:])
             elif arg.startswith('-'):
@@ -14,6 +13,3 @@ class Flags:
 
     def get_flags(self):
         return self._flags
-
-    def add_flag(self, flag):
-        self._flags.append(flag)

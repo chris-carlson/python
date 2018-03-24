@@ -1,4 +1,4 @@
-from custom.list_.pair_list import PairList
+from custom.collections.pair_list import PairList
 
 class OrderedDict(PairList):
 

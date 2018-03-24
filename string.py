@@ -1,4 +1,4 @@
-class Str(str):
+class String(str):
 
     def __init__(self, str_):
         self._rep = str_

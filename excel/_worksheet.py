@@ -12,12 +12,6 @@ class Worksheet:
             yield row
 
     def __getitem__(self, index):
-        if not type(index) == int:
-            raise TypeError('Index \'' + index + '\' must be of integer type')
-        if index < 0:
-            raise IndexError('Index \'' + index + '\' must be positive')
-        if index >= len(self._rows):
-            raise IndexError('Index \'' + index + '\' must be less than the number of rows')
         return self._rows[index]
 
     @property

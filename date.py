@@ -1,3 +1,5 @@
+from enum import Enum
+
 from custom.date.day_of_week import DayOfWeek
 from custom.math import Math
 from custom.regex import Regex
@@ -160,3 +162,13 @@ class Date:
 
     def _pad_num(self, num):
         return '0' + str(num) if num < 10 else str(num)
+
+class DayOfWeek(Enum):
+
+    SUNDAY = 0
+    MONDAY = 1
+    TUESDAY = 2
+    WEDNESDAY = 3
+    THURSDAY = 4
+    FRIDAY = 5
+    SATURDAY = 6
