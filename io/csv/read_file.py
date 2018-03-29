@@ -26,3 +26,6 @@ class ReadFile:
                 raise ValueError('A row in the file does not have ' + str(num) + ' columns')
             column.append(row[num])
         return column
+
+    def close(self):
+        self._file.close()
