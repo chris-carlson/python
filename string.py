@@ -11,7 +11,7 @@ class String(str):
             indices = self._find_pair_indices(char1, char2, start_index)
             current_pair += 1
             start_index = indices[1] + 1
-        return Str(self._rep[indices[0] + 1 : indices[1]].strip())
+        return String(self._rep[indices[0] + 1 : indices[1]].strip())
 
     def find_after(self, find_str, after_str, num=1):
         after_index = -1
@@ -23,32 +23,32 @@ class String(str):
                 raise ValueError('String \'' + after_str + '\' not found')
             current_num += 1
             start_index = after_index + 1
-        return Str(self._rep.find(find_str, after_index + 1))
+        return String(self._rep.find(find_str, after_index + 1))
 
     def substring_to(self, substring):
         index = self._rep.find(substring)
-        return Str(self._rep[:index])
+        return String(self._rep[:index])
 
     def substring_from(self, substring):
         index = self._rep.find(substring)
-        return Str(self._rep[index:])
+        return String(self._rep[index:])
 
     def substring_after(self, substring):
         index = self._rep.find(substring)
-        return Str(self._rep[index + len(substring):])
+        return String(self._rep[index + len(substring):])
 
     def is_capitalized(self):
-        return Str(self._rep[0] == self._rep[0].upper())
+        return String(self._rep[0] == self._rep[0].upper())
 
     def capitalize_first(self):
-        return Str(self._rep[0].upper() + self._rep[1:])
+        return String(self._rep[0].upper() + self._rep[1:])
 
     def remove(self, sequence):
         str_ = self._rep
         while str_.find(sequence) != -1:
             index = self._rep.find(sequence)
             str_ = str_[:index] + str_[index + len(sequence):]
-        return Str(str_)
+        return String(str_)
 
     def remove_whitespace(self):
         str_ = self._rep
@@ -56,10 +56,10 @@ class String(str):
         str_ = str_.replace('\t', '')
         str_ = str_.replace('\r', '')
         str_ = str_.replace('\n', '')
-        return Str(str_)
+        return String(str_)
 
     def insert_text(self, index, text):
-        return Str(self._rep[:index] + text + self._rep[index:])
+        return String(self._rep[:index] + text + self._rep[index:])
 
     def insert_text_before(self, char, text):
         index = self._rep.find(char)

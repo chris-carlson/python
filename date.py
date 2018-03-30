@@ -1,6 +1,5 @@
 from enum import Enum
 
-from custom.date.day_of_week import DayOfWeek
 from custom.math import Math
 from custom.regex import Regex
 
