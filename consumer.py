@@ -2,6 +2,7 @@ from custom.regex import Regex
 
 WHITESPACE_REGEX = Regex(r'\s')
 
+
 class Consumer:
 
     def __init__(self, rep):
@@ -25,7 +26,7 @@ class Consumer:
 
     def consume_char(self, char=None):
         assert self.has_input(), 'Consumer does not have any input left'
-        if char != None:
+        if char is not None:
             assert self.peek() == char, 'Expected \'' + char + '\', got \'' + self.peek() + '\''
         return self._remove_char()
 

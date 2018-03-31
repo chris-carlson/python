@@ -1,5 +1,6 @@
 from custom.collections.pair_list import PairList
 
+
 class OrderedDict(PairList):
 
     def __setitem__(self, key, value):
@@ -11,5 +12,5 @@ class OrderedDict(PairList):
             self.add(key, value)
 
     def add(self, key, value):
-        if not key in self:
+        if key not in self:
             self._rep.append((key, value))

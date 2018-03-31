@@ -1,7 +1,7 @@
 from selenium.webdriver.common.by import By as SeleniumBy
 
-class By:
 
+class By:
     ID = 0
     NAME = 1
     XPATH = 2

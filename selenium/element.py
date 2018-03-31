@@ -1,6 +1,7 @@
+from custom.selenium.by import By
+
 from selenium.webdriver.common.keys import Keys
 
-from custom.selenium.by import By
 
 class Element:
 

@@ -1,4 +1,4 @@
-class WriteFile():
+class WriteFile:
 
     def __init__(self, file_name, append=False):
         mode = 'a' if append else 'w'

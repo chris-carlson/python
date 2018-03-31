@@ -1,6 +1,7 @@
 class String(str):
 
     def __init__(self, str_):
+        super().__init__()
         self._rep = str_
 
     def find_between(self, char1, char2, pair_num=1):
@@ -11,7 +12,7 @@ class String(str):
             indices = self._find_pair_indices(char1, char2, start_index)
             current_pair += 1
             start_index = indices[1] + 1
-        return String(self._rep[indices[0] + 1 : indices[1]].strip())
+        return String(self._rep[indices[0] + 1: indices[1]].strip())
 
     def find_after(self, find_str, after_str, num=1):
         after_index = -1
@@ -73,5 +74,7 @@ class String(str):
         index1 = self._rep.find(char1, index + 1)
         index2 = self._rep.find(char2, index1 + 1)
         if index1 == -1 or index2 == -1:
-            raise ValueError('Could not find a pair of (\'' + char1 + '\', \'' + char2 + '\') in string starting at index ' + str(index))
-        return (index1, index2)
+            raise ValueError(
+                'Could not find a pair of (\'' + char1 + '\', \'' + char2 + '\') in string starting at index ' + str(
+                    index))
+        return index1, index2

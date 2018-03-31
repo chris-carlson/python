@@ -1,5 +1,7 @@
-from custom.excel._worksheet import Worksheet
+from custom.excel.worksheet import Worksheet
+
 from openpyxl import Workbook as OpenpyxlWorkbook, load_workbook
+
 
 class Workbook:
 
@@ -25,12 +27,12 @@ class Workbook:
         return self._worksheets[index]
 
     def load_data(self):
-        if self._file_name == None:
+        if self._file_name is None:
             raise ValueError('Could not load data for workbook. Please provide file name.')
         self._openpyxl_workbook = load_workbook(filename=self._file_name)
         for worksheet in self._openpyxl_workbook:
             worksheet = Worksheet(worksheet)
-            worksheet._load_data()
+            worksheet.load_data()
             self._worksheets.append(worksheet)
 
     def get_worksheet(self, title):
@@ -42,7 +44,7 @@ class Workbook:
         return worksheets[0]
 
     def create_worksheet(self, title, position=None):
-        if position == None:
+        if position is None:
             position = len(self._worksheets)
         if position < 0:
             raise IndexError('Position \'' + position + '\' must be positive')
@@ -53,7 +55,7 @@ class Workbook:
         return self._worksheets[position]
 
     def save(self):
-        if self._file_name == None:
+        if self._file_name is None:
             raise ValueError('Could not save workbook. Please provide file name.')
         self._save_worksheets()
         self._openpyxl_workbook.save(self._file_name)
@@ -64,4 +66,4 @@ class Workbook:
 
     def _save_worksheets(self):
         for worksheet in self._worksheets:
-            worksheet._save()
+            worksheet.save()

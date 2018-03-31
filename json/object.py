@@ -1,4 +1,5 @@
-from custom.json._pair import Pair
+from custom.json.pair import Pair
+
 
 class Object:
 

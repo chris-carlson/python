@@ -1,13 +1,20 @@
+HOURS_IN_DAY = 24
+MINUTES_IN_HOUR = 60
+MERIDIEM = {'AM': 'AM', 'PM': 'PM'}
+
+
 class Time:
 
-    HOURS_IN_DAY = 24
-    MINUTES_IN_HOUR = 60
-    MERIDIEM = {'AM': 'AM', 'PM': 'PM'}
+    @staticmethod
+    def _pad_num(num):
+        if num < 10:
+            return '0' + str(num)
+        return str(num)
 
     def __init__(self, hour, minute, meridiem):
-        assert 0 < hour <= self.HOURS_IN_DAY / 2
-        assert 0 <= minute < self.MINUTES_IN_HOUR
-        assert meridiem in self.MERIDIEM
+        assert 0 < hour <= HOURS_IN_DAY / 2
+        assert 0 <= minute < MINUTES_IN_HOUR
+        assert meridiem in MERIDIEM
         self._hour = hour
         self._minute = minute
         self._meridiem = meridiem
@@ -39,7 +46,7 @@ class Time:
 
     def add_minute(self):
         self._minute += 1
-        if self._minute == self.MINUTES_IN_HOUR:
+        if self._minute == MINUTES_IN_HOUR:
             self._minute = 0
             self.add_hour()
 
@@ -50,7 +57,7 @@ class Time:
     def subtract_minute(self):
         self._minute -= 1
         if self._minute == -1:
-            self._minute = self.MINUTES_IN_HOUR - 1
+            self._minute = MINUTES_IN_HOUR - 1
             self.subtract_hour()
 
     def add_hours(self, hours):
@@ -59,9 +66,9 @@ class Time:
 
     def add_hour(self):
         self._hour += 1
-        if self._hour == self.HOURS_IN_DAY / 2:
+        if self._hour == HOURS_IN_DAY / 2:
             self._toggle_meridiem()
-        if self._hour > self.HOURS_IN_DAY / 2:
+        if self._hour > HOURS_IN_DAY / 2:
             self._hour = 1
 
     def subtract_hours(self, hours):
@@ -70,30 +77,25 @@ class Time:
 
     def subtract_hour(self):
         self._hour -= 1
-        if self._hour == self.HOURS_IN_DAY / 2 - 1:
+        if self._hour == HOURS_IN_DAY / 2 - 1:
             self._toggle_meridiem()
         if self._hour == 0:
-            self._hour = self.HOURS_IN_DAY // 2
+            self._hour = HOURS_IN_DAY // 2
 
     def get_military_hour(self):
-        if self._meridiem == self.MERIDIEM['PM']:
-            if self._hour == self.HOURS_IN_DAY / 2:
+        if self._meridiem == MERIDIEM['PM']:
+            if self._hour == HOURS_IN_DAY / 2:
                 return self._hour
-            return self._hour + int(self.HOURS_IN_DAY / 2)
+            return self._hour + int(HOURS_IN_DAY / 2)
         return self._hour
 
     def _calculate_meridiem(self):
-        if self._hour < self.HOURS_IN_DAY / 2:
-            return self.MERIDIEM['AM']
-        return self.MERIDIEM['PM']
+        if self._hour < HOURS_IN_DAY / 2:
+            return MERIDIEM['AM']
+        return MERIDIEM['PM']
 
     def _toggle_meridiem(self):
-        if self._meridiem == self.MERIDIEM['AM']:
-            self._meridiem = self.MERIDIEM['PM']
+        if self._meridiem == MERIDIEM['AM']:
+            self._meridiem = MERIDIEM['PM']
         else:
-            self._meridiem = self.MERIDIEM['AM']
-
-    def _pad_num(self, num):
-        if num < 10:
-            return '0' + str(num)
-        return str(num)
+            self._meridiem = MERIDIEM['AM']

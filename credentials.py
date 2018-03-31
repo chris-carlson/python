@@ -1,5 +1,6 @@
 import getpass
 
+
 class Credentials:
 
     def __init__(self, username=''):

@@ -1,5 +1,6 @@
 from custom.io.text.write_file import WriteFile as TextWriteFile
 
+
 class WriteFile:
 
     def __init__(self, file_name, append=False):

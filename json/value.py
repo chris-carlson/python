@@ -1,7 +1,7 @@
 from custom.regex import Regex
 
-class Value:
 
+class Value:
     NUMBER_REGEX = Regex('(-|[0-9])')
     BOOLEAN_REGEX = Regex('(t|f)')
 
@@ -14,27 +14,27 @@ class Value:
 
     def parse(self, consumer):
         if consumer.peek() == '{':
-            from custom.json._object import Object
+            from custom.json.object import Object
             object_ = Object()
             object_.parse(consumer)
             self._value = object_.pairs
         elif consumer.peek() == '[':
-            from custom.json._array import Array
+            from custom.json.array import Array
             array = Array()
             array.parse(consumer)
             self._value = array.elements
         elif consumer.peek() == '\"':
-            from custom.json._string import String
+            from custom.json.string import String
             string = String()
             string.parse(consumer)
             self._value = string.value
         elif self.NUMBER_REGEX.matches(consumer.peek()):
-            from custom.json._number import Number
+            from custom.json.number import Number
             number = Number()
             number.parse(consumer)
             self._value = number.value
         elif self.BOOLEAN_REGEX.matches(consumer.peek()):
-            from custom.json._boolean import Boolean
+            from custom.json.boolean import Boolean
             boolean = Boolean()
             boolean.parse(consumer)
             self._value = boolean.value

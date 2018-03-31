@@ -1,7 +1,6 @@
-from enum import Enum
-
 from custom.math import Math
 from custom.regex import Regex
+from enum import IntEnum
 
 DATE_REGEX = Regex('\d{4}\D\d{2}\D\d{2}')
 NUMBER_REGEX = Regex('\d+')
@@ -11,6 +10,7 @@ DAYS_IN_WEEK = 7
 LEAP_MONTH = 2
 LEAP_YEAR_FREQUENCY = 4
 
+
 class Date:
 
     @staticmethod
@@ -19,6 +19,10 @@ class Date:
             raise ValueError('Date must match the format ####-##-##')
         matches = NUMBER_REGEX.find_matches(date_str)
         return Date(int(matches[0]), int(matches[1]), int(matches[2]))
+
+    @staticmethod
+    def _pad_num(num):
+        return '0' + str(num) if num < 10 else str(num)
 
     def __init__(self, year, month, day_of_month):
         self._year = year
@@ -33,7 +37,8 @@ class Date:
         return self._year == other.year and self._month == other.month and self._day_of_month == other.day_of_month
 
     def __str__(self):
-        return self._day_of_week.name.capitalize() + ' ' + str(self._year) + '/' + self._pad_num(self._month) + '/' + self._pad_num(self._day_of_month)
+        return self._day_of_week.name.capitalize() + ' ' + str(self._year) + '/' + self._pad_num(
+            self._month) + '/' + self._pad_num(self._day_of_month)
 
     def __repr__(self):
         return self.__str__()
@@ -146,7 +151,8 @@ class Date:
         last_two_digits_of_year = int(str(self._year)[2:])
         if new_month > 10:
             last_two_digits_of_year -= 1
-        return DayOfWeek((self._day_of_month + int((13 * new_month - 1) / 5) + last_two_digits_of_year + int(last_two_digits_of_year / 4) + int(first_two_digits_of_year / 4) - 2 * first_two_digits_of_year) % 7)
+        return DayOfWeek((self._day_of_month + int((13 * new_month - 1) / 5) + last_two_digits_of_year + int(
+            last_two_digits_of_year / 4) + int(first_two_digits_of_year / 4) - 2 * first_two_digits_of_year) % 7)
 
     def _get_days_in_current_month(self):
         if self._month == LEAP_MONTH and self._is_leap_year():
@@ -154,16 +160,14 @@ class Date:
         return DAYS_IN_MONTHS[self._month - 1]
 
     def _is_leap_year(self):
-        return self._year % LEAP_YEAR_FREQUENCY == 0 and (self._year % (LEAP_YEAR_FREQUENCY * 25) != 0 or self._year % (LEAP_YEAR_FREQUENCY * 100) == 0)
+        return self._year % LEAP_YEAR_FREQUENCY == 0 and (
+                self._year % (LEAP_YEAR_FREQUENCY * 25) != 0 or self._year % (LEAP_YEAR_FREQUENCY * 100) == 0)
 
     def _day_is_valid(self):
         return 1 <= self._day_of_month <= self._get_days_in_current_month()
 
-    def _pad_num(self, num):
-        return '0' + str(num) if num < 10 else str(num)
 
-class DayOfWeek(Enum):
-
+class DayOfWeek(IntEnum):
     SUNDAY = 0
     MONDAY = 1
     TUESDAY = 2

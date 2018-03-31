@@ -10,4 +10,4 @@ class Comparer:
     def find_unique_items(self):
         unique_list1 = [item for item in self._list1 if item not in self._list2]
         unique_list2 = [item for item in self._list2 if item not in self._list1]
-        return (unique_list1, unique_list2)
+        return unique_list1, unique_list2

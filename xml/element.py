@@ -1,4 +1,5 @@
-from custom.xml._element_list import ElementList
+from custom.xml.element_list import ElementList
+
 
 class Element:
 
@@ -18,15 +19,15 @@ class Element:
 
     @property
     def children(self):
-        assert self._data == None, 'Element \'' + self._name + '\' has no children'
+        assert self._data is None, 'Element \'' + self._name + '\' has no children'
         return self._children
 
     @property
     def data(self):
-        assert self._data != None, 'Element \'' + self._name + '\' has no data'
+        assert self._data is not None, 'Element \'' + self._name + '\' has no data'
         return self._data
 
-    def _parse(self, consumer):
+    def parse(self, consumer):
         consumer.consume_char('<')
         self._name = consumer.consume_to_one_of(['>', ' ', '/'])
         while consumer.peek() == ' ':
@@ -47,13 +48,14 @@ class Element:
             if consumer.peek() == '<':
                 while consumer.peek() == '<' and not consumer.starts_with('</'):
                     child = Element()
-                    child._parse(consumer)
+                    child.parse(consumer)
                     self._children.append(child)
             else:
                 self._data = consumer.consume_to('<')
             consumer.consume_char('<')
             consumer.consume_char('/')
             closing_tag_name = consumer.consume_to('>')
-            assert closing_tag_name == self._name, 'Closing tag name \'' + closing_tag_name + '\' does not match opening tag name \'' + self._name + '\''
+            assert closing_tag_name == self._name, 'Closing tag name \'' + closing_tag_name + \
+                                                   '\' does not match opening tag name \'' + self._name + '\''
             consumer.consume_char('>')
             consumer.consume_whitespace()

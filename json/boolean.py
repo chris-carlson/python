@@ -1,5 +1,4 @@
 class Boolean:
-
     TRUE = 'true'
     FALSE = 'false'
 

@@ -51,11 +51,13 @@ class PairList:
     def remove(self, key):
         if key not in self:
             raise AssertionError('Key \'' + str(key) + '\' is not in the list')
+        item_to_remove = None
         for item in self._rep:
             if item[0] == key:
                 item_to_remove = item
                 break
         self._rep.remove(item_to_remove)
+        return item_to_remove
 
     def sort_keys(self):
         if len(self._rep) > 0:

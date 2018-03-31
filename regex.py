@@ -1,5 +1,6 @@
 import re
 
+
 class Regex:
 
     def __init__(self, regex):

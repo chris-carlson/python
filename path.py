@@ -1,12 +1,13 @@
 from pathlib import Path as PythonPath
 
+
 class Path:
 
     def __init__(self, path):
         self._rep = PythonPath(path)
 
     def __str__(self):
-        return self.path
+        return self.get_full_path()
 
     def __repr__(self):
         return self.__str__()
@@ -33,7 +34,7 @@ class Path:
         return self._rep.parts[0] + '\\'.join(self._rep.parts[1:])
 
     def get_directory_path(self):
-        return self._rep.parts[0] + '\\'.join(self._rep.parts[1 : len(self._rep.parts) - 1])
+        return self._rep.parts[0] + '\\'.join(self._rep.parts[1: len(self._rep.parts) - 1])
 
     def join(self, path):
         self._rep.joinpath(path)

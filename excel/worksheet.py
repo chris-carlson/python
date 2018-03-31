@@ -1,5 +1,9 @@
 class Worksheet:
 
+    @staticmethod
+    def _row_is_blank(row):
+        return len([cell for cell in row if cell is not None]) == 0
+
     def __init__(self, openpyxl_worksheet):
         self._openpyxl_worksheet = openpyxl_worksheet
         self._rows = []
@@ -64,9 +68,9 @@ class Worksheet:
         self._rows.pop(index)
 
     def delete_rows(self, start_index=None, end_index=None):
-        if start_index == None:
+        if start_index is None:
             start_index = 0
-        if end_index == None:
+        if end_index is None:
             end_index = len(self._rows)
         if start_index < 0:
             raise IndexError('Start index \'' + start_index + '\' must be positive')
@@ -77,7 +81,8 @@ class Worksheet:
         if end_index >= len(self._rows):
             raise IndexError('End index \'' + end_index + '\' must be less than the number of rows')
         if start_index > end_index:
-            raise IndexError('Start index \'' + start_index + '\' must be less than the end index \'' + end_index + '\'')
+            raise IndexError(
+                'Start index \'' + start_index + '\' must be less than the end index \'' + end_index + '\'')
         for index in range(start_index, end_index):
             self.delete_row(start_index)
 
@@ -89,9 +94,9 @@ class Worksheet:
         self._rows[index] = []
 
     def clear_rows(self, start_index=None, end_index=None):
-        if start_index == None:
+        if start_index is None:
             start_index = 0
-        if end_index == None:
+        if end_index is None:
             end_index = len(self._rows)
         if start_index < 0:
             raise IndexError('Start index \'' + start_index + '\' must be positive')
@@ -102,11 +107,12 @@ class Worksheet:
         if end_index >= len(self._rows):
             raise IndexError('End index \'' + end_index + '\' must be less than the number of rows')
         if start_index > end_index:
-            raise IndexError('Start index \'' + start_index + '\' must be less than the end index \'' + end_index + '\'')
+            raise IndexError(
+                'Start index \'' + start_index + '\' must be less than the end index \'' + end_index + '\'')
         for index in range(start_index, end_index):
             self.clear_row(index)
 
-    def _load_data(self):
+    def load_data(self):
         for openpyxl_row in self._openpyxl_worksheet.rows:
             row = []
             for openpyxl_cell in openpyxl_row:
@@ -115,10 +121,7 @@ class Worksheet:
         while self._row_is_blank(self._rows[-1]):
             self._rows.pop(-1)
 
-    def _row_is_blank(self, row):
-        return len([cell for cell in row if cell != None]) == 0
-
-    def _save(self):
+    def save(self):
         for row_index in range(0, self._openpyxl_worksheet.max_row):
             openpyxl_row = self._openpyxl_worksheet[row_index + 1]
             for column_index in range(0, len(openpyxl_row)):
