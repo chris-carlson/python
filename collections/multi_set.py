@@ -39,8 +39,8 @@ class MultiSet:
             for item in self._rep:
                 if item[0] == key:
                     count = item[1]
-                    self._rep.remove(item)
-                    self._rep.add(key, count)
+                    self._rep.remove(item[0])
+                    self._rep.add(key, count + 1)
                     break
         else:
             self._rep.add(key, 1)

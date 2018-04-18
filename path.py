@@ -37,7 +37,7 @@ class Path:
         return self._rep.parts[0] + '\\'.join(self._rep.parts[1: len(self._rep.parts) - 1])
 
     def join(self, path):
-        self._rep.joinpath(path)
+        return Path(self.get_full_path() + '\\' + path)
 
     def has_file(self, name):
         return len([path for path in self.get_files() if path.name == name]) > 0
