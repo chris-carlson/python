@@ -1,5 +1,6 @@
 from custom.math import Math
 from custom.regex import Regex
+from datetime import date
 from enum import IntEnum
 
 DATE_REGEX = Regex('\d{4}\D\d{2}\D\d{2}')
@@ -19,6 +20,11 @@ class Date:
             raise ValueError('Date must match the format ####-##-##')
         matches = NUMBER_REGEX.find_matches(date_str)
         return Date(int(matches[0]), int(matches[1]), int(matches[2]))
+
+    @staticmethod
+    def today():
+        today = date.today()
+        return Date(today.year, today.month, today.day)
 
     @staticmethod
     def _pad_num(num):
@@ -132,7 +138,7 @@ class Date:
         return date
 
     def get_days_to(self, date):
-        copied_date = date.clone()
+        copied_date = date._clone()
         num_days = 0
         while self < copied_date:
             copied_date = copied_date.subtract_day()

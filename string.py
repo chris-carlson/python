@@ -4,6 +4,18 @@ class String(str):
         super().__init__()
         self._rep = str_
 
+    def find(self, find_str, num=1):
+        count = 0
+        index = 0
+        while count < num:
+            if count > 0:
+                index += 1
+            index = self._rep.find(find_str, index)
+            if index < 0:
+                raise ValueError('Could not find occurrence ' + str(num) + ' of \'' + find_str + '\'')
+            count += 1
+        return index
+
     def find_between(self, char1, char2, pair_num=1):
         indices = ()
         current_pair = 0
