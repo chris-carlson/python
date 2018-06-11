@@ -7,7 +7,7 @@ class Path:
         self._rep = PythonPath(path)
 
     def __str__(self):
-        return self.get_full_path()
+        return self.full_path
 
     def __repr__(self):
         return self.__str__()
@@ -39,7 +39,7 @@ class Path:
         return directory_name in self._rep.parts
 
     def join(self, path):
-        return Path(self.get_full_path() + '\\' + path)
+        return Path(self.full_path + '\\' + path)
 
     def has_file(self, name):
         return len([path for path in self.get_files() if path.name == name]) > 0
@@ -47,7 +47,7 @@ class Path:
     def get_file(self, name):
         paths = [path for path in self.get_files() if path.name == name]
         if len(paths) == 0:
-            raise ValueError('Could not find file ' + name + ' in directory ' + self.get_full_path())
+            raise ValueError('Could not find file ' + name + ' in directory ' + self.full_path)
         return paths[0]
 
     def get_files(self):
@@ -59,7 +59,7 @@ class Path:
     def get_directory(self, name):
         directories = [directory for directory in self.get_directories() if directory.name == name]
         if len(directories) == 0:
-            raise ValueError('Could not find file ' + name + ' in directory ' + self.get_full_path())
+            raise ValueError('Could not find file ' + name + ' in directory ' + self.full_path)
         return directories[0]
 
     def get_directories(self):
