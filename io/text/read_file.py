@@ -5,7 +5,7 @@ from custom.collections.ordered_set import OrderedSet
 class ReadFile:
 
     def __init__(self, file_name):
-        self._file = open(file_name, 'r')
+        self._file = open(file_name, mode='r', encoding='utf-8')
         self._lines = []
 
     @property

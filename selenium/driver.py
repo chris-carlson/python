@@ -12,8 +12,12 @@ class Driver:
         if headless:
             chrome_options.add_argument('headless')
             chrome_options.add_argument('disable-gpu')
-        self._rep = webdriver.Chrome(os.environ['CHROMEDRIVER'], chrome_options=chrome_options)
+        self._rep = webdriver.Chrome(chrome_options=chrome_options)
         self._wait = Wait(self._rep, wait_time)
+
+    @property
+    def source(self):
+        return self._rep.page_source
 
     def navigate(self, url):
         self._rep.get(url)
