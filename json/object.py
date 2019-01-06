@@ -1,4 +1,4 @@
-from custom.json.pair import Pair
+from cac.json.pair import Pair
 
 
 class Object:

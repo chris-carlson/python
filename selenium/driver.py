@@ -1,6 +1,5 @@
-import os
-from custom.selenium.element import Element
-from custom.selenium.wait import Wait
+from cac.selenium.element import Element
+from cac.selenium.wait import Wait
 
 from selenium import webdriver
 

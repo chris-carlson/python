@@ -1,4 +1,4 @@
-from custom.io.text.read_file import ReadFile as TextReadFile
+from cac.io.text.read_file import ReadFile as TextReadFile
 
 
 class ReadFile:
@@ -14,7 +14,7 @@ class ReadFile:
     def read_data(self):
         self._file.read_lines()
         self._rows = [[value for value in line.split('\"') if len(value) > 0 and value != ','] for line in
-                      self._file.get_stripped_lines()]
+            self._file.get_stripped_lines()]
 
     def get_row(self, num):
         if num >= len(self._rows):

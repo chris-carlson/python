@@ -1,5 +1,6 @@
-from colorama import init
 from colorama import Style
+from colorama import init
+
 
 # Fore/Back: BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE
 # Style: BRIGHT, DIM, NORMAL

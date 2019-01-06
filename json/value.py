@@ -1,4 +1,4 @@
-from custom.regex import Regex
+from cac.regex import Regex
 
 
 class Value:
@@ -14,27 +14,27 @@ class Value:
 
     def parse(self, consumer):
         if consumer.peek() == '{':
-            from custom.json.object import Object
+            from cac.json.object import Object
             object_ = Object()
             object_.parse(consumer)
             self._value = object_.pairs
         elif consumer.peek() == '[':
-            from custom.json.array import Array
+            from cac.json.array import Array
             array = Array()
             array.parse(consumer)
             self._value = array.elements
         elif consumer.peek() == '\"':
-            from custom.json.string import String
+            from cac.json.string import String
             string = String()
             string.parse(consumer)
             self._value = string.value
         elif self.NUMBER_REGEX.matches(consumer.peek()):
-            from custom.json.number import Number
+            from cac.json.number import Number
             number = Number()
             number.parse(consumer)
             self._value = number.value
         elif self.BOOLEAN_REGEX.matches(consumer.peek()):
-            from custom.json.boolean import Boolean
+            from cac.json.boolean import Boolean
             boolean = Boolean()
             boolean.parse(consumer)
             self._value = boolean.value

@@ -1,5 +1,6 @@
 import sys
 
+
 class Args:
 
     def __init__(self, num_args=-1, arg_flags=[]):

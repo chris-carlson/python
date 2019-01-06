@@ -1,4 +1,4 @@
-from custom.regex import Regex
+from cac.regex import Regex
 
 WHITESPACE_REGEX = Regex(r'\s')
 

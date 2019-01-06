@@ -1,5 +1,5 @@
-from custom.collections.multi_set import MultiSet
-from custom.collections.ordered_set import OrderedSet
+from cac.collections.multi_set import MultiSet
+from cac.collections.ordered_set import OrderedSet
 
 
 class ReadFile:

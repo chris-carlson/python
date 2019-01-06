@@ -1,4 +1,4 @@
-from custom.xml.element_list import ElementList
+from cac.xml.element_list import ElementList
 
 
 class Element:
@@ -55,7 +55,8 @@ class Element:
             consumer.consume_char('<')
             consumer.consume_char('/')
             closing_tag_name = consumer.consume_to('>')
-            assert closing_tag_name == self._name, 'Closing tag name \'' + closing_tag_name + \
-                                                   '\' does not match opening tag name \'' + self._name + '\''
+            assert closing_tag_name == self._name, 'Closing tag name \'' + closing_tag_name + '\' does not match ' \
+                                                                                              'opening tag name \'' +\
+                                                   self._name + '\''
             consumer.consume_char('>')
             consumer.consume_whitespace()

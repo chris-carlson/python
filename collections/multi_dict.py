@@ -1,5 +1,5 @@
-from custom.collections.ordered_set import OrderedSet
-from custom.collections.pair_list import PairList
+from cac.collections.ordered_set import OrderedSet
+from cac.collections.pair_list import PairList
 
 
 class MultiDict(PairList):
