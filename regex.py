@@ -18,3 +18,6 @@ class Regex:
 
     def find_matches(self, str_):
         return [match.group() for match in self._rep.finditer(str_)]
+
+    def find_match_indexes(self, str_):
+        return [(match.group(), match.start()) for match in self._rep.finditer(str_)]

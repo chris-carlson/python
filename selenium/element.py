@@ -59,11 +59,11 @@ class Element:
     def get_attribute(self, attribute):
         return self._rep.get_attribute(attribute)
 
-    def has_class(self, klass):
-        return klass in self.get_classes()
+    def has_class(self, class_):
+        return class_ in self.get_classes()
 
     def get_classes(self):
-        return [klass for klass in self._rep.get_attribute('class').split(' ') if len(klass) > 0]
+        return [class_ for class_ in self._rep.get_attribute('class').split(' ') if len(class_) > 0]
 
     @staticmethod
     def _get_elements(results):

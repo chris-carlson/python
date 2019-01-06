@@ -1,6 +1,6 @@
 class String(str):
 
-    def __init__(self, str_):
+    def __init__(self, str_=''):
         super().__init__()
         self._rep = str_
 
@@ -17,14 +17,14 @@ class String(str):
         return index
 
     def find_between(self, char1, char2, pair_num=1):
-        indices = ()
+        indexes = ()
         current_pair = 0
         start_index = 0
         while current_pair < pair_num:
-            indices = self._find_pair_indices(char1, char2, start_index)
+            indexes = self._find_pair_indexes(char1, char2, start_index)
             current_pair += 1
-            start_index = indices[1] + 1
-        return String(self._rep[indices[0] + 1: indices[1]].strip())
+            start_index = indexes[1] + 1
+        return String(self._rep[indexes[0] + 1: indexes[1]].strip())
 
     def find_after(self, find_str, after_str, num=1):
         after_index = -1
@@ -37,6 +37,19 @@ class String(str):
             current_num += 1
             start_index = after_index + 1
         return String(self._rep.find(find_str, after_index + 1))
+
+    def find_indexes(self, char, invalid_preceding_char=''):
+        indexes = []
+        current_index = 0
+        while current_index != -1:
+            char_index = self._rep.find(char, current_index)
+            if char_index != -1:
+                if not self._preceded_by(invalid_preceding_char, char_index):
+                    indexes.append(char_index)
+                current_index = char_index + 1
+            else:
+                current_index = -1
+        return indexes
 
     def substring_to(self, substring):
         index = self._rep.find(substring)
@@ -82,7 +95,7 @@ class String(str):
         index = self._rep.find(char) + 1
         return self.insert_text(index, text)
 
-    def _find_pair_indices(self, char1, char2, index=0):
+    def _find_pair_indexes(self, char1, char2, index=0):
         index1 = self._rep.find(char1, index + 1)
         index2 = self._rep.find(char2, index1 + 1)
         if index1 == -1 or index2 == -1:
@@ -90,3 +103,8 @@ class String(str):
                 'Could not find a pair of (\'' + char1 + '\', \'' + char2 + '\') in string starting at index ' + str(
                     index))
         return index1, index2
+
+    def _preceded_by(self, char, index):
+        if index == -1 or index == 0:
+            return False
+        return self._rep[index - 1] == char

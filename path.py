@@ -26,11 +26,11 @@ class Path:
 
     @property
     def full_path(self):
-        return self._rep.parts[0] + '\\'.join(self._rep.parts[1:])
+        return self._rep.parts[0] + '/'.join(self._rep.parts[1:])
 
     @property
     def directory_path(self):
-        return self._rep.parts[0] + '\\'.join(self._rep.parts[1: len(self._rep.parts) - 1])
+        return self._rep.parts[0] + '/'.join(self._rep.parts[1: len(self._rep.parts) - 1])
 
     def exists(self):
         return self._rep.exists()
@@ -39,7 +39,7 @@ class Path:
         return directory_name in self._rep.parts
 
     def join(self, path):
-        return Path(self.full_path + '\\' + path)
+        return Path(self.full_path + '/' + path)
 
     def has_file(self, name):
         return len([path for path in self.get_files() if path.name == name]) > 0
