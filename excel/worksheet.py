@@ -118,7 +118,7 @@ class Worksheet:
             for openpyxl_cell in openpyxl_row:
                 row.append(openpyxl_cell.value)
             self._rows.append(row)
-        while self._row_is_blank(self._rows[-1]):
+        while len(self._rows) > 0 and self._row_is_blank(self._rows[-1]):
             self._rows.pop(-1)
 
     def save(self):

@@ -10,6 +10,11 @@ class WriteFile:
     def write_line(self, str_=''):
         self._file.write(str(str_) + '\n')
 
+    def write_char_line(self, char, num):
+        for _ in range(0, num):
+            self._file.write(char)
+        self._file.write('\n')
+
     def write_iterable(self, iterable):
         for item in iterable:
             self._file.write(str(item) + '\n')

@@ -41,6 +41,9 @@ class Path:
     def join(self, path):
         return Path(self.full_path + '/' + path)
 
+    def rename(self, path):
+        return Path(self.full_path + '\\' + path)
+
     def has_file(self, name):
         return len([path for path in self.get_files() if path.name == name]) > 0
 

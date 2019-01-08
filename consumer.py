@@ -14,6 +14,9 @@ class Consumer:
     def __repr__(self):
         return self._rep
 
+    def __len__(self):
+        return len(self._rep)
+
     def has_input(self):
         return len(self._rep) > 0
 

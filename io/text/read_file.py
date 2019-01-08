@@ -15,6 +15,9 @@ class ReadFile:
     def read_lines(self):
         self._lines = [line for line in self._file]
 
+    def get_string(self):
+        return ''.join(self._lines)
+
     def get_parse_line(self):
         parse_line = ''.join(self._lines)
         parse_line = parse_line.replace('\t', '')

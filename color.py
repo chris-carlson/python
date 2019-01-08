@@ -1,19 +1,22 @@
+from colorama import Fore
+from colorama import Back
 from colorama import Style
 from colorama import init
 
 
-# Fore/Back: BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE
-# Style: BRIGHT, DIM, NORMAL
-
 class Color:
 
+    FORE = {'Black': Fore.BLACK, 'Red': Fore.RED, 'Green': Fore.GREEN, 'Yellow': Fore.YELLOW, 'Blue': Fore.BLUE, 'Magenta': Fore.MAGENTA, 'Cyan': Fore.CYAN, 'White': Fore.WHITE}
+    BACK = {'Black': Back.BLACK, 'Red': Back.RED, 'Green': Back.GREEN, 'Yellow': Back.YELLOW, 'Blue': Back.BLUE, 'Magenta': Back.MAGENTA, 'Cyan': Back.CYAN, 'White': Back.WHITE}
+    STYLE = {'Bright': Style.BRIGHT, 'Dim': Style.DIM, 'Normal': Style.NORMAL}
+
     @classmethod
-    def highlight_text(cls, color, style, text):
+    def highlight_text(cls, text, color, style):
         init()
         return color + style + text + Style.RESET_ALL
 
     @classmethod
-    def highlight_matches(cls, color, style, text, match_indexes):
+    def highlight_matches(cls, text, match_indexes, color, style):
         init()
         highlighted_text = ''
         start_index = 0

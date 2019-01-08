@@ -4,6 +4,9 @@ class String(str):
         super().__init__()
         self._rep = str_
 
+    def __getitem__(self, key):
+        return String(self._rep[key])
+
     def find(self, find_str, num=1):
         count = 0
         index = 0
@@ -16,15 +19,15 @@ class String(str):
             count += 1
         return index
 
-    def find_between(self, char1, char2, pair_num=1):
+    def find_between(self, str1, str2, pair_num=1):
         indexes = ()
         current_pair = 0
         start_index = 0
         while current_pair < pair_num:
-            indexes = self._find_pair_indexes(char1, char2, start_index)
+            indexes = self._find_pair_indexes(str1, str2, start_index)
             current_pair += 1
             start_index = indexes[1] + 1
-        return String(self._rep[indexes[0] + 1: indexes[1]].strip())
+        return String(self._rep[indexes[0] + len(str1): indexes[1]].strip())
 
     def find_after(self, find_str, after_str, num=1):
         after_index = -1
@@ -55,12 +58,24 @@ class String(str):
         index = self._rep.find(substring)
         return String(self._rep[:index])
 
+    def substring_to_last(self, substring):
+        index = self._rep.rfind(substring)
+        return String(self._rep[:index])
+
+    def substring_through(self, substring):
+        index = self._rep.find(substring)
+        return String(self._rep[:index + len(substring)])
+
     def substring_from(self, substring):
         index = self._rep.find(substring)
         return String(self._rep[index:])
 
     def substring_after(self, substring):
         index = self._rep.find(substring)
+        return String(self._rep[index + len(substring):])
+
+    def substring_after_last(self, substring):
+        index = self._rep.rfind(substring)
         return String(self._rep[index + len(substring):])
 
     def is_capitalized(self):
@@ -95,12 +110,12 @@ class String(str):
         index = self._rep.find(char) + 1
         return self.insert_text(index, text)
 
-    def _find_pair_indexes(self, char1, char2, index=0):
-        index1 = self._rep.find(char1, index + 1)
-        index2 = self._rep.find(char2, index1 + 1)
+    def _find_pair_indexes(self, str1, str2, index=0):
+        index1 = self._rep.find(str1, index + 1)
+        index2 = self._rep.find(str2, index1 + 1)
         if index1 == -1 or index2 == -1:
             raise ValueError(
-                'Could not find a pair of (\'' + char1 + '\', \'' + char2 + '\') in string starting at index ' + str(
+                'Could not find a pair of (\'' + str1 + '\', \'' + str2 + '\') in string starting at index ' + str(
                     index))
         return index1, index2
 
