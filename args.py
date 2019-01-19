@@ -3,7 +3,7 @@ import sys
 
 class Args:
 
-    def __init__(self, num_args=-1, arg_flags=[]):
+    def __init__(self, num_args=-1, arg_flags=None):
         self._args = []
         self._flags = {}
         args = sys.argv[1:][:]
@@ -16,7 +16,7 @@ class Args:
                     flag = arg[1:]
                 value = ''
                 if flag in arg_flags:
-                    if len(args) == 0:
+                    if arg_flags is None:
                         raise ValueError('Argument expected after flag \'' + flag + '\'')
                     value = args.pop(0)
                 self._flags[flag] = value
@@ -27,6 +27,12 @@ class Args:
 
     def __len__(self):
         return len(self._args)
+
+    def __str__(self) -> str:
+        return '(' + str(self._args) + ', ' + str(self._flags) + ')'
+
+    def __repr__(self) -> str:
+        return self.__str__()
 
     def get_args(self):
         return self._args

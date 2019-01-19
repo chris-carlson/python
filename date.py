@@ -4,8 +4,8 @@ from enum import IntEnum
 from cac.math import Math
 from cac.regex import Regex
 
-DATE_REGEX = Regex('\d{4}\D\d{2}\D\d{2}')
-NUMBER_REGEX = Regex('\d+')
+DATE_REGEX = Regex('\\d{4}\\D\\d{2}\\D\\d{2}')
+NUMBER_REGEX = Regex('\\d+')
 NUM_MONTHS = 12
 DAYS_IN_MONTHS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 DAYS_IN_WEEK = 7
@@ -103,53 +103,53 @@ class Date:
         return self._day_of_week
 
     def add_day(self):
-        date = self._clone()
-        date._day_of_month += 1
-        if date._day_of_month > date._get_days_in_current_month():
-            date._month += 1
-            if date._month > NUM_MONTHS:
-                date._month = 1
-                date._year += 1
-            date._day_of_month = 1
-        date._day_of_week = DayOfWeek((date._day_of_week.value + 1) % DAYS_IN_WEEK)
-        return date
+        cloned_date = self.clone()
+        cloned_date._day_of_month += 1
+        if cloned_date._day_of_month > cloned_date._get_days_in_current_month():
+            cloned_date._month += 1
+            if cloned_date._month > NUM_MONTHS:
+                cloned_date._month = 1
+                cloned_date._year += 1
+            cloned_date._day_of_month = 1
+        cloned_date._day_of_week = DayOfWeek((cloned_date._day_of_week.value + 1) % DAYS_IN_WEEK)
+        return cloned_date
 
     def add_days(self, days):
-        date = self._clone()
+        cloned_date = self.clone()
         for i in range(0, days):
-            date = date.add_day()
-        return date
+            cloned_date = cloned_date.add_day()
+        return cloned_date
 
     def subtract_day(self):
-        date = self._clone()
-        date._day_of_month -= 1
-        if date._day_of_month < 1:
-            date._month -= 1
-            if date._month < 1:
-                date._month = NUM_MONTHS
-                date._year -= 1
-            date._day_of_month = date._get_days_in_current_month()
-        date._day_of_week = DayOfWeek((date._day_of_week.value - 1) % DAYS_IN_WEEK)
-        return date
+        cloned_date = self.clone()
+        cloned_date._day_of_month -= 1
+        if cloned_date._day_of_month < 1:
+            cloned_date._month -= 1
+            if cloned_date._month < 1:
+                cloned_date._month = NUM_MONTHS
+                cloned_date._year -= 1
+            cloned_date._day_of_month = cloned_date._get_days_in_current_month()
+        cloned_date._day_of_week = DayOfWeek((cloned_date._day_of_week.value - 1) % DAYS_IN_WEEK)
+        return cloned_date
 
     def subtract_days(self, days):
-        date = self._clone()
+        cloned_date = self.clone()
         for i in range(0, days):
-            date = date.subtract_day()
-        return date
+            cloned_date = cloned_date.subtract_day()
+        return cloned_date
 
-    def get_days_to(self, date):
-        copied_date = date._clone()
+    def get_days_to(self, target_date):
+        cloned_date = target_date.clone()
         num_days = 0
-        while self < copied_date:
-            copied_date = copied_date.subtract_day()
+        while self < cloned_date:
+            cloned_date = cloned_date.subtract_day()
             num_days += 1
-        while self > copied_date:
-            copied_date = copied_date.add_day()
+        while self > cloned_date:
+            cloned_date = cloned_date.add_day()
             num_days -= 1
         return num_days
 
-    def _clone(self):
+    def clone(self):
         return Date(self._year, self._month, self._day_of_month)
 
     def _get_day_of_week(self):

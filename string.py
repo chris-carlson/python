@@ -7,39 +7,8 @@ class String(str):
     def __getitem__(self, key):
         return String(self._rep[key])
 
-    def find(self, find_str, num=1):
-        count = 0
-        index = 0
-        while count < num:
-            if count > 0:
-                index += 1
-            index = self._rep.find(find_str, index)
-            if index < 0:
-                raise ValueError('Could not find occurrence ' + str(num) + ' of \'' + find_str + '\'')
-            count += 1
-        return index
-
-    def find_between(self, str1, str2, pair_num=1):
-        indexes = ()
-        current_pair = 0
-        start_index = 0
-        while current_pair < pair_num:
-            indexes = self._find_pair_indexes(str1, str2, start_index)
-            current_pair += 1
-            start_index = indexes[1] + 1
-        return String(self._rep[indexes[0] + len(str1): indexes[1]].strip())
-
-    def find_after(self, find_str, after_str, num=1):
-        after_index = -1
-        current_num = 0
-        start_index = 0
-        while current_num < num:
-            after_index = self._rep.find(after_str, start_index)
-            if after_index == -1:
-                raise ValueError('String \'' + after_str + '\' not found')
-            current_num += 1
-            start_index = after_index + 1
-        return String(self._rep.find(find_str, after_index + 1))
+    def __add__(self, string):
+        return String(self._rep + string)
 
     def find_indexes(self, char, invalid_preceding_char=''):
         indexes = []
@@ -79,7 +48,7 @@ class String(str):
         return String(self._rep[index + len(substring):])
 
     def is_capitalized(self):
-        return String(self._rep[0] == self._rep[0].upper())
+        return self._rep[0] == self._rep[0].upper()
 
     def capitalize_first(self):
         return String(self._rep[0].upper() + self._rep[1:])

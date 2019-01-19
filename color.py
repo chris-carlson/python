@@ -1,13 +1,14 @@
-from colorama import Fore
 from colorama import Back
+from colorama import Fore
 from colorama import Style
 from colorama import init
 
 
 class Color:
-
-    FORE = {'Black': Fore.BLACK, 'Red': Fore.RED, 'Green': Fore.GREEN, 'Yellow': Fore.YELLOW, 'Blue': Fore.BLUE, 'Magenta': Fore.MAGENTA, 'Cyan': Fore.CYAN, 'White': Fore.WHITE}
-    BACK = {'Black': Back.BLACK, 'Red': Back.RED, 'Green': Back.GREEN, 'Yellow': Back.YELLOW, 'Blue': Back.BLUE, 'Magenta': Back.MAGENTA, 'Cyan': Back.CYAN, 'White': Back.WHITE}
+    FORE = {'Black': Fore.BLACK, 'Red': Fore.RED, 'Green': Fore.GREEN, 'Yellow': Fore.YELLOW, 'Blue': Fore.BLUE,
+            'Magenta': Fore.MAGENTA, 'Cyan': Fore.CYAN, 'White': Fore.WHITE}
+    BACK = {'Black': Back.BLACK, 'Red': Back.RED, 'Green': Back.GREEN, 'Yellow': Back.YELLOW, 'Blue': Back.BLUE,
+            'Magenta': Back.MAGENTA, 'Cyan': Back.CYAN, 'White': Back.WHITE}
     STYLE = {'Bright': Style.BRIGHT, 'Dim': Style.DIM, 'Normal': Style.NORMAL}
 
     @classmethod
