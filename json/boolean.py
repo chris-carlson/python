@@ -2,14 +2,14 @@ class Boolean:
     TRUE = 'true'
     FALSE = 'false'
 
-    def __init__(self) -> None:
+    def __init__(self):
         self._value = None
 
     @property
-    def value(self) -> None:
+    def value(self):
         return self._value
 
-    def parse(self, consumer) -> None:
+    def parse(self, consumer):
         value = consumer.consume_to_one_of([',', '}', ']']).strip()
         if value == self.TRUE:
             self._value = True

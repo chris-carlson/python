@@ -1,31 +1,25 @@
-from abc import ABC, abstractmethod
-from typing import TypeVar, Generic
-
 from cac.consumer import Consumer
 from cac.io.text.read_file import ReadFile
+from cac.json.value import Value
 
-E = TypeVar('E')
 
+class Document:
 
-class Document(ABC, Generic[E]):
-
-    def __init__(self, file_name: str) -> None:
-        self._file: ReadFile = ReadFile(file_name)
-        self._root: E = None
+    def __init__(self, file_name):
+        self._file = ReadFile(file_name)
+        self._root = None
 
     @property
-    def root(self) -> E:
+    def root(self):
         assert self._root is not None, 'Document has not been parsed yet'
         return self._root
 
-    def parse(self) -> None:
+    def parse(self):
         assert self._root is None, 'Document has already been parsed'
         self._file.read_lines()
-        parse_line: str = self._file.get_parse_line()
-        consumer: Consumer = Consumer(parse_line)
+        parse_line = self._file.get_parse_line()
+        consumer = Consumer(parse_line)
         consumer.consume_whitespace()
-        self._root = self._parse_value(consumer)
-
-    @abstractmethod
-    def _parse_value(self, consumer: Consumer) -> E:
-        pass
+        value = Value()
+        value.parse(consumer)
+        self._root = value.value

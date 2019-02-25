@@ -1,28 +1,23 @@
-from typing import TypeVar, Generic
-
 from cac.regex import Regex
-from consumer import Consumer
-
-E = TypeVar('E')
 
 
-class Value(Generic[E]):
-    NUMBER_REGEX: Regex = Regex('(-|[0-9])')
-    BOOLEAN_REGEX: Regex = Regex('(t|f)')
+class Value:
+    NUMBER_REGEX = Regex('(-|[0-9])')
+    BOOLEAN_REGEX = Regex('(t|f)')
 
-    def __init__(self) -> None:
-        self._value: E = None
+    def __init__(self):
+        self._value = None
 
     @property
-    def value(self) -> E:
+    def value(self):
         return self._value
 
-    def parse(self, consumer: Consumer) -> None:
+    def parse(self, consumer):
         if consumer.peek() == '{':
             from cac.json.object import Object
-            json_object = Object()
-            json_object.parse(consumer)
-            self._value = json_object.pairs
+            object_ = Object()
+            object_.parse(consumer)
+            self._value = object_.pairs
         elif consumer.peek() == '[':
             from cac.json.array import Array
             array = Array()
