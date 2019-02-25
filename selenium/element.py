@@ -1,33 +1,35 @@
-from cac.selenium.by import By
+from typing import List
 
+from cac.selenium.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.remote.webelement import WebElement
 
 
 class Element:
 
-    def __init__(self, element):
-        self._rep = element
+    def __init__(self, element: WebElement) -> None:
+        self._rep: WebElement = element
 
     @property
-    def name(self):
+    def name(self) -> str:
         return self._rep.tag_name
 
     @property
-    def text(self):
+    def text(self) -> str:
         return self._rep.text
 
-    def has_element(self, by, search):
+    def has_element(self, by: By, search: str) -> bool:
         return len(self.find_elements(by, search)) > 0
 
-    def find_element(self, by, search):
-        results = self.find_elements(by, search)
+    def find_element(self, by: By, search: str) -> 'Element':
+        results: List[Element] = self.find_elements(by, search)
         if len(results) > 1:
             raise ValueError('Found ' + str(len(results)) + ' elements for search \'' + search + '\'')
         elif len(results) == 0:
             raise ValueError('Found no elements for search \'' + search + '\'')
         return results[0]
 
-    def find_elements(self, by, search):
+    def find_elements(self, by: By, search: str) -> List['Element']:
         if by == By.ID:
             return Element._get_elements(self._rep.find_elements_by_id(search))
         elif by == By.NAME:
@@ -44,27 +46,27 @@ class Element:
             return Element._get_elements(self._rep.find_elements_by_css_selector(search))
         raise ValueError('Invalid by value \'' + str(by) + '\'')
 
-    def click(self):
+    def click(self) -> None:
         if self._rep.tag_name == 'input':
             self._rep.send_keys(Keys.RETURN)
         else:
             self._rep.click()
 
-    def clear_text(self):
+    def clear_text(self) -> None:
         self._rep.clear()
 
-    def enter_text(self, text):
+    def enter_text(self, text: str) -> None:
         self._rep.send_keys(text)
 
-    def get_attribute(self, attribute):
+    def get_attribute(self, attribute: str) -> str:
         return self._rep.get_attribute(attribute)
 
-    def has_class(self, class_):
-        return class_ in self.get_classes()
+    def has_class(self, css_class: str) -> bool:
+        return css_class in self.get_classes()
 
-    def get_classes(self):
-        return [class_ for class_ in self._rep.get_attribute('class').split(' ') if len(class_) > 0]
+    def get_classes(self) -> List[str]:
+        return [css_class for css_class in self._rep.get_attribute('class').split(' ') if len(css_class) > 0]
 
     @staticmethod
-    def _get_elements(results):
+    def _get_elements(results: List[WebElement]):
         return [Element(result) for result in results]

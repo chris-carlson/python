@@ -4,19 +4,19 @@ from cac.json.value import Value
 
 class Pair:
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._key = None
         self._value = None
 
     @property
-    def key(self):
+    def key(self) -> None:
         return self._key.value
 
     @property
-    def value(self):
+    def value(self) -> None:
         return self._value.value
 
-    def parse(self, consumer):
+    def parse(self, consumer) -> None:
         self._key = String()
         self._key.parse(consumer)
         consumer.consume_whitespace()

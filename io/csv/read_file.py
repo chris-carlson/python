@@ -1,26 +1,28 @@
-from cac.io.text.read_file import ReadFile as TextReadFile
+from typing import List
+
 from cac.consumer import Consumer
+from cac.io.text.read_file import ReadFile as TextReadFile
 
 
 class ReadFile:
 
-    def __init__(self, file_name):
-        self._file = TextReadFile(file_name)
-        self._rows = []
+    def __init__(self, file_name: str) -> None:
+        self._file: TextReadFile = TextReadFile(file_name)
+        self._rows: List[List[str]] = []
 
-    def __iter__(self):
+    def __iter__(self) -> List[str]:
         for row in self._rows:
             yield row
 
     @property
-    def rows(self):
+    def rows(self) -> List[List[str]]:
         return self._rows
 
-    def read_data(self):
+    def read_data(self) -> None:
         self._file.read_lines()
         for line in self._file.get_stripped_lines():
-            row = []
-            consumer = Consumer(line)
+            row: List[str] = []
+            consumer: Consumer = Consumer(line)
             while consumer.has_input():
                 if consumer.starts_with('\"'):
                     consumer.consume_char('\"')
@@ -35,18 +37,18 @@ class ReadFile:
                     row.append(consumer.consume_to_end())
             self._rows.append(row)
 
-    def get_row(self, num):
+    def get_row(self, num: int) -> List[str]:
         if num >= len(self._rows):
             raise ValueError('The file does not have ' + str(num) + ' rows')
         return self._rows[num]
 
-    def get_column(self, num):
-        column = []
+    def get_column(self, num: int) -> List[str]:
+        column: List[str] = []
         for row in self._rows:
             if num >= len(row):
                 raise ValueError('A row in the file does not have ' + str(num) + ' columns')
             column.append(row[num])
         return column
 
-    def close(self):
+    def close(self) -> None:
         self._file.close()

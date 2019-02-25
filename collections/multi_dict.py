@@ -1,14 +1,19 @@
+from typing import TypeVar
+
 from cac.collections.ordered_set import OrderedSet
 from cac.collections.pair_list import PairList
 
+K = TypeVar('K')
+V = TypeVar('V')
 
-class MultiDict(PairList):
 
-    def add(self, key, value):
+class MultiDict(PairList[K, OrderedSet[V]]):
+
+    def add(self, key: K, value: V) -> None:
         if key in self:
-            set_ = self.get(key)
-            set_.add(value)
+            value_set: OrderedSet[V] = self.get(key)
+            value_set.add(value)
         else:
-            set_ = OrderedSet()
-            set_.add(value)
-            self._rep.append((key, set_))
+            value_set: OrderedSet[V] = OrderedSet[V]()
+            value_set.add(value)
+            self._rep.append((key, value_set))

@@ -11,7 +11,7 @@ class By:
     CSS = 6
 
     @staticmethod
-    def convert(package_by):
+    def convert(package_by: 'By'):
         if package_by == By.ID:
             return SeleniumBy.ID
         elif package_by == By.NAME:
