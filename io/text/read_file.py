@@ -8,8 +8,8 @@ from cac.collections.ordered_set import OrderedSet
 class ReadFile:
 
     def __init__(self, file_name: str) -> None:
-        self._file_name: str = file_name
         self._file: TextIOWrapper = open(file_name, mode='r')
+        self._lines: List[str] = []
         self._lines: List[str] = []
 
     @property
@@ -17,10 +17,7 @@ class ReadFile:
         return self._lines
 
     def read_lines(self) -> None:
-        try:
-            self._lines = [line for line in self._file]
-        except UnicodeDecodeError:
-            raise ValueError('Could not read from \'' + self._file_name + '\'')
+        self._lines = [line for line in self._file]
 
     def get_string(self) -> str:
         return ''.join(self._lines)
