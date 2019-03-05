@@ -10,7 +10,6 @@ class ReadFile:
     def __init__(self, file_name: str) -> None:
         self._file: TextIOWrapper = open(file_name, mode='r')
         self._lines: List[str] = []
-        self._lines: List[str] = []
 
     @property
     def lines(self) -> List[str]:
@@ -18,9 +17,6 @@ class ReadFile:
 
     def read_lines(self) -> None:
         self._lines = [line for line in self._file]
-
-    def get_string(self) -> str:
-        return ''.join(self._lines)
 
     def get_parse_line(self) -> str:
         parse_line: str = ''.join(self._lines)
@@ -38,8 +34,8 @@ class ReadFile:
             ordered_set.add(line)
         return ordered_set
 
-    def count_unique_lines(self) -> MultiSet[str, int]:
-        multi_set: MultiSet[str, int] = MultiSet[str, int]()
+    def count_unique_lines(self) -> MultiSet[str]:
+        multi_set: MultiSet[str] = MultiSet[str]()
         for line in self.get_stripped_lines():
             multi_set.add(line)
         return multi_set

@@ -1,12 +1,14 @@
-from typing import TypeVar, Generic, Tuple, List
+from typing import Generic
+from typing import List
+from typing import Tuple
+from typing import TypeVar
 
 from cac.collections.pair_list import PairList
 
-K = TypeVar('K')
-V = TypeVar('V')
+E = TypeVar('E')
 
 
-class MultiSet(Generic[K, V]):
+class MultiSet(Generic[E]):
 
     def __init__(self) -> None:
         self._rep = PairList()
@@ -20,26 +22,26 @@ class MultiSet(Generic[K, V]):
     def __len__(self) -> int:
         return len(self._rep)
 
-    def __contains__(self, key: K) -> bool:
+    def __contains__(self, key: E) -> bool:
         return key in self.keys()
 
-    def __iter__(self) -> Tuple[K, V]:
+    def __iter__(self) -> Tuple[E, int]:
         for item in self._rep:
             yield item
 
-    def __getitem__(self, key: K) -> V:
+    def __getitem__(self, key: E) -> int:
         return self.get(key)
 
-    def get(self, key: K) -> V:
+    def get(self, key: E) -> int:
         return self._rep.get(key)
 
-    def keys(self) -> List[K]:
+    def keys(self) -> List[E]:
         return self._rep.keys()
 
-    def values(self) -> List[V]:
+    def values(self) -> List[int]:
         return self._rep.values()
 
-    def add(self, key: K) -> None:
+    def add(self, key: E) -> None:
         if key in self:
             for item in self._rep:
                 if item[0] == key:
@@ -50,7 +52,7 @@ class MultiSet(Generic[K, V]):
         else:
             self._rep.add(key, 1)
 
-    def remove(self, key: K) -> None:
+    def remove(self, key: E) -> None:
         self._rep.remove(key)
 
     def sort_keys(self) -> None:
