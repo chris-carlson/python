@@ -1,7 +1,7 @@
-from typing import Dict, List
+from typing import Dict
+from typing import List
 
-from cac.xml.element_list import ElementList
-from consumer import Consumer
+from cac.consumer import Consumer
 
 
 class Element:
@@ -9,7 +9,7 @@ class Element:
     def __init__(self) -> None:
         self._name: str = ''
         self._attributes: Dict[str, str] = {}
-        self._children: ElementList = ElementList()
+        self._children: List[Element] = []
         self._data: str = None
 
     @property
@@ -22,13 +22,45 @@ class Element:
 
     @property
     def children(self) -> List['Element']:
-        assert self._data is None, 'Element \'' + self._name + '\' has no children'
         return self._children
 
     @property
     def data(self) -> str:
-        assert self._data is not None, 'Element \'' + self._name + '\' has no data'
+        assert self._data is not None
         return self._data
+
+    def find_child_by_name(self, name: str) -> 'Element':
+        filtered_items: List[Element] = self.filter_children_by_name(name)
+        if len(filtered_items) == 0:
+            raise ValueError('Could not find a child with name \'' + name + '\'')
+        elif len(filtered_items) > 1:
+            raise ValueError('Found multiple children with name \'' + name + '\'')
+        return filtered_items[0]
+
+    def filter_children_by_name(self, name: str) -> List['Element']:
+        return List['Element']([item for item in self._children if item.name == name])
+
+    def find_child_by_attribute(self, name: str, value: str) -> 'Element':
+        filtered_items: List[Element] = self.filter_children_by_attribute(name, value)
+        if len(filtered_items) == 0:
+            raise ValueError('Could not find a child with attribute \'' + name + '\' and value \'' + value + '\'')
+        elif len(filtered_items) > 1:
+            raise ValueError('Found multiple children with attribute \'' + name + '\' and value \'' + value + '\'')
+        return filtered_items[0]
+
+    def filter_children_by_attribute(self, name: str, value: str) -> List['Element']:
+        return [item for item in self._children if name in item.attributes and item.attributes[name] == value]
+
+    def find_child_by_data(self, data: str) -> 'Element':
+        filtered_items: List[Element] = self.filter_children_by_data(data)
+        if len(filtered_items) == 0:
+            raise ValueError('Could not find a child with data \'' + data + '\'')
+        elif len(filtered_items) > 1:
+            raise ValueError('Found multiple children with data \'' + data + '\'')
+        return filtered_items[0]
+
+    def filter_children_by_data(self, data: str) -> List['Element']:
+        return List['Element']([item for item in self._children if item.data == data])
 
     def parse(self, consumer: Consumer) -> None:
         consumer.consume_char('<')
@@ -58,8 +90,6 @@ class Element:
             consumer.consume_char('<')
             consumer.consume_char('/')
             closing_tag_name: str = consumer.consume_to('>')
-            assert closing_tag_name == self._name, 'Closing tag name \'' + closing_tag_name + '\' does not match ' \
-                                                                                              'opening tag name \'' + \
-                                                   self._name + '\''
+            assert closing_tag_name == self._name
             consumer.consume_char('>')
             consumer.consume_whitespace()
