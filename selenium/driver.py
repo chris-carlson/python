@@ -1,9 +1,9 @@
 from typing import List
 
+from cac.selenium.by import By
 from cac.selenium.element import Element
 from cac.selenium.wait import Wait
 from selenium import webdriver
-from selenium.by import By
 
 
 class Driver:
