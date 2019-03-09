@@ -1,6 +1,6 @@
 from cac.consumer import Consumer
+from cac.io.text.read_file import ReadFile
 from cac.xml.element import Element
-from io.text.read_file import ReadFile
 
 
 class Document:

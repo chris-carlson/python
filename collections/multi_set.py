@@ -1,7 +1,4 @@
-from typing import Generic
-from typing import List
-from typing import Tuple
-from typing import TypeVar
+from typing import Generic, List, Tuple, TypeVar
 
 from cac.collections.pair_list import PairList
 
@@ -11,7 +8,7 @@ E = TypeVar('E')
 class MultiSet(Generic[E]):
 
     def __init__(self) -> None:
-        self._rep = PairList()
+        self._rep: PairList = PairList()
 
     def __str__(self) -> str:
         return self._rep.__str__()

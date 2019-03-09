@@ -1,5 +1,4 @@
-from typing import Dict
-from typing import List
+from typing import Dict, List
 
 from cac.consumer import Consumer
 
@@ -37,8 +36,8 @@ class Element:
             raise ValueError('Found multiple children with name \'' + name + '\'')
         return filtered_items[0]
 
-    def filter_children_by_name(self, name: str) -> List['Element']:
-        return List['Element']([item for item in self._children if item.name == name])
+    def find_children_by_name(self, name: str) -> List['Element']:
+        return [item for item in self._children if item.name == name]
 
     def find_child_by_attribute(self, name: str, value: str) -> 'Element':
         filtered_items: List[Element] = self.filter_children_by_attribute(name, value)
@@ -48,7 +47,7 @@ class Element:
             raise ValueError('Found multiple children with attribute \'' + name + '\' and value \'' + value + '\'')
         return filtered_items[0]
 
-    def filter_children_by_attribute(self, name: str, value: str) -> List['Element']:
+    def find_children_by_attribute(self, name: str, value: str) -> List['Element']:
         return [item for item in self._children if name in item.attributes and item.attributes[name] == value]
 
     def find_child_by_data(self, data: str) -> 'Element':
@@ -59,20 +58,22 @@ class Element:
             raise ValueError('Found multiple children with data \'' + data + '\'')
         return filtered_items[0]
 
-    def filter_children_by_data(self, data: str) -> List['Element']:
-        return List['Element']([item for item in self._children if item.data == data])
+    def find_children_by_data(self, data: str) -> List['Element']:
+        return [item for item in self._children if item.data == data]
 
     def parse(self, consumer: Consumer) -> None:
         consumer.consume_char('<')
         self._name = consumer.consume_to_one_of(['>', ' ', '/'])
-        while consumer.peek() == ' ':
+        while consumer.peek() != '/' and consumer.peek() != '>':
             consumer.consume_whitespace()
             attribute_name: str = consumer.consume_to('=')
             consumer.consume_char('=')
             consumer.consume_one_of(['\'', '\"'])
             attribute_value: str = consumer.consume_to_one_of(['\'', '\"'])
+            attribute_value = attribute_value.replace('&amp;', '&')
             consumer.consume_one_of(['\'', '\"'])
             self._attributes[attribute_name] = attribute_value
+            consumer.consume_whitespace()
         if consumer.peek() == '/':
             consumer.consume_char('/')
             consumer.consume_char('>')
@@ -85,6 +86,7 @@ class Element:
                     child: Element = Element()
                     child.parse(consumer)
                     self._children.append(child)
+                    consumer.consume_whitespace()
             else:
                 self._data = consumer.consume_to('<')
             consumer.consume_char('<')
