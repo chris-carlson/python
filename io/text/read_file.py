@@ -1,8 +1,7 @@
 from io import TextIOWrapper
-from typing import List
+from typing import List, Set
 
 from cac.collections.multi_set import MultiSet
-from cac.collections.ordered_set import OrderedSet
 
 
 class ReadFile:
@@ -28,8 +27,8 @@ class ReadFile:
     def get_stripped_lines(self) -> List[str]:
         return [line.strip() for line in self._lines]
 
-    def get_unique_lines(self) -> OrderedSet[str]:
-        ordered_set: OrderedSet[str] = OrderedSet[str]()
+    def get_unique_lines(self) -> Set[str]:
+        ordered_set: Set[str] = set()
         for line in self.get_stripped_lines():
             ordered_set.add(line)
         return ordered_set
