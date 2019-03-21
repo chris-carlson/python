@@ -52,14 +52,16 @@ class Consumer:
             consumed += self.consume_char(char)
         return consumed
 
-    def consume_to(self, char: str) -> str:
+    def consume_to(self, char: str, allow_escaped: bool = False) -> str:
         assert self.contains(char), 'Could not find \'' + char + '\''
-        return self.consume_to_one_of([char])
+        return self.consume_to_one_of([char], allow_escaped)
 
-    def consume_to_one_of(self, chars: List[str]) -> str:
+    def consume_to_one_of(self, chars: List[str], allow_escaped: bool = False) -> str:
         assert self._contains_one_of(chars), 'Could not find one of \'' + str(chars) + '\''
         consumed: str = ''
-        while self.peek() not in chars:
+        is_escaped: bool = False
+        while self.peek() not in chars or (is_escaped and not allow_escaped):
+            is_escaped = self.peek() == '\\'
             consumed += self._remove_char()
         return consumed
 
