@@ -1,5 +1,7 @@
 from typing import List, Tuple
 
+from cac.regex import Regex
+
 
 class String(str):
 
@@ -95,6 +97,15 @@ class String(str):
     def insert_text_after(self, char: str, text: str) -> 'String':
         index: int = self._rep.find(char) + 1
         return self.insert_text(index, text)
+
+    def replace(self, regex: Regex, text: str) -> 'String':
+        string: str = self._rep
+        while regex.matches(string):
+            match_index: Tuple[str, int] = regex.find_match_index(string)
+            match: str = match_index[0]
+            index: int = match_index[1]
+            string = string[:index] + text + string[index + len(match):]
+        return String(string)
 
     def _find_pair_indexes(self, str1: str, str2: str, index: int = 0) -> Tuple[int, int]:
         index1: int = self._rep.find(str1, index)
