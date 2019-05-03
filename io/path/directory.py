@@ -7,6 +7,10 @@ from cac.io.path.file import File
 class Directory:
 
     @staticmethod
+    def get_cwd() -> 'Directory':
+        return Directory(os.getcwd())
+
+    @staticmethod
     def _get_path(path: Path) -> str:
         return path.parts[0] + '\\'.join(path.parts[1:])
 
@@ -27,14 +31,21 @@ class Directory:
     def path(self) -> str:
         return self._rep.parts[0] + '\\'.join(self._rep.parts[1:])
 
+    @property
+    def parent_path(self) -> str:
+        return self._rep.parts[0] + '\\'.join(self._rep.parts[1 : len(self._rep.parts) - 1])
+
     def exists(self) -> bool:
         return self._rep.exists()
 
     def contains_directory(self, directory_name: str) -> bool:
         return directory_name in self._rep.parts
 
-    def join(self, path: str) -> 'Directory':
+    def join_directory(self, path: str) -> 'Directory':
         return Directory(self.path + '\\' + path)
+
+    def join_file(self, path: str) -> File:
+        return File(self.path + '\\' + path)
 
     def has_file(self, name: str) -> bool:
         return len([path for path in self.get_files() if path.name == name]) > 0
@@ -59,3 +70,10 @@ class Directory:
 
     def get_directories(self) -> List['Directory']:
         return [Directory(self._get_path(child_path)) for child_path in self._rep.iterdir() if child_path.is_dir()]
+
+    def rename(self, name: str) -> None:
+        new_path: str = self.parent_path + '\\' + name
+        os.rename(self.path, new_path)
+
+    def delete(self) -> None:
+        os.remove(self.path)

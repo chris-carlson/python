@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, List, Tuple
 
 from colorama import Back
 from colorama import Fore
@@ -14,12 +14,12 @@ class Color:
     STYLE: Dict[str, int] = {'Bright': Style.BRIGHT, 'Dim': Style.DIM, 'Normal': Style.NORMAL}
 
     @staticmethod
-    def highlight_text(text, color, style) -> str:
+    def highlight_text(text: str, color: int, style: int) -> str:
         init()
         return color + style + text + Style.RESET_ALL
 
     @staticmethod
-    def highlight_matches(text, match_indexes, color, style) -> str:
+    def highlight_matches(text: str, match_indexes: List[Tuple[str, int]], color: int, style: int) -> str:
         init()
         highlighted_text = ''
         start_index = 0

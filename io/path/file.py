@@ -1,3 +1,5 @@
+import os
+
 from pathlib import Path
 
 
@@ -34,3 +36,10 @@ class File:
 
     def exists(self) -> bool:
         return self._rep.exists()
+
+    def rename(self, name: str) -> None:
+        new_path: str = self.directory_path + '\\' + name
+        os.rename(self.path, new_path)
+
+    def delete(self) -> None:
+        os.remove(self.path)
