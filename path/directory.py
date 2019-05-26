@@ -1,7 +1,9 @@
+import os
+
 from pathlib import Path
 from typing import List
 
-from cac.io.path.file import File
+from cac.path.file import File
 
 
 class Directory:
