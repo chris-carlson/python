@@ -15,7 +15,12 @@ class ReadFile:
         return self._lines
 
     def read_lines(self) -> None:
-        self._lines = [line for line in self._file]
+        self._lines = []
+        try:
+            for line in self._file:
+                self._lines.append(line)
+        except UnicodeDecodeError:
+            pass
 
     def get_parse_line(self) -> str:
         parse_line: str = ''.join(self._lines)
