@@ -1,8 +1,13 @@
 import sys
 from typing import List, Dict
 
+from cac.color import Color
 
 class Args:
+
+    @staticmethod
+    def print_help(flag: str, arg: str, description: str) -> None:
+        print(Color.highlight_text('-' + flag, Color.FORE['Magenta'], Color.STYLE['Bright']) + ' ' + Color.highlight_text(arg, Color.FORE['Green'], Color.STYLE['Bright']) + ': ' + description)
 
     def __init__(self, num_args: int = -1, arg_flags: List[str] = None) -> None:
         self._args: List[str] = []
