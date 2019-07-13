@@ -1,4 +1,5 @@
 import os
+import shutil
 
 from pathlib import Path
 
@@ -43,3 +44,6 @@ class File:
 
     def delete(self) -> None:
         os.remove(self.path)
+
+    def copy(self, path: str) -> None:
+        shutil.copyfile(self.path, path)

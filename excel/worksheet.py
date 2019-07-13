@@ -1,6 +1,6 @@
 from typing import List
 
-from openpyxl.worksheet import Worksheet as OpenpyxlWorksheet
+from openpyxl.worksheet.worksheet import Worksheet as OpenpyxlWorksheet
 
 
 class Worksheet:

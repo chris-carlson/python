@@ -1,12 +1,12 @@
 from typing import List
 
-from cac.io.text.write_file import WriteFile as TextWriteFile
+from cac.io.text.text_writer import TextWriter
 
 
-class WriteFile:
+class CsvWriter:
 
     def __init__(self, file_name: str, append: bool = False) -> None:
-        self._file: TextWriteFile = TextWriteFile(file_name, append)
+        self._file: TextWriter = TextWriter(file_name, append)
 
     def write_row(self, values: List[str]) -> None:
         self._file.write_line(','.join(['\"' + value + '\"' for value in values]))

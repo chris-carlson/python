@@ -4,7 +4,7 @@ from typing import List, Set
 from cac.collections.multi_set import MultiSet
 
 
-class ReadFile:
+class TextReader:
 
     def __init__(self, file_name: str) -> None:
         self._file: TextIOWrapper = open(file_name, mode='r')

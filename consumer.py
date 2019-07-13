@@ -31,6 +31,9 @@ class Consumer:
     def matches(self, regex: Regex) -> bool:
         return regex.matches(self._rep)
 
+    def get_string(self) -> str:
+        return self._rep
+
     def peek(self) -> str:
         assert self.has_input(), 'Consumer does not have any input left'
         return self._rep[0]
@@ -95,6 +98,12 @@ class Consumer:
     def consume_to_whitespace(self) -> str:
         consumed: str = ''
         while self.has_input() and not WHITESPACE_REGEX.matches(self.peek()):
+            consumed += self.consume_char()
+        return consumed
+
+    def consume_through_whitespace(self) -> str:
+        consumed: str = ''
+        while not WHITESPACE_REGEX.matches(consumed):
             consumed += self.consume_char()
         return consumed
 

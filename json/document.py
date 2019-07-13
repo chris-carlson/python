@@ -2,14 +2,14 @@ from typing import Dict
 from typing import List
 
 from cac.consumer import Consumer
-from cac.io.text.read_file import ReadFile
+from cac.io.text.text_reader import TextReader
 from cac.json.value import Value
 
 
 class Document:
 
     def __init__(self, file_name) -> None:
-        self._file: ReadFile = ReadFile(file_name)
+        self._file: TextReader = TextReader(file_name)
 
     def parse_object(self) -> Dict[str, Value]:
         value: Value = self._get_value()

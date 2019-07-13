@@ -1,13 +1,13 @@
 from typing import List
 
 from cac.consumer import Consumer
-from cac.io.text.read_file import ReadFile as TextReadFile
+from cac.io.text.text_reader import TextReader
 
 
-class ReadFile:
+class CsvReader:
 
     def __init__(self, file_name: str) -> None:
-        self._file: TextReadFile = TextReadFile(file_name)
+        self._file: TextReader = TextReader(file_name)
         self._rows: List[List[str]] = []
 
     def __iter__(self) -> List[str]:
