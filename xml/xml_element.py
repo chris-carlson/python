@@ -3,7 +3,7 @@ from typing import Dict, List
 from cac.consumer import Consumer
 
 
-class Element:
+class XmlElement:
 
     def __init__(self) -> None:
         self._name: str = ''

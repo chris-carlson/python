@@ -3,7 +3,7 @@ from cac.io.text.text_reader import TextReader
 from cac.xml.element import Element
 
 
-class Document:
+class XmlDocument:
 
     def __init__(self, file_name: str) -> None:
         self._text_reader: TextReader = TextReader(file_name)

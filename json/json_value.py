@@ -5,26 +5,26 @@ from cac.consumer import Consumer
 from cac.regex import Regex
 
 
-class Value:
+class JsonValue:
     NUMBER_REGEX: Regex = Regex('-|[0-9]')
     BOOLEAN_REGEX: Regex = Regex('t|f')
 
     def __init__(self) -> None:
-        self._object: Dict[str, Value] = None
-        self._array: List[Value] = None
+        self._object: Dict[str, JsonValue] = None
+        self._array: List[JsonValue] = None
         self._string: str = None
         self._integer_number: int = None
         self._float_number: float = None
         self._boolean: bool = None
 
     @property
-    def object(self) -> Dict[str, 'Value']:
+    def object(self) -> Dict[str, 'JsonValue']:
         if self._object is None:
             raise ValueError('Expected type \'object\' but got type \'' + self._get_type() + '\'')
         return self._object
 
     @property
-    def array(self) -> List['Value']:
+    def array(self) -> List['JsonValue']:
         if self._array is None:
             raise ValueError('Expected type \'array\' but got type \'' + self._get_type() + '\'')
         return self._array
@@ -76,7 +76,7 @@ class Value:
             consumer.consume_whitespace()
             consumer.consume_char(':')
             consumer.consume_whitespace()
-            value: Value = Value()
+            value: JsonValue = JsonValue()
             value.parse(consumer)
             consumer.consume_whitespace()
             if consumer.peek() == ',':
@@ -90,7 +90,7 @@ class Value:
         consumer.consume_char('[')
         consumer.consume_whitespace()
         while consumer.peek() != ']':
-            value: Value = Value()
+            value: JsonValue = JsonValue()
             value.parse(consumer)
             consumer.consume_whitespace()
             if consumer.peek() == ',':
