@@ -1,22 +1,17 @@
+from csv import writer as Writer
+from io import TextIOWrapper
 from typing import List
-
-from cac.io.text.text_writer import TextWriter
 
 
 class CsvWriter:
 
     def __init__(self, file_name: str, append: bool = False) -> None:
-        self._file: TextWriter = TextWriter(file_name, append)
+        mode: str = 'a' if append else 'w'
+        self._file: TextIOWrapper = open(file_name, mode, newline='')
 
     def write_row(self, values: List[str]) -> None:
-        self._file.write_line(','.join(['\"' + value + '\"' for value in values]))
-        row_values: List[str] = []
-        for value in values:
-            if ',' in values:
-                row_values.append('\"' + value + '\"')
-            else:
-                row_values.append(value)
-        self._file.write_line(','.join(row_values))
+        writer: Writer = Writer(self._file, delimiter=',')
+        writer.writerow(values)
 
     def close(self) -> None:
         self._file.close()

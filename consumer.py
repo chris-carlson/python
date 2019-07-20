@@ -101,12 +101,6 @@ class Consumer:
             consumed += self.consume_char()
         return consumed
 
-    def consume_through_whitespace(self) -> str:
-        consumed: str = ''
-        while not WHITESPACE_REGEX.matches(consumed):
-            consumed += self.consume_char()
-        return consumed
-
     def consume_to_end(self) -> str:
         consumed: str = ''
         while self.has_input():
