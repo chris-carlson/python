@@ -8,4 +8,4 @@ class JsonWriter:
         self._file: TextWriter = TextWriter(file_name)
 
     def write(self, data: object) -> None:
-        self._file.write_line(json.dumps(data))
+        self._file.write_line(json.dumps(data, indent=2))

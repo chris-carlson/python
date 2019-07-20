@@ -11,7 +11,7 @@ class XmlWriter:
         self._file: TextWriter = TextWriter(file_name)
 
     def write(self, element: XmlElement) -> None:
-        self._file.write_line(ET.tostring(self._convert_element(element), encoding='unicode'))
+        self._file.write_line(ET.tostring(self._convert_element(element), 'unicode'))
 
     def _convert_element(self, wrapper_element: XmlElement) -> Element:
         native_element: Element = Element(wrapper_element.tag, wrapper_element.attributes)

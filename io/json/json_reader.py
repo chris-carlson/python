@@ -49,5 +49,5 @@ class JsonReader:
 
     def _get_value(self) -> object:
         self._file.read_lines()
-        read_line: str = self._file.get_read_line()
+        read_line: str = self._file.get_parse_line()
         return json.loads(read_line)
