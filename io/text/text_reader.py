@@ -11,7 +11,7 @@ class TextReader:
         lines: List[str] = []
         try:
             for line in self._file:
-                lines.append(line.strip())
+                lines.append(line.rstrip())
         except UnicodeDecodeError:
             pass
         return lines
