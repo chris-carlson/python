@@ -1,7 +1,6 @@
 import json
 
-from typing import Dict
-from typing import List
+from typing import Dict, List
 
 from cac.io.text.text_reader import TextReader
 
@@ -48,6 +47,6 @@ class JsonReader:
         return value
 
     def _get_value(self) -> object:
-        self._file.read_lines()
-        read_line: str = self._file.get_parse_line()
-        return json.loads(read_line)
+        lines: List[str] = self._file.read_lines()
+        self._file.close()
+        return json.loads(''.join(lines))
