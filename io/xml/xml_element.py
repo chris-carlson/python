@@ -39,6 +39,10 @@ class XmlElement:
     def text(self, text) -> None:
         self._text = text
 
+    def has_tag(self, tag: str) -> bool:
+        matching_children: List[XmlElement] = self.get_all_by_tag(tag)
+        return len(matching_children) > 0
+
     def get_one_by_tag(self, tag: str) -> 'XmlElement':
         matching_children: List[XmlElement] = self.get_all_by_tag(tag)
         return Finder.find_only(matching_children)
