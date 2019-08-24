@@ -43,11 +43,11 @@ class Directory:
     def contains_directory(self, directory_name: str) -> bool:
         return directory_name in self._rep.parts
 
-    def join_directory(self, path: str) -> 'Directory':
-        return Directory(self.path + '\\' + path)
+    def join_directory(self, path: str, extension: str = '') -> 'Directory':
+        return Directory(self.path + '\\' + path + extension)
 
-    def join_file(self, path: str) -> File:
-        return File(self.path + '\\' + path)
+    def join_file(self, path: str, extension: str = '') -> File:
+        return File(self.path + '\\' + path + extension)
 
     def has_file(self, name: str) -> bool:
         return len([path for path in self.get_files() if path.name == name]) > 0
