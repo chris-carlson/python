@@ -7,7 +7,7 @@ from cac.io.text.text_reader import TextReader
 
 class JsonReader:
 
-    def __init__(self, file_name) -> None:
+    def __init__(self, file_name: str) -> None:
         self._file: TextReader = TextReader(file_name)
 
     def read_object(self) -> Dict[str, object]:
