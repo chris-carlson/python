@@ -19,3 +19,6 @@ class WorkbookWriter:
 
     def save(self) -> None:
         self._openpyxl_workbook.save(self._file_name)
+
+    def close(self) -> None:
+        self._openpyxl_workbook.close()

@@ -8,6 +8,12 @@ class Regex:
         flags: int = 0 if case_sensitive else re.I
         self._rep = re.compile(regex, flags)
 
+    def __str__(self) -> str:
+        return self._rep
+
+    def __repr__(self) -> str:
+        return self.__str__()
+
     def matches(self, string: str) -> bool:
         matches: List[str] = self.find_matches(string)
         return len(matches) > 0

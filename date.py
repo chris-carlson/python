@@ -42,7 +42,7 @@ class Date:
         return self._year == other.year and self._month == other.month and self._day_of_month == other.day_of_month
 
     def __str__(self) -> str:
-        return str(self._year) + '/' + String.pad_number(self._month) + '/' + String.pad_number(self._day_of_month)
+        return str(self._year) + '/' + String.pad_number(self._month, 2) + '/' + String.pad_number(self._day_of_month, 2)
 
     def __repr__(self) -> str:
         return self.__str__()

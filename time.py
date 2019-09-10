@@ -21,7 +21,7 @@ class Time:
         return self._hour == other.hour and self._minute == other.minute and self._meridiem == other.meridiem
 
     def __str__(self) -> str:
-        return String.pad_number(self._hour) + ':' + String.pad_number(self._minute) + ' ' + self._meridiem
+        return String.pad_number(self._hour, 2) + ':' + String.pad_number(self._minute, 2) + ' ' + self._meridiem
 
     def __repr__(self) -> str:
         return self.__str__()

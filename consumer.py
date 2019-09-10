@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple
 
 from cac.regex import Regex
 
@@ -26,13 +26,10 @@ class Consumer:
         return self._rep.startswith(sequence)
 
     def contains(self, sequence: str) -> bool:
-        return self._rep.find(sequence) != -1
+        return sequence in self._rep
 
     def matches(self, regex: Regex) -> bool:
         return regex.matches(self._rep)
-
-    def get_string(self) -> str:
-        return self._rep
 
     def peek(self) -> str:
         assert self.has_input(), 'Consumer does not have any input left'
@@ -53,6 +50,12 @@ class Consumer:
         consumed: str = ''
         for char in chars:
             consumed += self.consume_char(char)
+        return consumed
+
+    def consume_num_chars(self, num_chars: int) -> str:
+        consumed: str = ''
+        for _ in range(0, num_chars):
+            consumed += self.consume_char()
         return consumed
 
     def consume_to(self, char: str, allow_escaped: bool = False) -> str:
@@ -100,6 +103,16 @@ class Consumer:
         while self.has_input() and not WHITESPACE_REGEX.matches(self.peek()):
             consumed += self.consume_char()
         return consumed
+
+    def consume_regex(self, regex: Regex) -> str:
+        match_index: Tuple[str, int] = regex.find_match_index(self._rep)
+        if match_index[1] != 0:
+            raise ValueError('Consumer does not start with regex \'' + str(regex) + '\'')
+        return self.consume_through_sequence(match_index[0])
+
+    def consume_to_regex(self, regex: Regex) -> str:
+        match_index: Tuple[str, int] = regex.find_match_index(self._rep)
+        return self._remove_chars(match_index[1])
 
     def consume_to_end(self) -> str:
         consumed: str = ''

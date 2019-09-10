@@ -6,10 +6,11 @@ from cac.color import Color
 class Args:
 
     @staticmethod
-    def print_help(flag: str, arg: str, description: str) -> None:
+    def print_help(flag: str, arg: str, description: str = '') -> None:
         flag = Color.highlight_text('-' + flag, Color.FORE['Magenta'], Color.STYLE['Bright'])
         arg = ' ' + Color.highlight_text(arg, Color.FORE['Green'], Color.STYLE['Bright']) if len(arg) > 0 else ''
-        print(flag + arg + ': ' + description)
+        description = ': ' + description if len(description) > 0 else ''
+        print(flag + arg + description)
 
     def __init__(self, num_args: int = -1, arg_flags: List[str] = None) -> None:
         self._args: List[str] = []

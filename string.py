@@ -2,12 +2,17 @@ from typing import List, Tuple
 
 from cac.regex import Regex
 
+EXCESSIVE_WHITESPACE_REGEX: Regex = Regex(r'\s{2,}')
+
 
 class String(str):
 
     @staticmethod
-    def pad_number(num: int) -> str:
-        return '0' + str(num) if num < 10 else str(num)
+    def pad_number(number: int, num_digits: int) -> str:
+        string_number: str = str(number)
+        while len(string_number) < num_digits:
+            string_number = '0' + string_number
+        return string_number
 
     def __init__(self, string: str = '') -> None:
         super().__init__()
@@ -86,6 +91,9 @@ class String(str):
         string = string.replace('\r', '')
         string = string.replace('\n', '')
         return String(string)
+
+    def remove_excessive_whitespace(self) -> 'String':
+        return self.replace(EXCESSIVE_WHITESPACE_REGEX, ' ')
 
     def insert_text(self, index: int, text: str) -> 'String':
         return String(self._rep[:index] + text + self._rep[index:])
