@@ -12,7 +12,7 @@ class Args:
         description = ': ' + description if len(description) > 0 else ''
         print(flag + arg + description)
 
-    def __init__(self, num_args: int = -1, arg_flags: List[str] = None) -> None:
+    def __init__(self, arg_flags: List[str] = None) -> None:
         self._args: List[str] = []
         self._flags: Dict[str, str] = {}
         args: List[str] = sys.argv[1:][:]
@@ -29,8 +29,6 @@ class Args:
                 self._flags[flag] = value
             else:
                 self._args.append(arg)
-        if num_args != -1:
-            assert len(self._args) == num_args
 
     def __len__(self) -> int:
         return len(self._args)

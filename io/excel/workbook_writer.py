@@ -2,7 +2,7 @@ from typing import List
 
 from openpyxl import Workbook as OpenpyxlWorkbook, load_workbook
 
-from cac.excel.worksheet import Worksheet
+from cac.io.excel.worksheet import Worksheet
 
 class WorkbookWriter:
 
