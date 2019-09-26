@@ -1,27 +1,27 @@
-import xml.etree.ElementTree as ET
-
 from typing import Dict, List
+
+import xml.etree.ElementTree as ET
 from xml.etree.ElementTree import Element
 
 from cac.finder import Finder
 
 class XmlElement:
 
-    def __init__(self, tag: str, attributes: Dict[str, str] = {}) -> None:
-        self._tag: str = tag
+    def __init__(self, name: str, attributes: Dict[str, str] = {}) -> None:
+        self._name: str = name
         self._attributes: Dict[str, str] = attributes
         self._text: str = ''
         self._children: List[XmlElement] = []
 
     def __str__(self) -> str:
-        return self._tag
+        return self._name
 
     def __repr__(self) -> str:
         return self.__str__()
 
     @property
-    def tag(self) -> str:
-        return self._tag
+    def name(self) -> str:
+        return self._name
 
     @property
     def text(self) -> str:
@@ -39,44 +39,31 @@ class XmlElement:
     def text(self, text) -> None:
         self._text = text
 
-    def has_tag(self, tag: str) -> bool:
-        matching_children: List[XmlElement] = self.get_all_by_tag(tag)
-        return len(matching_children) > 0
+    def has_child(self, name: str) -> bool:
+        return len(self.get_all_by_name(name)) > 0
 
-    def get_one_by_tag(self, tag: str) -> 'XmlElement':
-        matching_children: List[XmlElement] = self.get_all_by_tag(tag)
-        return Finder.find_only(matching_children)
+    def get_one_by_name(self, name: str) -> 'XmlElement':
+        return Finder.find_only(self.get_all_by_name(name))
 
     def get_one_by_text(self, text: str) -> 'XmlElement':
-        matching_children: List[XmlElement] = self.get_all_by_text(text)
-        return Finder.find_only(matching_children)
+        return Finder.find_only(self.get_all_by_text(text))
 
-    def get_all_by_tag(self, tag: str) -> List['XmlElement']:
-        matching_children: List[XmlElement] = []
-        for child in self._children:
-            if child.tag == tag:
-                matching_children.append(child)
-        return matching_children
+    def get_all_by_name(self, name: str) -> List['XmlElement']:
+        return [child for child in self._children if child.name == name]
 
     def get_all_by_text(self, text: str) -> List['XmlElement']:
-        matching_children: List[XmlElement] = []
-        for child in self._children:
-            if child.text == text:
-                matching_children.append(child)
-        return matching_children
+        return [child for child in self._children if child.text == text]
 
-    def find_one_by_tag(self, tag: str) -> 'XmlElement':
-        matching_children: List[XmlElement] = self.find_all_by_tag(tag)
-        return Finder.find_only(matching_children)
+    def find_one_by_name(self, name: str) -> 'XmlElement':
+        return Finder.find_only(self.find_all_by_name(name))
 
     def find_one_by_text(self, text: str) -> 'XmlElement':
-        matching_children: List[XmlElement] = self.find_all_by_text(text)
-        return Finder.find_only(matching_children)
+        return Finder.find_only(self.find_all_by_text(text))
 
-    def find_all_by_tag(self, tag: str) -> List['XmlElement']:
-        matching_children: List[XmlElement] = self.get_all_by_tag(tag)
+    def find_all_by_name(self, name: str) -> List['XmlElement']:
+        matching_children: List[XmlElement] = self.get_all_by_name(name)
         for child in self._children:
-            matching_children.extend(child.find_all_by_tag(tag))
+            matching_children.extend(child.find_all_by_name(name))
         return matching_children
 
     def find_all_by_text(self, text: str) -> List['XmlElement']:
