@@ -1,4 +1,4 @@
-from typing import Dict, List, Tuple, TypeVar
+from typing import Dict, TypeVar
 
 E = TypeVar('E')
 
@@ -12,13 +12,3 @@ class MultiSet(Dict[E, int]):
             self[element] = count
         else:
             self[element] = 1
-
-    def to_sorted_list(self, sort_values=False) -> List[Tuple[E, int]]:
-        pair_list: List[Tuple[E, int]] = []
-        for element, count in self.items():
-            pair_list.append((element, count))
-        sort_index: int = 1 if sort_values else 0
-        pair_list.sort(key=lambda pair: pair[sort_index])
-        if sort_values:
-            pair_list.reverse()
-        return pair_list

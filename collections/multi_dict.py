@@ -1,28 +1,21 @@
-from typing import Dict, List, Set, Tuple, TypeVar
+from typing import Dict, List, TypeVar
 
 K = TypeVar('K')
 V = TypeVar('V')
 
 
-class MultiDict(Dict[K, Set[V]]):
+class MultiDict(Dict[K, List[V]]):
 
     def add(self, key: K) -> None:
         if key in self:
             raise ValueError('Key \'' + key + '\' is already in the MultiDict')
-        self[key] = set()
+        self[key] = []
 
     def add(self, key: K, value: V) -> None:
         if key in self:
-            values: Set[V] = self.get(key)
-            values.add(value)
+            values: List[V] = self.get(key)
+            values.append(value)
         else:
-            values: Set[V] = set()
-            values.add(value)
+            values: List[V] = []
+            values.append(value)
             self[key] = values
-
-    def to_sorted_list(self) -> List[Tuple[K, Set[V]]]:
-        pair_list: List[Tuple[K, Set[V]]] = []
-        for key, values in self.items():
-            pair_list.append((key, values))
-        pair_list.sort(key=lambda pair: pair[0])
-        return pair_list

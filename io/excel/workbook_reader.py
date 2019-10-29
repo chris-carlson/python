@@ -6,6 +6,10 @@ from cac.io.excel.worksheet import Worksheet
 
 class WorkbookReader:
 
+    @staticmethod
+    def _row_is_blank(row: List[object]) -> bool:
+        return len([cell for cell in row if cell is not None]) == 0
+
     def __init__(self, file_name: str) -> None:
         self._file_name: str = file_name
 
@@ -18,7 +22,8 @@ class WorkbookReader:
                 row: List[object] = []
                 for openpyxl_cell in openpyxl_row:
                     row.append(openpyxl_cell.value)
-                rows.append(row)
+                if not WorkbookReader._row_is_blank(row):
+                    rows.append(row)
             worksheets.append(Worksheet(openpyxl_worksheet.title, rows))
         openpyxl_workbook.close()
         return worksheets

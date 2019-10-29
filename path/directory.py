@@ -1,4 +1,5 @@
 import os
+import shutil
 
 from pathlib import Path
 from typing import List
@@ -108,3 +109,6 @@ class Directory:
 
     def delete(self) -> None:
         os.remove(self.path)
+
+    def copy(self, path: str) -> None:
+        shutil.copytree(self.path, path)
