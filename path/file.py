@@ -38,6 +38,9 @@ class File:
     def exists(self) -> bool:
         return self._rep.exists()
 
+    def has_parent_directory(self, name: str) -> bool:
+        return name in self._rep.parts[1:]
+
     def rename(self, name: str) -> None:
         new_path: str = self.directory_path + '\\' + name
         os.rename(self.path, new_path)

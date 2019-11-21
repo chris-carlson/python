@@ -1,4 +1,5 @@
 __pycache__/
+db2/
 io/blob/
 regex_conversion/
 test/

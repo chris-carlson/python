@@ -39,8 +39,11 @@ class XmlElement:
     def text(self, text) -> None:
         self._text = text
 
-    def has_child(self, name: str) -> bool:
+    def can_get_child(self, name: str) -> bool:
         return len(self.get_all_by_name(name)) > 0
+
+    def can_find_child(self, name: str) -> bool:
+        return len(self.find_all_by_name(name)) > 0
 
     def get_one_by_name(self, name: str) -> 'XmlElement':
         return Finder.find_only(self.get_all_by_name(name))
@@ -48,17 +51,26 @@ class XmlElement:
     def get_one_by_text(self, text: str) -> 'XmlElement':
         return Finder.find_only(self.get_all_by_text(text))
 
+    def get_one_by_attribute(self, name: str, value: str) -> 'XmlElement':
+        return Finder.find_only(self.get_all_by_attribute(name, value))
+
     def get_all_by_name(self, name: str) -> List['XmlElement']:
         return [child for child in self._children if child.name == name]
 
     def get_all_by_text(self, text: str) -> List['XmlElement']:
         return [child for child in self._children if child.text == text]
 
+    def get_all_by_attribute(self, name: str, value: str) -> List['XmlElement']:
+        return [child for child in self._children if child.attributes[name] == value]
+
     def find_one_by_name(self, name: str) -> 'XmlElement':
         return Finder.find_only(self.find_all_by_name(name))
 
     def find_one_by_text(self, text: str) -> 'XmlElement':
         return Finder.find_only(self.find_all_by_text(text))
+
+    def find_one_by_attribute(self, name: str, value: str) -> 'XmlElement':
+        return Finder.find_only(self.find_all_by_attribute(name, value))
 
     def find_all_by_name(self, name: str) -> List['XmlElement']:
         matching_children: List[XmlElement] = self.get_all_by_name(name)
@@ -70,4 +82,10 @@ class XmlElement:
         matching_children: List[XmlElement] = self.get_all_by_text(text)
         for child in self._children:
             matching_children.extend(child.find_all_by_text(text))
+        return matching_children
+
+    def find_all_by_attribute(self, name: str, value: str) -> List['XmlElement']:
+        matching_children: List[XmlElement] = self.get_all_by_attribute(name, value)
+        for child in self._children:
+            matching_children.extend(child.find_all_by_attribute(name, value))
         return matching_children

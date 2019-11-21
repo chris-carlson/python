@@ -2,13 +2,24 @@ from lxml import etree
 from lxml.etree import Element
 from lxml.etree import ElementTree
 
+from cac.io.text.text_reader import TextReader
 from cac.io.xml.xml_element import XmlElement
 from cac.string import String
 
 class XmlReader:
 
+    @staticmethod
+    def read_text(text: str) -> XmlElement:
+        element: Element = etree.XML(text)
+        return self._convert_element(element)
+
     def __init__(self, file_name: str) -> None:
         self._file_name: str = file_name
+
+    def is_empty(self) -> bool:
+        reader: TextReader = TextReader(self._file_name)
+        lines: List[str] = [line for line in reader.read_stripped_lines() if len(line) > 0 and not line.startswith('<?xml')]
+        return len(lines) == 0
 
     def read_root(self) -> XmlElement:
         tree: ElementTree = etree.parse(self._file_name)
@@ -28,5 +39,8 @@ class XmlReader:
         if tag.startswith('{'):
             for abbreviation, expansion in native_element.nsmap.items():
                 if tag.startswith('{' + expansion + '}'):
-                    return abbreviation + ':' + tag.substring_after('}')
+                    if abbreviation is None:
+                        return tag.substring_after('}')
+                    else:
+                        return abbreviation + ':' + tag.substring_after('}')
         return tag
