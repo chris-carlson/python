@@ -28,3 +28,7 @@ class Row(List[E]):
     def get_cell(self, letter: str) -> object:
         index: int = LetterConverter.convert_letter(letter)
         return self._rep[index]
+
+    def set_cell(self, letter: str, value: object) -> object:
+        index: int = LetterConverter.convert_letter(letter)
+        self._rep[index] = value
