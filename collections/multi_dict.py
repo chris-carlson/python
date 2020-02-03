@@ -1,21 +1,22 @@
-from typing import Dict, Set, TypeVar
+from typing import Dict, List, TypeVar
 
 K = TypeVar('K')
 V = TypeVar('V')
 
 
-class MultiDict(Dict[K, Set[V]]):
+class MultiDict(Dict[K, List[V]]):
 
     def add(self, key: K) -> None:
         if key in self:
             raise ValueError('Key \'' + key + '\' is already in the MultiDict')
-        self[key] = set()
+        self[key] = []
 
     def add(self, key: K, value: V) -> None:
         if key in self:
-            values: Set[V] = self.get(key)
-            values.add(value)
+            values: List[V] = self.get(key)
+            if value not in values:
+                values.append(value)
         else:
-            values: Set[V] = set()
-            values.add(value)
+            values: List[V] = []
+            values.append(value)
             self[key] = values

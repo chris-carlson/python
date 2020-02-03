@@ -9,10 +9,14 @@ class Regex:
         self._rep = re.compile(regex, flags)
 
     def __str__(self) -> str:
-        return self._rep
+        return self._rep.pattern
 
     def __repr__(self) -> str:
         return self.__str__()
+
+    @property
+    def pattern(self) -> str:
+        return self._rep.pattern
 
     def matches(self, string: str) -> bool:
         matches: List[str] = self.find_matches(string)

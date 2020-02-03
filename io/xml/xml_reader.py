@@ -16,7 +16,8 @@ class XmlReader:
     @staticmethod
     def _convert_element(native_element: Element) -> XmlElement:
         tag_name: str = XmlReader._get_tag_name(native_element)
-        wrapper_element: XmlElement = XmlElement(tag_name, native_element.attrib)
+        attributes: Dict[str, str] = XmlReader._get_attributes(native_element)
+        wrapper_element: XmlElement = XmlElement(tag_name, attributes)
         if len(list(native_element)) == 0:
             wrapper_element.text = native_element.text
         for child in list(native_element):
@@ -34,6 +35,10 @@ class XmlReader:
                     else:
                         return abbreviation + ':' + tag.substring_after('}')
         return tag
+
+    @staticmethod
+    def _get_attributes(native_element: Element) -> Dict[str, str]:
+        return {name: value for name, value in native_element.attrib.items()}
 
     def __init__(self, file_name: str) -> None:
         self._file_name: str = file_name

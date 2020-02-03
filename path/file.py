@@ -9,6 +9,12 @@ class File:
     def __init__(self, path: str) -> None:
         self._rep: Path = Path(path)
 
+    def __eq__(self, other: 'File') -> bool:
+        return self.path == other.path
+
+    def __hash__(self) -> int:
+        return hash(self.path)
+
     def __str__(self) -> str:
         return self.path
 

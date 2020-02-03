@@ -9,6 +9,9 @@ class Row(List[E]):
     def __init__(self, rep: List[object]) -> None:
         self._rep: List[object] = rep
 
+    def __eq__(self, other: 'Row') -> bool:
+        return self._rep == other._rep
+
     def __str__(self) -> str:
         return str(self._rep)
 
@@ -27,7 +30,7 @@ class Row(List[E]):
 
     def get_cell(self, letter: str) -> object:
         index: int = LetterConverter.convert_letter(letter)
-        return self._rep[index]
+        return self._rep[index].strip()
 
     def set_cell(self, letter: str, value: object) -> object:
         index: int = LetterConverter.convert_letter(letter)

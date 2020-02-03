@@ -33,6 +33,10 @@ class Worksheet:
     def rows(self) -> List[Row[object]]:
         return self._rows
 
+    def get_columns(self) -> List[object]:
+        longest_row: int = max([len(row) for row in self._rows])
+        return [self.get_column_by_index(index) for index in range(0, longest_row)]
+
     def get_column_by_index(self, index: int) -> List[object]:
         return [row[index] for row in self._rows]
 

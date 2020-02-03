@@ -71,6 +71,20 @@ class String(str):
         index: int = self._rep.rfind(substring)
         return String(self._rep[index + len(substring):])
 
+    def substring_after_occurrence(self, text: str, occurrence: int) -> 'String':
+        indexes: List[int] = self.get_indexes(text)
+        index: int = indexes[occurrence - 1] if occurrence >= 0 else indexes[occurrence]
+        return String(self._rep[index + 1:])
+
+    def get_indexes(self, char: str) -> List[int]:
+        if len(char) != 1:
+            raise ValueError('The string for indexes must be a character')
+        indexes: List[int] = []
+        for index in range(0, len(self._rep)):
+            if self._rep[index] == char:
+                indexes.append(index)
+        return indexes
+
     def is_capitalized(self) -> bool:
         return self._rep[0] == self._rep[0].upper()
 
@@ -106,7 +120,7 @@ class String(str):
         index: int = self._rep.find(char) + 1
         return self.insert_text(index, text)
 
-    def replace(self, regex: Regex, text: str) -> 'String':
+    def replace_completely(self, regex: Regex, text: str) -> 'String':
         string: str = self._rep
         while regex.matches(string):
             match_index: Tuple[str, int] = regex.find_match_index(string)
