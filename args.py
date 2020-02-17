@@ -2,11 +2,24 @@ import sys
 from typing import List, Dict
 
 from cac.color import Color
+from cac.regex import Regex
 
 class Args:
 
     @staticmethod
-    def print_help(flag: str, arg: str, description: str = '') -> None:
+    def print_command_help(command: str, arguments: List[str]) -> None:
+        command = Color.highlight_text(command, Color.FORE['Magenta'], Color.STYLE['Bright'])
+        arguments = [Color.highlight_text(command, Color.FORE['Green'], Color.STYLE['Bright']) for argument in arguments]
+        print(command + ' ' + ' '.join(arguments))
+
+    @staticmethod
+    def print_argument_help(argument: str, values: List[str]) -> None:
+        argument = Color.highlight_text(command, Color.FORE['Magenta'], Color.STYLE['Bright'])
+        values = [Color.highlight_text(command, Color.FORE['Green'], Color.STYLE['Bright']) for argument in arguments]
+        print(argument + ': ' + ', '.join(values))
+
+    @staticmethod
+    def print_flag_help(flag: str, arg: str, description: str = '') -> None:
         flag = Color.highlight_text('-' + flag, Color.FORE['Magenta'], Color.STYLE['Bright'])
         arg = ' ' + Color.highlight_text(arg, Color.FORE['Green'], Color.STYLE['Bright']) if len(arg) > 0 else ''
         description = ': ' + description if len(description) > 0 else ''
@@ -42,9 +55,16 @@ class Args:
     def get_args(self) -> List[str]:
         return self._args
 
-    def get_arg(self, num) -> str:
+    def get_arg(self, num: str, values: List[str] = None, regex: Regex = None) -> str:
         assert num >= 1
-        return self._args[num - 1]
+        arg: str = self._args[num - 1]
+        if values is not None:
+            if arg not in values:
+                raise ValueError('Argument \'' + arg + '\' must be one of ' + str(values))
+        if regex is not None:
+            if not regex.matches(arg):
+                raise ValueError('Argument \'' + arg + '\' must match regex ' + str(regex))
+        return arg
 
     def has_flag(self, flag) -> bool:
         return flag in self._flags

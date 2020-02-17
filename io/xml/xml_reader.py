@@ -1,3 +1,5 @@
+from typing import Dict
+
 from lxml import etree
 from lxml.etree import Element
 from lxml.etree import ElementTree
