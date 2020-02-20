@@ -7,9 +7,10 @@ from cac.finder import Finder
 
 class XmlElement:
 
-    def __init__(self, name: str, attributes: Dict[str, str] = {}) -> None:
+    def __init__(self, name: str, attributes: Dict[str, str] = {}, parent: 'XmlElement' = None) -> None:
         self._name: str = name
         self._attributes: Dict[str, str] = attributes
+        self._parent: type = parent
         self._text: str = ''
         self._children: List[XmlElement] = []
 
@@ -24,12 +25,16 @@ class XmlElement:
         return self._name
 
     @property
-    def text(self) -> str:
-        return self._text
-
-    @property
     def attributes(self) -> Dict[str, str]:
         return self._attributes
+
+    @property
+    def parent(self) -> 'XmlElement':
+        return self._parent
+
+    @property
+    def text(self) -> str:
+        return self._text
 
     @property
     def children(self) -> List['XmlElement']:
@@ -61,7 +66,7 @@ class XmlElement:
         return [child for child in self._children if child.text == text]
 
     def get_all_by_attribute(self, name: str, value: str) -> List['XmlElement']:
-        return [child for child in self._children if child.attributes[name] == value]
+        return [child for child in self._children if 'uuid' in child.attributes and child.attributes[name] == value]
 
     def find_one_by_name(self, name: str) -> 'XmlElement':
         return Finder.find_only(self.find_all_by_name(name))

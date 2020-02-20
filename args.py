@@ -9,13 +9,13 @@ class Args:
     @staticmethod
     def print_command_help(command: str, arguments: List[str]) -> None:
         command = Color.highlight_text(command, Color.FORE['Magenta'], Color.STYLE['Bright'])
-        arguments = [Color.highlight_text(command, Color.FORE['Green'], Color.STYLE['Bright']) for argument in arguments]
+        arguments = [Color.highlight_text(argument, Color.FORE['Green'], Color.STYLE['Bright']) for argument in arguments]
         print(command + ' ' + ' '.join(arguments))
 
     @staticmethod
     def print_argument_help(argument: str, values: List[str]) -> None:
-        argument = Color.highlight_text(command, Color.FORE['Magenta'], Color.STYLE['Bright'])
-        values = [Color.highlight_text(command, Color.FORE['Green'], Color.STYLE['Bright']) for argument in arguments]
+        argument = Color.highlight_text(argument, Color.FORE['Magenta'], Color.STYLE['Bright'])
+        values = [Color.highlight_text(value, Color.FORE['Green'], Color.STYLE['Bright']) for argument in arguments]
         print(argument + ': ' + ', '.join(values))
 
     @staticmethod
