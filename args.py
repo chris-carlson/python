@@ -15,17 +15,19 @@ class Args:
     @staticmethod
     def print_argument_help(argument: str, values: List[str]) -> None:
         argument = Color.highlight_text(argument, Color.FORE['Magenta'], Color.STYLE['Bright'])
-        values = [Color.highlight_text(value, Color.FORE['Green'], Color.STYLE['Bright']) for argument in arguments]
+        values = [Color.highlight_text(value, Color.FORE['Green'], Color.STYLE['Bright']) for value in values]
         print(argument + ': ' + ', '.join(values))
 
     @staticmethod
-    def print_flag_help(flag: str, arg: str, description: str = '') -> None:
+    def print_flag_help(flag: str, arg: str, description: str = '', values: List[str] = []) -> None:
         flag = Color.highlight_text('-' + flag, Color.FORE['Magenta'], Color.STYLE['Bright'])
         arg = ' ' + Color.highlight_text(arg, Color.FORE['Green'], Color.STYLE['Bright']) if len(arg) > 0 else ''
+        values = [Color.highlight_text(value, Color.FORE['Green'], Color.STYLE['Bright']) for value in values]
+        value_string: str = ' [' + ', '.join(values) + ']' if len(values) > 0 else ''
         description = ': ' + description if len(description) > 0 else ''
-        print(flag + arg + description)
+        print(flag + arg + value_string + description)
 
-    def __init__(self, arg_flags: List[str] = None) -> None:
+    def __init__(self, valid_flags: List[str] = None, arg_flags: List[str] = None) -> None:
         self._args: List[str] = []
         self._flags: Dict[str, str] = {}
         args: List[str] = sys.argv[1:][:]
@@ -42,6 +44,10 @@ class Args:
                 self._flags[flag] = value
             else:
                 self._args.append(arg)
+        if valid_flags is not None:
+            for flag in self._flags:
+                if flag not in valid_flags:
+                    raise ValueError('Invalid flag entered: \'' + flag + '\'')
 
     def __len__(self) -> int:
         return len(self._args)
@@ -66,8 +72,18 @@ class Args:
                 raise ValueError('Argument \'' + arg + '\' must match regex ' + str(regex))
         return arg
 
-    def has_flag(self, flag) -> bool:
+    def has_flag(self, flag: str) -> bool:
         return flag in self._flags
 
-    def get_flag(self, flag) -> str:
-        return self._flags[flag]
+    def get_flags(self) -> Dict[str, str]:
+        return self._flags
+
+    def get_flag(self, flag: str, values: List[str] = None) -> str:
+        flag: str = self._flags[flag]
+        if values is not None:
+            if flag not in values:
+                raise ValueError('Value for flag \'' + flag + '\' must be one of ' + str(values))
+        return flag
+
+    def should_print_help(self, expected_arguments: int) -> bool:
+        return 'help' in self._flags or len(self._args) != expected_arguments

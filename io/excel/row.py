@@ -30,7 +30,10 @@ class Row(List[E]):
 
     def get_cell(self, letter: str) -> object:
         index: int = LetterConverter.convert_letter(letter)
-        return self._rep[index].strip()
+        cell: object = self._rep[index].strip()
+        if type(cell) == str:
+            cell = cell.strip()
+        return cell
 
     def set_cell(self, letter: str, value: object) -> object:
         index: int = LetterConverter.convert_letter(letter)

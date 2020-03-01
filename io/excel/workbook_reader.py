@@ -28,3 +28,9 @@ class WorkbookReader:
             worksheets.append(Worksheet(openpyxl_worksheet.title, rows))
         openpyxl_workbook.close()
         return worksheets
+
+    def read_worksheet(self) -> Worksheet:
+        worksheets: List[Worksheet] = self.read_worksheets()
+        if len(worksheets) > 1:
+            raise ValueError('Found \'' + str(len(worksheets)) + '\' worksheets')
+        return worksheets[0]
