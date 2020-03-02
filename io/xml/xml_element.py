@@ -66,7 +66,7 @@ class XmlElement:
         return [child for child in self._children if child.text == text]
 
     def get_all_by_attribute(self, name: str, value: str = None) -> List['XmlElement']:
-        return [child for child in self._children if name in child.attributes and (value == None or child.attributes[name] == value])
+        return [child for child in self._children if name in child.attributes and (value == None or child.attributes[name] == value)]
 
     def find_one_by_name(self, name: str) -> 'XmlElement':
         return Finder.find_only(self.find_all_by_name(name))
