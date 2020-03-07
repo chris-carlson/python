@@ -7,19 +7,22 @@ from cac.regex import Regex
 class Args:
 
     @staticmethod
-    def print_command_help(command: str, arguments: List[str]) -> None:
+    def print_command_help(command: str, arguments: List[str] = []) -> None:
         command = Color.highlight_text(command, Color.FORE['Magenta'], Color.STYLE['Bright'])
         arguments = [Color.highlight_text(argument, Color.FORE['Green'], Color.STYLE['Bright']) for argument in arguments]
-        print(command + ' ' + ' '.join(arguments))
+        argument_string: str = ' [' + ', '.join(arguments) + ']' if len(arguments) > 0 else ''
+        print(command + argument_string)
 
     @staticmethod
-    def print_argument_help(argument: str, values: List[str]) -> None:
+    def print_argument_help(argument: str, values: List[str], description: str = '') -> None:
         argument = Color.highlight_text(argument, Color.FORE['Magenta'], Color.STYLE['Bright'])
         values = [Color.highlight_text(value, Color.FORE['Green'], Color.STYLE['Bright']) for value in values]
-        print(argument + ': ' + ', '.join(values))
+        value_string: str = ': [' + ', '.join(values) + ']' if len(values) > 0 else ''
+        description = ' - ' + description if len(description) > 0 else ''
+        print(argument + value_string + description)
 
     @staticmethod
-    def print_flag_help(flag: str, arg: str, description: str = '', values: List[str] = []) -> None:
+    def print_flag_help(flag: str, arg: str, values: List[str] = [], description: str = '') -> None:
         flag = Color.highlight_text('-' + flag, Color.FORE['Magenta'], Color.STYLE['Bright'])
         arg = ' ' + Color.highlight_text(arg, Color.FORE['Green'], Color.STYLE['Bright']) if len(arg) > 0 else ''
         values = [Color.highlight_text(value, Color.FORE['Green'], Color.STYLE['Bright']) for value in values]

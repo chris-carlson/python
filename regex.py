@@ -4,7 +4,7 @@ from typing import List, Tuple
 
 class Regex:
 
-    def __init__(self, regex: str, case_sensitive=True) -> None:
+    def __init__(self, regex: str, case_sensitive = True) -> None:
         flags: int = 0 if case_sensitive else re.I
         self._rep = re.compile(regex, flags)
 
