@@ -1,4 +1,5 @@
 import sys
+
 from typing import List, Dict
 
 from cac.color import Color
@@ -14,11 +15,11 @@ class Args:
         print(command + argument_string)
 
     @staticmethod
-    def print_argument_help(argument: str, values: List[str], description: str = '') -> None:
+    def print_argument_help(argument: str, values: List[str] = [], description: str = '') -> None:
         argument = Color.highlight_text(argument, Color.FORE['Magenta'], Color.STYLE['Bright'])
         values = [Color.highlight_text(value, Color.FORE['Green'], Color.STYLE['Bright']) for value in values]
-        value_string: str = ': [' + ', '.join(values) + ']' if len(values) > 0 else ''
-        description = ' - ' + description if len(description) > 0 else ''
+        value_string: str = ' [' + ', '.join(values) + ']' if len(values) > 0 else ''
+        description = ': ' + description if len(description) > 0 else ''
         print(argument + value_string + description)
 
     @staticmethod
@@ -29,6 +30,10 @@ class Args:
         value_string: str = ' [' + ', '.join(values) + ']' if len(values) > 0 else ''
         description = ': ' + description if len(description) > 0 else ''
         print(flag + arg + value_string + description)
+
+    @staticmethod
+    def exit() -> None:
+        sys.exit()
 
     def __init__(self, valid_flags: List[str] = None, arg_flags: List[str] = None) -> None:
         self._args: List[str] = []
