@@ -23,7 +23,7 @@ class Args:
         print(argument + value_string + description)
 
     @staticmethod
-    def print_flag_help(flag: str, arg: str, values: List[str] = [], description: str = '') -> None:
+    def print_flag_help(flag: str, arg: str = '', values: List[str] = [], description: str = '') -> None:
         flag = Color.highlight_text('-' + flag, Color.FORE['Magenta'], Color.STYLE['Bright'])
         arg = ' ' + Color.highlight_text(arg, Color.FORE['Green'], Color.STYLE['Bright']) if len(arg) > 0 else ''
         values = [Color.highlight_text(value, Color.FORE['Green'], Color.STYLE['Bright']) for value in values]

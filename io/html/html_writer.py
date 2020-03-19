@@ -23,3 +23,6 @@ class HtmlWriter:
         if len(wrapper_element.text) > 0:
             native_element.contents = [NavigableString(wrapper_element.text)]
         return native_element
+
+    def close(self) -> None:
+        self._file.close()

@@ -7,11 +7,11 @@ from cac.finder import Finder
 
 class XmlElement:
 
-    def __init__(self, name: str, attributes: Dict[str, str] = {}, parent: 'XmlElement' = None) -> None:
+    def __init__(self, name: str, attributes: Dict[str, str] = {}, parent: 'XmlElement' = None, text: str = '') -> None:
         self._name: str = name
         self._attributes: Dict[str, str] = attributes
         self._parent: type = parent
-        self._text: str = ''
+        self._text: str = text
         self._children: List[XmlElement] = []
 
     def __str__(self) -> str:
