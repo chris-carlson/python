@@ -11,7 +11,7 @@ class Args:
     def print_command_help(command: str, arguments: List[str] = []) -> None:
         command = Color.highlight_text(command, Color.FORE['Magenta'], Color.STYLE['Bright'])
         arguments = [Color.highlight_text(argument, Color.FORE['Green'], Color.STYLE['Bright']) for argument in arguments]
-        argument_string: str = ' [' + ', '.join(arguments) + ']' if len(arguments) > 0 else ''
+        argument_string: str = ' ' + ', '.join(arguments) if len(arguments) > 0 else ''
         print(command + argument_string)
 
     @staticmethod
@@ -54,7 +54,7 @@ class Args:
                 self._args.append(arg)
         if valid_flags is not None:
             for flag in self._flags:
-                if flag not in valid_flags:
+                if flag not in valid_flags and flag != 'help':
                     raise ValueError('Invalid flag entered: \'' + flag + '\'')
 
     def __len__(self) -> int:
@@ -66,8 +66,13 @@ class Args:
     def __repr__(self) -> str:
         return self.__str__()
 
-    def get_args(self) -> List[str]:
+    @property
+    def args(self) -> List[str]:
         return self._args
+
+    @property
+    def flags(self) -> Dict[str, str]:
+        return self._flags
 
     def get_arg(self, num: str, values: List[str] = None, regex: Regex = None) -> str:
         assert num >= 1
@@ -83,15 +88,9 @@ class Args:
     def has_flag(self, flag: str) -> bool:
         return flag in self._flags
 
-    def get_flags(self) -> Dict[str, str]:
-        return self._flags
-
     def get_flag(self, flag: str, values: List[str] = None) -> str:
         flag: str = self._flags[flag]
         if values is not None:
             if flag not in values:
                 raise ValueError('Value for flag \'' + flag + '\' must be one of ' + str(values))
         return flag
-
-    def should_print_help(self, expected_arguments: int) -> bool:
-        return 'help' in self._flags or len(self._args) != expected_arguments

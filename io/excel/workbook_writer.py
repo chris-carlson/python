@@ -1,6 +1,7 @@
 from typing import List
 
 from openpyxl import Workbook as OpenpyxlWorkbook, load_workbook
+from openpyxl.worksheet.worksheet import Worksheet as OpenpyxlWorksheet
 
 from cac.io.excel.worksheet import Worksheet
 

@@ -37,6 +37,12 @@ class XmlElement:
         return self._text
 
     @property
+    def path(self) -> str:
+        if self._parent is None:
+            return self._name
+        return self._parent.path + '/' + self._name
+
+    @property
     def children(self) -> List['XmlElement']:
         return self._children
 

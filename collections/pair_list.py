@@ -7,7 +7,7 @@ V = TypeVar('V')
 
 class PairList(List[Pair[K, V]]):
 
-    def __init__(self, elements: List[Pair[K, V]]) -> None:
+    def __init__(self, elements: List[Pair[K, V]] = []) -> None:
         for element in elements:
             self.append(element)
 
