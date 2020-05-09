@@ -29,8 +29,14 @@ class WorkbookReader:
         openpyxl_workbook.close()
         return worksheets
 
-    def read_worksheet(self) -> Worksheet:
+    def read_worksheet(self, title: str = None) -> Worksheet:
         worksheets: List[Worksheet] = self.read_worksheets()
-        if len(worksheets) > 1:
-            raise ValueError('Found \'' + str(len(worksheets)) + '\' worksheets')
-        return worksheets[0]
+        if title is None:
+            if len(worksheets) > 1:
+                raise ValueError('Found \'' + str(len(worksheets)) + '\' worksheets')
+            return worksheets[0]
+        else:
+            matching_worksheets: List[Worksheet] = [worksheet for worksheet in worksheets if worksheet.title == title]
+            if len(matching_worksheets) == 0:
+                raise ValueError('Could not find any worksheets with title \'' + title + '\'')
+            return matching_worksheets[0]
