@@ -8,10 +8,12 @@ class LetterConverter:
     @staticmethod
     def convert_letter(letter: str) -> int:
         column_index: int = 0
-        for letter_index in range(0, len(letter)):
-            character: str = letter[letter_index].upper()
-            column_index += (ord(character) - 65) + (letter_index * 26)
-        return column_index
+        letter = letter[::-1]
+        for position_index in range(0, len(letter)):
+            character: str = letter[position_index].upper()
+            letter_index: int = LetterConverter.LETTERS.index(character) + 1
+            column_index += letter_index * (26 ** position_index)
+        return column_index - 1
 
     @staticmethod
     def convert_number(number: int) -> str:
