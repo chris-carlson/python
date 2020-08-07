@@ -1,5 +1,6 @@
 from collections import Iterable
 from io import TextIOWrapper
+from unidecode import unidecode
 
 
 class TextWriter:
@@ -10,10 +11,10 @@ class TextWriter:
         self._tab_size: int = tab_size
 
     def write(self, string: str, num_tabs: int = 0) -> None:
-        self._file.write(self._get_tab_spaces(num_tabs) + string)
+        self._file.write(self._get_tab_spaces(num_tabs) + unidecode(string))
 
     def write_line(self, string: str = '', num_tabs: int = 0) -> None:
-        self._file.write(self._get_tab_spaces(num_tabs) + string + '\n')
+        self._file.write(self._get_tab_spaces(num_tabs) + unidecode(string) + '\n')
 
     def write_char_line(self, char: str, num: int) -> None:
         for _ in range(0, num):

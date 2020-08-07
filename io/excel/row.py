@@ -1,4 +1,4 @@
-from typing import List, TypeVar
+from typing import Dict, List, TypeVar
 
 from cac.io.excel.letter_converter import LetterConverter
 
@@ -6,8 +6,10 @@ E = TypeVar('E')
 
 class Row(List[E]):
 
-    def __init__(self, rep: List[object]) -> None:
+    def __init__(self, rep: List[object], bold: bool = False, number_formats: Dict[str, str] = {}) -> None:
         self._rep: List[object] = rep
+        self._bold: bool = bold
+        self._number_formats: Dict[str, str] = number_formats
 
     def __eq__(self, other: 'Row') -> bool:
         return self._rep == other._rep
@@ -27,6 +29,14 @@ class Row(List[E]):
 
     def __getitem__(self, index: int) -> object:
         return self._rep[index]
+
+    @property
+    def bold(self) -> bool:
+        return self._bold
+
+    @property
+    def number_formats(self) -> Dict[str, str]:
+        return self._number_formats
 
     def get_cells(self, starting_letter: str, ending_letter: str) -> List[object]:
         cells: List[object] = []
@@ -49,3 +59,6 @@ class Row(List[E]):
         if type(cell) == str:
             cell = cell.strip()
         return cell
+
+    def extend(self, rep: List[object]) -> None:
+        self._rep.extend(rep)

@@ -3,6 +3,7 @@ from typing import List
 from cac.selenium.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.webelement import WebElement
+from selenium.webdriver.support.ui import Select
 
 
 class Element:
@@ -58,6 +59,13 @@ class Element:
     def enter_text(self, text: str) -> None:
         self._rep.send_keys(text)
 
+    def select(self, value: str, text=False) -> None:
+        dropdown: Select = Select(self._rep)
+        if text:
+            dropdown.select_by_visible_text(value)
+        else:
+            dropdown.select_by_value(value)
+
     def get_attribute(self, attribute: str) -> str:
         return self._rep.get_attribute(attribute)
 
@@ -66,6 +74,11 @@ class Element:
 
     def get_classes(self) -> List[str]:
         return [css_class for css_class in self._rep.get_attribute('class').split(' ') if len(css_class) > 0]
+
+    def get_options(self) -> List[str]:
+        dropdown: Select = Select(self._rep)
+        options: List[Element] = [Element(option) for option in dropdown.options]
+        return [option.get_attribute('value') for option in options]
 
     @staticmethod
     def _get_elements(results: List[WebElement]):

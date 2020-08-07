@@ -1,5 +1,6 @@
 from io import TextIOWrapper
 from typing import List, Set
+from unidecode import unidecode
 
 
 class TextReader:
@@ -8,12 +9,7 @@ class TextReader:
         self._file: TextIOWrapper = open(file_name, mode='r')
 
     def read_raw_lines(self) -> List[str]:
-        lines: List[str] = []
-        try:
-            lines = [line for line in self._file]
-        except UnicodeDecodeError:
-            pass
-        return lines
+        return [unidecode(line) for line in self._file]
 
     def read_lines(self) -> List[str]:
         return [line.rstrip() for line in self.read_raw_lines()]
