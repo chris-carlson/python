@@ -1,6 +1,7 @@
 import re
-from typing import List, Tuple
 
+from re import Match
+from typing import List, Tuple
 
 class Regex:
 
@@ -25,13 +26,13 @@ class Regex:
     def find_match(self, string: str) -> str:
         matches: List[str] = self.find_matches(string)
         if len(matches) == 0:
-            raise ValueError('Found no matches for str \'' + string + '\'')
+            raise ValueError('Found no matches for string \'' + string + '\'')
         return matches[0]
 
     def find_match_index(self, string: str) -> Tuple[str, int]:
         match_indexes: List[Tuple[str, int]] = self.find_match_indexes(string)
         if len(match_indexes) == 0:
-            raise ValueError('Found no matches for str \'' + string + '\'')
+            raise ValueError('Found no matches for string \'' + string + '\'')
         return match_indexes[0]
 
     def find_matches(self, string: str) -> List[str]:
@@ -39,3 +40,11 @@ class Regex:
 
     def find_match_indexes(self, string: str) -> List[Tuple[str, int]]:
         return [(match.group(), match.start()) for match in self._rep.finditer(string)]
+
+    def count_groups(self, string: str) -> int:
+        match: Match = self._rep.match(string)
+        return len(match.groups())
+
+    def find_group(self, string: str, index: int) -> str:
+        match: Match = self._rep.match(string)
+        return match.group(index)

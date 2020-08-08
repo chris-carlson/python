@@ -1,8 +1,8 @@
-import os
-import shutil
+import os, shutil, time
 
 from pathlib import Path
 
+from cac.date import Date
 
 class File:
 
@@ -56,3 +56,8 @@ class File:
 
     def copy(self, path: str) -> None:
         shutil.copyfile(self.path, path)
+
+    def modified_date(self) -> Date:
+        epoch_seconds: float = os.path.getmtime(self.path)
+        modified_time: str = time.ctime(epoch_seconds)
+        return Date.parse_time(modified_time)

@@ -1,7 +1,10 @@
+from typing import Dict
+
 from datetime import date
 from enum import IntEnum
 from typing import List
 
+from cac.consumer import Consumer
 from cac.math import Math
 from cac.regex import Regex
 from cac.string import String
@@ -14,6 +17,7 @@ DAYS_IN_WEEK: int = 7
 LEAP_MONTH: int = 2
 LEAP_YEAR_FREQUENCY: int = 4
 
+MONTHS: Dict[str, int] = {'Jan': 1, 'Feb': 2, 'Mar': 3, 'Apr': 4, 'May': 5, 'Jun': 6, 'Jul': 7, 'Aug': 8, 'Sep': 9, 'Oct': 10, 'Nov': 11, 'Dec': 12}
 
 class Date:
 
@@ -28,6 +32,18 @@ class Date:
     def today() -> 'Date':
         today: date = date.today()
         return Date(today.year, today.month, today.day)
+
+    @staticmethod
+    def parse_time(time_rep: str) -> 'Date':
+        consumer: Consumer = Consumer(time_rep)
+        consumer.consume_through(' ')
+        month: int = MONTHS[consumer.consume_to(' ')]
+        consumer.consume_char(' ')
+        day_of_month: int = int(consumer.consume_to(' '))
+        consumer.consume_char(' ')
+        consumer.consume_through(' ')
+        year: int = int(consumer.consume_to_end())
+        return Date(year, month, day_of_month)
 
     def __init__(self, year: int, month: int, day_of_month: int) -> None:
         self._year: int = year

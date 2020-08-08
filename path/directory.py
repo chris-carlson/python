@@ -114,7 +114,7 @@ class Directory:
         os.rename(self.path, new_path)
 
     def delete(self) -> None:
-        os.remove(self.path)
+        shutil.rmtree(self.path)
 
     def copy(self, path: str) -> None:
         shutil.copytree(self.path, path)
