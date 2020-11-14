@@ -4,6 +4,7 @@ from cac.io.excel.letter_converter import LetterConverter
 
 E = TypeVar('E')
 
+
 class Row(List[E]):
 
     def __init__(self, rep: List[object], bold: bool = False, number_formats: Dict[str, str] = {}) -> None:

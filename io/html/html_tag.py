@@ -2,9 +2,10 @@ from typing import Dict, List
 
 from cac.finder import Finder
 
+
 class HtmlTag:
 
-    def __init__(self, name: str, attributes: Dict[str, str]= {}, text: str = '') -> None:
+    def __init__(self, name: str, attributes: Dict[str, str] = {}, text: str = '') -> None:
         self._name: str = name
         self._attributes: Dict[str, str] = attributes
         self._text: str = text
@@ -45,7 +46,8 @@ class HtmlTag:
         return []
 
     def get_by_id(self, id_name: str) -> 'HtmlTag':
-        return Finder.find_only([child for child in self._children if 'id' in child.attributes and child.attributes['id'] == id_name])
+        return Finder.find_only(
+            [child for child in self._children if 'id' in child.attributes and child.attributes['id'] == id_name])
 
     def get_one_by_name(self, name: str) -> 'HtmlTag':
         return Finder.find_only(self.get_all_by_name(name))
@@ -69,7 +71,8 @@ class HtmlTag:
         return Finder.find_only(self._find_all_by_id(id_name))
 
     def _find_all_by_id(self, id_name: str) -> List['HtmlTag']:
-        matching_children: List[HtmlTag] = [child for child in self._children if 'id' in child.attributes and child.attributes['id'] == id_name]
+        matching_children: List[HtmlTag] = [child for child in self._children if
+            'id' in child.attributes and child.attributes['id'] == id_name]
         for child in self._children:
             matching_children.extend(child._find_all_by_id(id_name))
         return matching_children

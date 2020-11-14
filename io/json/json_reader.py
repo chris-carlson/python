@@ -1,5 +1,4 @@
 import json
-
 from typing import Dict, List
 
 from cac.io.text.text_reader import TextReader

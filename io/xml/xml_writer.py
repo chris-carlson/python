@@ -4,6 +4,7 @@ from xml.etree.ElementTree import Element
 from cac.io.text.text_writer import TextWriter
 from cac.io.xml.xml_element import XmlElement
 
+
 class XmlWriter:
 
     def __init__(self, file_name: str) -> None:

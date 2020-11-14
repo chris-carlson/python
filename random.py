@@ -1,6 +1,7 @@
+from typing import List
+
 import random
 
-from typing import List
 
 class Random:
 

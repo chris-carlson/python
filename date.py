@@ -1,8 +1,6 @@
-from typing import Dict
-
 from datetime import date
 from enum import IntEnum
-from typing import List
+from typing import Dict, List
 
 from cac.consumer import Consumer
 from cac.math import Math
@@ -17,7 +15,9 @@ DAYS_IN_WEEK: int = 7
 LEAP_MONTH: int = 2
 LEAP_YEAR_FREQUENCY: int = 4
 
-MONTHS: Dict[str, int] = {'Jan': 1, 'Feb': 2, 'Mar': 3, 'Apr': 4, 'May': 5, 'Jun': 6, 'Jul': 7, 'Aug': 8, 'Sep': 9, 'Oct': 10, 'Nov': 11, 'Dec': 12}
+MONTHS: Dict[str, int] = {'Jan': 1, 'Feb': 2, 'Mar': 3, 'Apr': 4, 'May': 5, 'Jun': 6, 'Jul': 7, 'Aug': 8, 'Sep': 9,
+    'Oct': 10, 'Nov': 11, 'Dec': 12}
+
 
 class Date:
 
@@ -58,7 +58,8 @@ class Date:
         return self._year == other.year and self._month == other.month and self._day_of_month == other.day_of_month
 
     def __str__(self) -> str:
-        return str(self._year) + '-' + String.pad_number(self._month, 2) + '-' + String.pad_number(self._day_of_month, 2)
+        return str(self._year) + '-' + String.pad_number(self._month, 2) + '-' + String.pad_number(self._day_of_month,
+            2)
 
     def __repr__(self) -> str:
         return self.__str__()

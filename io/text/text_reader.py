@@ -1,5 +1,6 @@
 from io import TextIOWrapper
-from typing import List, Set
+from typing import List
+
 from unidecode import unidecode
 
 

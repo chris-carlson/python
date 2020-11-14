@@ -3,6 +3,7 @@ from typing import List
 from cac.io.excel.letter_converter import LetterConverter
 from cac.io.excel.row import Row
 
+
 class Worksheet:
 
     def __init__(self, title: str, rows: List[Row[object]]) -> None:

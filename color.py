@@ -1,9 +1,6 @@
 from typing import Dict, List, Tuple
 
-from colorama import Back
-from colorama import Fore
-from colorama import Style
-from colorama import init
+from colorama import Back, Fore, Style, init
 
 
 class Color:

@@ -1,11 +1,9 @@
 import os
 import shutil
-
 from pathlib import Path
 from typing import List
 
 from cac.finder import Finder
-from cac.ignore import Ignore
 from cac.path.file import File
 from cac.regex import Regex
 
@@ -45,7 +43,7 @@ class Directory:
 
     @property
     def parent_path(self) -> str:
-        return self._rep.parts[0] + '\\'.join(self._rep.parts[1 : len(self._rep.parts) - 1])
+        return self._rep.parts[0] + '\\'.join(self._rep.parts[1: len(self._rep.parts) - 1])
 
     def exists(self) -> bool:
         return self._rep.exists()
@@ -100,7 +98,8 @@ class Directory:
         return directories
 
     def find_directory(self, name: str, regex: Regex = None, ignore: List[str] = []) -> 'Directory':
-        return Finder.find_only([directory for directory in self.find_directories(regex, ignore) if directory.name == name])
+        return Finder.find_only(
+            [directory for directory in self.find_directories(regex, ignore) if directory.name == name])
 
     def find_directories(self, regex: Regex = None, ignore: List[str] = []) -> List['Directory']:
         directories: List[File] = self.get_directories(regex)

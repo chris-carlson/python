@@ -2,8 +2,8 @@ from typing import Dict
 
 from bs4 import BeautifulSoup
 from bs4.element import Tag
-
 from cac.io.html.html_tag import HtmlTag
+
 
 class HtmlReader:
 

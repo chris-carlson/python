@@ -1,5 +1,5 @@
-from collections import Iterable
 from io import TextIOWrapper
+
 from unidecode import unidecode
 
 

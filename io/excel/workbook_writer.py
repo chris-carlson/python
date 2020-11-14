@@ -29,7 +29,8 @@ class WorkbookWriter:
                     openpyxl_worksheet.cell(row=row_index + 1, column=column_index + 1).font = Font(bold=True)
                 letter: str = LetterConverter.convert_number(column_index)
                 if letter in row.number_formats:
-                    openpyxl_worksheet.cell(row=row_index + 1, column=column_index + 1).number_format = row.number_formats[letter]
+                    openpyxl_worksheet.cell(row=row_index + 1, column=column_index + 1).number_format = \
+                        row.number_formats[letter]
         self._openpyxl_workbook.save(self._file_name)
 
     def close(self) -> None:

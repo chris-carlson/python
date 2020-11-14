@@ -1,16 +1,17 @@
 import sys
-
-from typing import List, Dict
+from typing import Dict, List
 
 from cac.color import Color
 from cac.regex import Regex
+
 
 class Args:
 
     @staticmethod
     def print_command_help(command: str, arguments: List[str] = []) -> None:
         command = Color.highlight_text(command, Color.FORE['Magenta'], Color.STYLE['Bright'])
-        arguments = [Color.highlight_text(argument, Color.FORE['Green'], Color.STYLE['Bright']) for argument in arguments]
+        arguments = [Color.highlight_text(argument, Color.FORE['Green'], Color.STYLE['Bright']) for argument in
+            arguments]
         argument_string: str = ' ' + ', '.join(arguments) if len(arguments) > 0 else ''
         print(command + argument_string)
 
