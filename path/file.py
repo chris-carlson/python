@@ -1,8 +1,10 @@
-import os, shutil, time
-
+import os
+import shutil
+import time
 from pathlib import Path
 
 from cac.date import Date
+
 
 class File:
 
@@ -54,7 +56,9 @@ class File:
     def delete(self) -> None:
         os.remove(self.path)
 
-    def copy(self, path: str) -> None:
+    def copy(self, path: str, same_directory: bool = True) -> None:
+        if same_directory:
+            path = self.directory_path + '\\' + path
         shutil.copyfile(self.path, path)
 
     def modified_date(self) -> Date:
