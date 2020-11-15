@@ -15,4 +15,4 @@ class PairList(List[Pair[K, V]]):
                 self.append(element)
 
     def add(self, key: K, value: V) -> None:
-        self.append(Pair(key, value))
+        self.append(Pair((key, value)))
