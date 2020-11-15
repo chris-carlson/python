@@ -1,5 +1,4 @@
-from io import TextIOWrapper
-from typing import List
+from typing import List, TextIO
 
 from unidecode import unidecode
 
@@ -7,7 +6,7 @@ from unidecode import unidecode
 class TextReader:
 
     def __init__(self, file_name: str) -> None:
-        self._file: TextIOWrapper = open(file_name, mode='r')
+        self._file: TextIO = open(file_name, mode='r')
 
     def read_raw_lines(self) -> List[str]:
         return [unidecode(line) for line in self._file]

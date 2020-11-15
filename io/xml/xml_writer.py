@@ -1,4 +1,4 @@
-import xml.etree.ElementTree as ET
+import xml.etree.ElementTree as ElementTree
 from xml.etree.ElementTree import Element
 
 from cac.io.text.text_writer import TextWriter
@@ -11,7 +11,7 @@ class XmlWriter:
         self._file: TextWriter = TextWriter(file_name)
 
     def write(self, element: XmlElement) -> None:
-        self._file.write_line(ET.tostring(self._convert_element(element), 'unicode'))
+        self._file.write_line(ElementTree.tostring(self._convert_element(element), 'unicode'))
 
     def _convert_element(self, wrapper_element: XmlElement) -> Element:
         native_element: Element = Element(wrapper_element.name, wrapper_element.attributes)

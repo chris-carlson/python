@@ -1,15 +1,19 @@
-from typing import Tuple, TypeVar
+from typing import TypeVar
 
 K = TypeVar('K')
 V = TypeVar('V')
 
 
-class Pair(Tuple[K, V]):
+class Pair:
+
+    def __init__(self, key: K, value: V) -> None:
+        self._key: K = key
+        self._value: V = value
 
     @property
     def key(self) -> K:
-        return self[0]
+        return self._key
 
     @property
     def value(self) -> V:
-        return self[1]
+        return self._value

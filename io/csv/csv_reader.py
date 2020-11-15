@@ -1,17 +1,16 @@
-from csv import reader as Reader
-from io import TextIOWrapper
-from typing import List
+from csv import reader
+from typing import List, TextIO
 
 
 class CsvReader:
 
     def __init__(self, file_name: str) -> None:
-        self._file: TextIOWrapper = open(file_name, newline='')
+        self._file: TextIO = open(file_name, newline='')
 
     def read_rows(self) -> List[List[str]]:
         rows: List[List[str]] = []
-        reader: Reader = Reader(self._file, delimiter=',')
-        for row in reader:
+        csv_reader: reader = reader(self._file, delimiter=',')
+        for row in csv_reader:
             rows.append(row)
         return rows
 

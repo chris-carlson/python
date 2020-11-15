@@ -72,13 +72,13 @@ class Directory:
                     files.append(File(wrapper_path))
         return files
 
-    def find_file(self, name: str, regex: Regex = None, ignore: List[str] = []) -> File:
+    def find_file(self, name: str, regex: Regex = None, ignore: List[str] = None) -> File:
         return Finder.find_only([file_ for file_ in self.find_files(regex, ignore) if file_.name == name])
 
-    def find_files(self, regex: Regex = None, ignore: List[str] = []) -> List[File]:
+    def find_files(self, regex: Regex = None, ignore: List[str] = None) -> List[File]:
         files: List[File] = self.get_files(regex)
         for sub_directory in self.get_directories():
-            if sub_directory.name not in ignore:
+            if ignore is None or sub_directory.name not in ignore:
                 files.extend(sub_directory.find_files(regex))
         return files
 
@@ -89,7 +89,7 @@ class Directory:
         return Finder.find_only([directory for directory in self.get_directories() if directory.name == name])
 
     def get_directories(self, regex: Regex = None) -> List['Directory']:
-        directories: List[File] = []
+        directories: List[Directory] = []
         for native_path in self._rep.iterdir():
             if native_path.is_dir():
                 wrapper_path: str = Directory._get_path(native_path)
@@ -97,14 +97,14 @@ class Directory:
                     directories.append(Directory(wrapper_path))
         return directories
 
-    def find_directory(self, name: str, regex: Regex = None, ignore: List[str] = []) -> 'Directory':
+    def find_directory(self, name: str, regex: Regex = None, ignore: List[str] = None) -> 'Directory':
         return Finder.find_only(
-            [directory for directory in self.find_directories(regex, ignore) if directory.name == name])
+                [directory for directory in self.find_directories(regex, ignore) if directory.name == name])
 
-    def find_directories(self, regex: Regex = None, ignore: List[str] = []) -> List['Directory']:
-        directories: List[File] = self.get_directories(regex)
+    def find_directories(self, regex: Regex = None, ignore: List[str] = None) -> List['Directory']:
+        directories: List[Directory] = self.get_directories(regex)
         for sub_directory in self.get_directories():
-            if sub_directory.name not in ignore:
+            if ignore is None or sub_directory.name not in ignore:
                 directories.extend(sub_directory.find_directories(regex))
         return directories
 

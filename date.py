@@ -16,7 +16,7 @@ LEAP_MONTH: int = 2
 LEAP_YEAR_FREQUENCY: int = 4
 
 MONTHS: Dict[str, int] = {'Jan': 1, 'Feb': 2, 'Mar': 3, 'Apr': 4, 'May': 5, 'Jun': 6, 'Jul': 7, 'Aug': 8, 'Sep': 9,
-    'Oct': 10, 'Nov': 11, 'Dec': 12}
+        'Oct': 10, 'Nov': 11, 'Dec': 12}
 
 
 class Date:
@@ -59,7 +59,7 @@ class Date:
 
     def __str__(self) -> str:
         return str(self._year) + '-' + String.pad_number(self._month, 2) + '-' + String.pad_number(self._day_of_month,
-            2)
+                2)
 
     def __repr__(self) -> str:
         return self.__str__()
@@ -173,7 +173,7 @@ class Date:
         if new_month > 10:
             last_two_digits_of_year -= 1
         return DayOfWeek((self._day_of_month + int((13 * new_month - 1) / 5) + last_two_digits_of_year + int(
-            last_two_digits_of_year / 4) + int(first_two_digits_of_year / 4) - 2 * first_two_digits_of_year) % 7)
+                last_two_digits_of_year / 4) + int(first_two_digits_of_year / 4) - 2 * first_two_digits_of_year) % 7)
 
     def _get_days_in_current_month(self) -> int:
         if self._month == LEAP_MONTH and self._is_leap_year():

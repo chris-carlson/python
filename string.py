@@ -1,8 +1,7 @@
+import re
 from typing import List, Tuple
 
 from cac.regex import Regex
-
-EXCESSIVE_WHITESPACE_REGEX: Regex = Regex(r'\s{2,}')
 
 
 class String(str):
@@ -38,7 +37,7 @@ class String(str):
         return indexes
 
     def substring_between(self, str1, str2, pair_num=1) -> 'String':
-        indexes: Tuple[int, int] = ()
+        indexes: Tuple = ()
         current_pair: int = 0
         start_index: int = 0
         while current_pair < pair_num:
@@ -107,7 +106,7 @@ class String(str):
         return String(string)
 
     def remove_excessive_whitespace(self) -> 'String':
-        return self.replace(EXCESSIVE_WHITESPACE_REGEX, ' ')
+        return String(re.sub(r'\s{2,}', ' ', self._rep))
 
     def insert_text(self, index: int, text: str) -> 'String':
         return String(self._rep[:index] + text + self._rep[index:])
@@ -134,8 +133,8 @@ class String(str):
         index2: int = self._rep.find(str2, index1 + 1)
         if index1 == -1 or index2 == -1:
             raise ValueError(
-                'Could not find a pair of (\'' + str1 + '\', \'' + str2 + '\') in string starting at index ' + str(
-                    index))
+                    'Could not find a pair of (\'' + str1 + '\', \'' + str2 + '\') in string starting at index ' + str(
+                            index))
         return index1, index2
 
     def _preceded_by(self, char: str, index: int) -> bool:

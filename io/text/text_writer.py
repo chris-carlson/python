@@ -1,4 +1,4 @@
-from io import TextIOWrapper
+from typing import TextIO
 
 from unidecode import unidecode
 
@@ -7,7 +7,7 @@ class TextWriter:
 
     def __init__(self, file_name: str, tab_size: int = 0, append: bool = False) -> None:
         mode: str = 'a' if append else 'w'
-        self._file: TextIOWrapper = open(file_name, mode=mode, encoding='utf-8', newline='\n')
+        self._file: TextIO = open(file_name, mode=mode, encoding='utf-8', newline='\n')
         self._tab_size: int = tab_size
 
     def write(self, string: str, num_tabs: int = 0) -> None:

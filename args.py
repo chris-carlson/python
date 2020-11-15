@@ -8,29 +8,34 @@ from cac.regex import Regex
 class Args:
 
     @staticmethod
-    def print_command_help(command: str, arguments: List[str] = []) -> None:
-        command = Color.highlight_text(command, Color.FORE['Magenta'], Color.STYLE['Bright'])
-        arguments = [Color.highlight_text(argument, Color.FORE['Green'], Color.STYLE['Bright']) for argument in
-            arguments]
-        argument_string: str = ' ' + ', '.join(arguments) if len(arguments) > 0 else ''
-        print(command + argument_string)
+    def print_command_help(command: str, arguments: List[str] = None) -> None:
+        colored_command: str = Color.highlight_text(command, Color.FORE['Magenta'])
+        colored_arguments: List[str] = []
+        if arguments is not None:
+            colored_arguments = [Color.highlight_text(argument, Color.FORE['Green']) for argument in arguments]
+        argument_string: str = ' ' + ', '.join(colored_arguments) if len(colored_arguments) > 0 else ''
+        print(colored_command + argument_string)
 
     @staticmethod
-    def print_argument_help(argument: str, values: List[str] = [], description: str = '') -> None:
-        argument = Color.highlight_text(argument, Color.FORE['Magenta'], Color.STYLE['Bright'])
-        values = [Color.highlight_text(value, Color.FORE['Green'], Color.STYLE['Bright']) for value in values]
-        value_string: str = ' [' + ', '.join(values) + ']' if len(values) > 0 else ''
-        description = ': ' + description if len(description) > 0 else ''
-        print(argument + value_string + description)
+    def print_argument_help(argument: str, values: List[str] = None, description: str = '') -> None:
+        colored_argument: str = Color.highlight_text(argument, Color.FORE['Magenta'])
+        colored_values: List[str] = []
+        if values is not None:
+            colored_values = [Color.highlight_text(value, Color.FORE['Green']) for value in values]
+        value_string: str = ' [' + ', '.join(colored_values) + ']' if len(colored_values) > 0 else ''
+        description_suffix: str = ': ' + description if len(description) > 0 else ''
+        print(colored_argument + value_string + description_suffix)
 
     @staticmethod
-    def print_flag_help(flag: str, arg: str = '', values: List[str] = [], description: str = '') -> None:
-        flag = Color.highlight_text('-' + flag, Color.FORE['Magenta'], Color.STYLE['Bright'])
-        arg = ' ' + Color.highlight_text(arg, Color.FORE['Green'], Color.STYLE['Bright']) if len(arg) > 0 else ''
-        values = [Color.highlight_text(value, Color.FORE['Green'], Color.STYLE['Bright']) for value in values]
-        value_string: str = ' [' + ', '.join(values) + ']' if len(values) > 0 else ''
-        description = ': ' + description if len(description) > 0 else ''
-        print(flag + arg + value_string + description)
+    def print_flag_help(flag: str, arg: str = '', values: List[str] = None, description: str = '') -> None:
+        colored_flag: str = Color.highlight_text('-' + flag, Color.FORE['Magenta'])
+        colored_arg: str = ' ' + Color.highlight_text(arg, Color.FORE['Green']) if len(arg) > 0 else ''
+        colored_values: List[str] = []
+        if values is not None:
+            colored_values = [Color.highlight_text(value, Color.FORE['Green']) for value in values]
+        value_string: str = ' [' + ', '.join(colored_values) + ']' if len(colored_values) > 0 else ''
+        description_suffix: str = ': ' + description if len(description) > 0 else ''
+        print(colored_flag + colored_arg + value_string + description_suffix)
 
     @staticmethod
     def exit() -> None:
@@ -75,7 +80,7 @@ class Args:
     def flags(self) -> Dict[str, str]:
         return self._flags
 
-    def get_arg(self, num: str, values: List[str] = None, regex: Regex = None) -> str:
+    def get_arg(self, num: int, values: List[str] = None, regex: Regex = None) -> str:
         assert num >= 1
         arg: str = self._args[num - 1]
         if values is not None:

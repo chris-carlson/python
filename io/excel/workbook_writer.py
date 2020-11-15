@@ -19,6 +19,7 @@ class WorkbookWriter:
         for worksheet in worksheets:
             self.write_worksheet(worksheet)
 
+    # noinspection PyDunderSlots,PyUnresolvedReferences
     def write_worksheet(self, worksheet: Worksheet) -> None:
         openpyxl_worksheet: OpenpyxlWorksheet = self._openpyxl_workbook.create_sheet(worksheet.title)
         for row_index in range(0, len(worksheet)):
