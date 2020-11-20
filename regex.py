@@ -46,6 +46,10 @@ class Regex:
         match: Match = self._rep.match(string)
         return len(match.groups())
 
+    def find_groups(self, string: str) -> List[str]:
+        match: Match = self._rep.match(string)
+        return match.groups()
+
     def find_group(self, string: str, index: int) -> str:
         match: Match = self._rep.match(string)
         return match.group(index)
