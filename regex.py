@@ -43,13 +43,13 @@ class Regex:
         return [(match.group(), match.start()) for match in self._rep.finditer(string)]
 
     def count_groups(self, string: str) -> int:
-        match: Match = self._rep.match(string)
+        match: Match = self._rep.search(string)
         return len(match.groups())
 
     def find_groups(self, string: str) -> List[str]:
-        match: Match = self._rep.match(string)
+        match: Match = self._rep.search(string)
         return match.groups()
 
-    def find_group(self, string: str, index: int) -> str:
-        match: Match = self._rep.match(string)
+    def find_group(self, string: str, index: int = 1) -> str:
+        match: Match = self._rep.search(string)
         return match.group(index)
