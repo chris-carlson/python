@@ -16,10 +16,10 @@ class Cli:
         self._flags: Dict[str, str] = {}
         self._arguments: Dict[str, str] = {}
         user_inputs: List[str] = sys.argv[1:][:]
-        self._parse_flags(user_inputs, command.flags[:])
-        if 'h' in self._flags or 'help' in self._flags:
+        if '-h' in user_inputs or '--help' in user_inputs:
             command.print_help()
             sys.exit()
+        self._parse_flags(user_inputs, command.flags[:])
         self._parse_arguments(user_inputs, command.arguments[:])
 
     @property
