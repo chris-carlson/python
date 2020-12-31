@@ -17,8 +17,9 @@ class Printer:
         if len(self._command.arguments) > 0:
             command += self._create_argument_help()
         print(command)
-        print()
-        self._print_flag_details()
+        if len(self._command.flags) > 0:
+            print()
+            self._print_flag_details()
 
     def _create_flag_help(self) -> str:
         standalone_flag_names: List[str] = [flag.names[1] for flag in self._command.flags if
