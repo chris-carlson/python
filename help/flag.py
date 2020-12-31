@@ -3,7 +3,8 @@ from typing import List, Tuple
 
 class Flag:
 
-    def __init__(self, names: Tuple[str, str], description: str, parameter: str = '', values: List[str] = None) -> None:
+    def __init__(self, names: Tuple[str, str], description: str, parameter: str = None,
+            values: List[str] = None) -> None:
         self._names: Tuple[str, str] = names
         self._description: str = description
         self._parameter: str = parameter

@@ -1,4 +1,3 @@
-import sys
 from typing import List
 
 from cac.color import Color
@@ -13,6 +12,14 @@ class Command:
         self._flags: List[Flag] = flags
         self._arguments: List[Argument] = arguments
 
+    @property
+    def flags(self) -> List[Flag]:
+        return self._flags
+
+    @property
+    def arguments(self) -> List[Argument]:
+        return self._arguments
+
     def print_help(self) -> None:
         command: str = Color.highlight_text(self._name, Color.FORE['Magenta'])
         if len(self._flags) > 0:
@@ -25,10 +32,10 @@ class Command:
 
     def _create_flag_help(self) -> str:
         standalone_flag_names: List[str] = [flag.names[1] for flag in self._flags if
-                len(flag.names[1]) > 0 and len(flag.parameter) == 0]
+                len(flag.names[1]) > 0 and flag.parameter is None]
         command = ' [' + Color.highlight_text('-' + ''.join(standalone_flag_names), Color.FORE['Cyan']) + ']'
         parameter_flags: List[Flag] = [flag for flag in self._flags if
-                len(flag.names[1]) > 0 and len(flag.parameter) > 0]
+                len(flag.names[1]) > 0 and flag.parameter is not None]
         command += ''.join([
                 '[' + Color.highlight_text('-' + flag.names[1], Color.FORE['Cyan']) + ' ' + self._create_flag_parameter(
                         flag) + ']' for flag in parameter_flags])
@@ -57,13 +64,10 @@ class Command:
     def _print_flag_details(self) -> None:
         for flag in self._flags:
             long_name: str = Color.highlight_text('--' + flag.names[0], Color.FORE['Cyan'])
-            if len(flag.parameter) > 0:
+            if flag.parameter is not None:
                 long_name += ' ' + Color.highlight_text('<' + flag.parameter + '>', Color.FORE['Green'])
                 if flag.values is not None and len(flag.values) > 0:
                     long_name += '=' + Color.highlight_text('{' + '|'.join(flag.values) + '}', Color.FORE['Yellow'])
             short_name: str = Color.highlight_text('-' + flag.names[1], Color.FORE['Cyan']) + ', ' if len(
                     flag.names[1]) > 0 else ''
             print(short_name + long_name + ': ' + flag.description)
-
-    def exit(self) -> None:
-        sys.exit()
