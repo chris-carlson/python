@@ -51,8 +51,11 @@ class Cli:
                     if matching_flag.values is not None and len(
                             matching_flag.values) > 0 and parameter not in matching_flag.values:
                         raise ValueError(
-                                'Input \'{0}\' provided for flag \'{1}\'does not match one of the expected values '
+                                'Input \'{0}\' provided for flag \'{1}\' does not match one of the expected values '
                                 '{2}'.format(parameter, user_input_flag, str(matching_flag.values)))
+                    if matching_flag.regex is not None and not matching_flag.regex.matches(parameter):
+                        raise ValueError('Input \'{0}\' provided for flag \'{1}\' does not match the expected format '
+                                         '{2}'.format(parameter, user_input_flag, str(matching_flag.regex)))
                     self._flags[user_input_flag] = parameter
                     user_inputs.pop(flag_index + 1)
                 except IndexError:
@@ -69,8 +72,12 @@ class Cli:
             except IndexError:
                 raise ValueError('Extra argument \'' + user_input + '\' provided')
             if argument.values is not None and len(argument.values) > 0 and user_input not in argument.values:
-                raise ValueError('Input \'{0}\' provided for argument \'{1}\'does not match one of the expected values '
-                                 '{2}'.format(user_input, argument.name, str(argument.values)))
+                raise ValueError(
+                        'Input \'{0}\' provided for argument \'{1}\' does not match one of the expected values '
+                        '{2}'.format(user_input, argument.name, str(argument.values)))
+            if argument.regex is not None and not argument.regex.matches(user_input):
+                raise ValueError('Input \'{0}\' provided for argument \'{1}\' does not match the expected format '
+                                 '{2}'.format(user_input, argument.name, str(argument.regex)))
             self._arguments[argument.name] = user_input
         required_arguments: List[Argument] = [argument for argument in arguments if argument.required]
         if len(required_arguments) > 0:

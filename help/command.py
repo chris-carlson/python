@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Set
 
 from cac.color import Color
 from cac.help.argument import Argument
