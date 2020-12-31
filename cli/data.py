@@ -80,6 +80,9 @@ class Data:
             if argument.regex is not None and not argument.regex.matches(user_input):
                 raise ValueError('Input \'{0}\' provided for argument \'{1}\' does not match the expected format '
                                  '{2}'.format(user_input, argument.name, str(argument.regex)))
+            if argument.repeated:
+                user_input += ',' + ','.join(user_inputs)
+                user_inputs = []
             self._arguments[argument.name] = user_input
         required_arguments: List[Argument] = [argument for argument in arguments if argument.required]
         if len(required_arguments) > 0:
