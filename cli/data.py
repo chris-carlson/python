@@ -2,22 +2,24 @@ import sys
 from typing import Dict, List
 
 from cac.finder import Finder
-from cac.help.command import Command
-from cac.help.argument import Argument
-from cac.help.flag import Flag
+from cac.cli.argument import Argument
+from cac.cli.command import Command
+from cac.cli.flag import Flag
+from cac.cli.printer import Printer
 from cac.regex import Regex
 
 FLAG_REGEX: Regex = Regex(r'--?(\w+)')
 
 
-class Cli:
+class Data:
 
     def __init__(self, command: Command) -> None:
         self._flags: Dict[str, str] = {}
         self._arguments: Dict[str, str] = {}
         user_inputs: List[str] = sys.argv[1:][:]
         if '-h' in user_inputs or '--help' in user_inputs:
-            command.print_help()
+            printer: Printer = Printer(command)
+            printer.print_help()
             sys.exit()
         self._parse_flags(user_inputs, command.flags[:])
         self._parse_arguments(user_inputs, command.arguments[:])
