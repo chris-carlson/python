@@ -1,11 +1,11 @@
 import sys
 from typing import Dict, List
 
-from cac.finder import Finder
 from cac.cli.argument import Argument
 from cac.cli.command import Command
 from cac.cli.flag import Flag
 from cac.cli.printer import Printer
+from cac.finder import Finder
 from cac.regex import Regex
 
 FLAG_REGEX: Regex = Regex(r'--?(\w+)')
@@ -32,11 +32,19 @@ class Data:
     def arguments(self) -> Dict[str, str]:
         return self._arguments
 
+    def has_flag_parameter(self, flag: str) -> bool:
+        if flag not in self._flags:
+            raise ValueError('Flag \'' + flag + '\' is not defined')
+        return len(self._flags[flag]) > 0
+
     def _parse_flags(self, user_inputs: List[str], flags: List[Flag]) -> None:
         user_input_flags: List[str] = [FLAG_REGEX.find_group(user_input) for user_input in user_inputs if
                 user_input.startswith('-')]
         parameter_flags: List[str] = [flag.names[0] for flag in flags if flag.parameter is not None] + [flag.names[1]
                 for flag in flags if len(flag.names[1]) > 0 and flag.parameter is not None]
+        for flag in flags:
+            self._flags[flag.names[0]] = ''
+            self._flags[flag.names[1]] = ''
         for user_input_flag in user_input_flags:
             try:
                 flag_index: int = user_inputs.index(
@@ -58,7 +66,8 @@ class Data:
                     if matching_flag.regex is not None and not matching_flag.regex.matches(parameter):
                         raise ValueError('Input \'{0}\' provided for flag \'{1}\' does not match the expected format '
                                          '{2}'.format(parameter, user_input_flag, str(matching_flag.regex)))
-                    self._flags[user_input_flag] = parameter
+                    self._flags[matching_flag.names[0]] = parameter
+                    self._flags[matching_flag.names[1]] = parameter
                     user_inputs.pop(flag_index + 1)
                 except IndexError:
                     raise ValueError('No parameter provided for flag \'' + user_input_flag + '\'')

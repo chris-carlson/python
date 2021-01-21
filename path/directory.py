@@ -11,6 +11,12 @@ from cac.regex import Regex
 class Directory:
 
     @staticmethod
+    def get_home() -> 'Directory':
+        drive: str = os.getenv('HOMEDRIVE')
+        home: str = os.getenv('HOMEPATH')
+        return Directory(drive + home)
+
+    @staticmethod
     def get_cwd() -> 'Directory':
         return Directory(os.getcwd())
 

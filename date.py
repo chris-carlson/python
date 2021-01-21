@@ -54,17 +54,16 @@ class Date:
         assert 1 <= month <= NUM_MONTHS
         assert self._day_is_valid()
 
-    def __eq__(self, other) -> bool:
-        return self._year == other.year and self._month == other.month and self._day_of_month == other.day_of_month
+    def __eq__(self, other: 'Date') -> bool:
+        return self.year == other.year and self.month == other.month and self.day_of_month == other.day_of_month
 
     def __str__(self) -> str:
-        return str(self._year) + '-' + String.pad_number(self._month, 2) + '-' + String.pad_number(self._day_of_month,
-                2)
+        return str(self.year) + '-' + String.pad_number(self.month, 2) + '-' + String.pad_number(self.day_of_month, 2)
 
     def __repr__(self) -> str:
         return self.__str__()
 
-    def __lt__(self, other) -> bool:
+    def __lt__(self, other: 'Date') -> bool:
         if self.year == other.year:
             if self.month == other.month:
                 if self.day_of_month == other.day_of_month:
@@ -73,7 +72,7 @@ class Date:
             return self.month < other.month
         return self.year < other.year
 
-    def __le__(self, other) -> bool:
+    def __le__(self, other: 'Date') -> bool:
         if self.year == other.year:
             if self.month == other.month:
                 if self.day_of_month == other.day_of_month:
@@ -82,7 +81,7 @@ class Date:
             return self.month <= other.month
         return self.year <= other.year
 
-    def __gt__(self, other) -> bool:
+    def __gt__(self, other: 'Date') -> bool:
         if self.year == other.year:
             if self.month == other.month:
                 if self.day_of_month == other.day_of_month:
@@ -91,7 +90,7 @@ class Date:
             return self.month > other.month
         return self.year > other.year
 
-    def __ge__(self, other) -> bool:
+    def __ge__(self, other: 'Date') -> bool:
         if self.year == other.year:
             if self.month == other.month:
                 if self.day_of_month == other.day_of_month:

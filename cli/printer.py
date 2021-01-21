@@ -1,8 +1,8 @@
 from typing import List
 
-from cac.color import Color
 from cac.cli.command import Command
 from cac.cli.flag import Flag
+from cac.color import Color
 
 
 class Printer:
@@ -22,14 +22,18 @@ class Printer:
             self._print_flag_details()
 
     def _create_flag_help(self) -> str:
+        command: str = ''
         standalone_flag_names: List[str] = [flag.names[1] for flag in self._command.flags if
                 len(flag.names[1]) > 0 and flag.parameter is None]
-        command = ' [' + Color.highlight_text('-' + ''.join(standalone_flag_names), Color.FORE['Cyan']) + ']'
         parameter_flags: List[Flag] = [flag for flag in self._command.flags if
                 len(flag.names[1]) > 0 and flag.parameter is not None]
-        command += ''.join([
-                '[' + Color.highlight_text('-' + flag.names[1], Color.FORE['Cyan']) + ' ' + self._create_flag_parameter(
-                        flag) + ']' for flag in parameter_flags])
+        if len(standalone_flag_names) > 0 or len(parameter_flags) > 0:
+            command += ' '
+        if len(standalone_flag_names) > 0:
+            command += '[' + Color.highlight_text('-' + ''.join(standalone_flag_names), Color.FORE['Cyan']) + ']'
+        if len(parameter_flags) > 0:
+            command += ''.join(['[' + Color.highlight_text('-' + flag.names[1],
+                    Color.FORE['Cyan']) + ' ' + self._create_flag_parameter(flag) + ']' for flag in parameter_flags])
         return command
 
     def _create_flag_parameter(self, flag: Flag) -> str:
