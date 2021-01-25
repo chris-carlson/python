@@ -1,3 +1,5 @@
+from cac.string import String
+
 class Duration:
 
     def __init__(self, hours: int = 0, minutes: int = 0, seconds: int = 0) -> None:
@@ -9,7 +11,7 @@ class Duration:
         return self.hours == other.hours and self.minutes == other.minutes and self.seconds == other.seconds
 
     def __str__(self) -> str:
-        return str(self.hours) + '-' + String.pad_number(self.minutes, 2) + '-' + String.pad_number(self.seconds, 2)
+        return str(self.hours) + ':' + String.pad_number(self.minutes, 2) + ':' + String.pad_number(self.seconds, 2)
 
     def __repr__(self) -> str:
         return self.__str__()

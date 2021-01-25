@@ -5,11 +5,11 @@ from cac.finder import Finder
 
 class HtmlTag:
 
-    def __init__(self, name: str, attributes: Dict[str, str] = None, text: str = '') -> None:
+    def __init__(self, name: str, attributes: Dict[str, str] = None, children: List['HtmlTag'] = None, text: str = '') -> None:
         self._name: str = name
         self._attributes: Dict[str, str] = attributes if attributes is not None else {}
+        self._children: List[HtmlTag] = children if children is not None else []
         self._text: str = text
-        self._children: List[HtmlTag] = []
 
     def __str__(self) -> str:
         return self._name
