@@ -1,4 +1,5 @@
 import random
+from enum import IntEnum
 from typing import List
 
 
@@ -29,3 +30,13 @@ class Random:
     def get_random_percent() -> float:
         random.seed()
         return random.random() * 100
+
+    @staticmethod
+    def flip_coin(weight: float = 50.0) -> 'CoinSide':
+        percent: float = Random.get_random_percent()
+        return CoinSide.HEADS if percent < weight else CoinSide.TAILS
+
+
+class CoinSide(IntEnum):
+    HEADS: int = 0
+    TAILS: int = 1

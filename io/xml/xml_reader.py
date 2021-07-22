@@ -31,10 +31,7 @@ class XmlReader:
         if tag.startswith('{'):
             for abbreviation, expansion in native_element.nsmap.items():
                 if tag.startswith('{' + expansion + '}'):
-                    if abbreviation is None:
-                        return tag.substring_after('}')
-                    else:
-                        return abbreviation + ':' + tag.substring_after('}')
+                    return tag.substring_after('}')
         return tag
 
     @staticmethod

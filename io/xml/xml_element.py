@@ -100,3 +100,11 @@ class XmlElement:
         for child in self._children:
             matching_children.extend(child.find_all_by_attribute(name, value))
         return matching_children
+
+    def get_optional_child(self, name: str) -> 'XmlElement':
+        matching_children: List[XmlElement] = self.get_all_by_name(name)
+        if len(matching_children) == 0:
+            return None
+        if len(matching_children) > 1:
+            raise ValueError('Found multiple matching children')
+        return matching_children[0]

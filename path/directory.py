@@ -94,12 +94,13 @@ class Directory:
     def get_directory(self, name: str) -> 'Directory':
         return Finder.find_only([directory for directory in self.get_directories() if directory.name == name])
 
-    def get_directories(self, regex: Regex = None) -> List['Directory']:
+    def get_directories(self, regex: Regex = None, ignore: List[str] = None) -> List['Directory']:
         directories: List[Directory] = []
         for native_path in self._rep.iterdir():
             if native_path.is_dir():
                 wrapper_path: str = Directory._get_path(native_path)
-                if regex is None or regex.matches(wrapper_path):
+                if (regex is None or regex.matches(wrapper_path)) and (
+                        ignore is None or native_path.parts[-1] not in ignore):
                     directories.append(Directory(wrapper_path))
         return directories
 
@@ -108,7 +109,7 @@ class Directory:
                 [directory for directory in self.find_directories(regex, ignore) if directory.name == name])
 
     def find_directories(self, regex: Regex = None, ignore: List[str] = None) -> List['Directory']:
-        directories: List[Directory] = self.get_directories(regex)
+        directories: List[Directory] = self.get_directories(regex, ignore)
         for sub_directory in self.get_directories():
             if ignore is None or sub_directory.name not in ignore:
                 directories.extend(sub_directory.find_directories(regex))
