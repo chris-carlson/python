@@ -32,16 +32,23 @@ def validate_argument(input_argument: str, argument_definition: Argument) -> Non
 
 class Command:
 
-    def __init__(self, name: str, argument_definitions: List[Argument], flag_definitions: List[Flag] = None) -> None:
+    def __init__(self, name: str, argument_definitions: List[Argument] = None,
+            flag_definitions: List[Flag] = None) -> None:
         self._name: str = name
-        self._argument_definitions: List[Argument] = argument_definitions
+        self._argument_definitions: List[Argument] = argument_definitions if flag_definitions is not None else []
         self._flag_definitions: List[Flag] = flag_definitions if flag_definitions is not None else []
-        self._validate()
         self._user_inputs: List[str] = sys.argv[1:][:]
         if '-h' in self._user_inputs or '--help' in self._user_inputs:
             printer: Printer = Printer(name, argument_definitions, flag_definitions)
             printer.print_help()
             sys.exit()
+
+    @property
+    def name(self) -> str:
+        return self._name
+
+    def set_user_inputs(self, user_inputs: List[str]) -> None:
+        self._user_inputs = user_inputs
 
     def _validate(self) -> None:
         flag_names: List[str] = [flag.names[0] for flag in self._flag_definitions] + [flag.names[1] for flag in
@@ -55,6 +62,7 @@ class Command:
             raise ValueError('Duplicate argument definitions found: ' + str(duplicate_argument_names))
 
     def parse_flags(self) -> Dict[str, str]:
+        self._validate()
         user_flags: Dict[str, str] = {}
         input_flags: List[str] = [FLAG_REGEX.find_group(user_input) for user_input in self._user_inputs if
                 user_input.startswith('-')]
@@ -95,6 +103,7 @@ class Command:
                 user_input_flag == flag.names[0] or user_input_flag == flag.names[1]])
 
     def parse_arguments(self) -> Dict[str, str]:
+        self._validate()
         user_arguments: Dict[str, str] = {}
         input_arguments: List[str] = self._find_input_arguments()
         for index in range(0, len(input_arguments)):
