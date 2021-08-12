@@ -57,8 +57,14 @@ class Directory:
     def contains_directory(self, directory_name: str) -> bool:
         return directory_name in self._rep.parts
 
-    def join_directory(self, path: str, extension: str = '') -> 'Directory':
-        return Directory(self.path + '\\' + path + extension)
+    def join_directory(self, path: str) -> 'Directory':
+        return Directory(self.path + '\\' + path)
+
+    def join_directories(self, paths: List[str]) -> 'Directory':
+        directory: Directory = Directory(self.path)
+        for path in paths:
+            directory = directory.join_directory(path)
+        return directory
 
     def join_file(self, path: str, extension: str = '') -> File:
         return File(self.path + '\\' + path + extension)
