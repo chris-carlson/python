@@ -4,7 +4,7 @@ from subprocess import CompletedProcess
 from typing import List
 
 
-class Command:
+class Process:
 
     @staticmethod
     def run(arguments: List[str], cwd: str = None, run_cmd: bool = True) -> str:
