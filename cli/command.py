@@ -32,12 +32,12 @@ def validate_argument(input_argument: str, argument_definition: Argument) -> Non
 
 class Command:
 
-    def __init__(self, name: str, argument_definitions: List[Argument] = None,
-            flag_definitions: List[Flag] = None) -> None:
+    def __init__(self, name: str, argument_definitions: List[Argument] = None, flag_definitions: List[Flag] = None,
+            user_inputs: List[str] = None) -> None:
         self._name: str = name
-        self._argument_definitions: List[Argument] = argument_definitions if flag_definitions is not None else []
-        self._flag_definitions: List[Flag] = flag_definitions if flag_definitions is not None else []
-        self._user_inputs: List[str] = sys.argv[1:][:]
+        self._arguments: List[Argument] = argument_definitions if flag_definitions is not None else []
+        self._flags: List[Flag] = flag_definitions if flag_definitions is not None else []
+        self._user_inputs: List[str] = user_inputs if user_inputs is not None else sys.argv[1:][:]
         if '-h' in self._user_inputs or '--help' in self._user_inputs:
             printer: Printer = Printer(name, argument_definitions, flag_definitions)
             printer.print_help()
@@ -47,16 +47,20 @@ class Command:
     def name(self) -> str:
         return self._name
 
-    def set_user_inputs(self, user_inputs: List[str]) -> None:
-        self._user_inputs = user_inputs
+    @property
+    def arguments(self) -> List[Argument]:
+        return self._arguments
+
+    @property
+    def flags(self) -> List[Flag]:
+        return self._flags
 
     def _validate(self) -> None:
-        flag_names: List[str] = [flag.names[0] for flag in self._flag_definitions] + [flag.names[1] for flag in
-                self._flag_definitions]
+        flag_names: List[str] = [flag.names[0] for flag in self._flags] + [flag.names[1] for flag in self._flags]
         duplicate_flag_names: Set[str] = Finder.find_duplicates(flag_names)
         if len(duplicate_flag_names) > 0:
             raise ValueError('Duplicate flag definitions found: ' + str(duplicate_flag_names))
-        argument_names: List[str] = [argument.name for argument in self._argument_definitions]
+        argument_names: List[str] = [argument.name for argument in self._arguments]
         duplicate_argument_names: Set[str] = Finder.find_duplicates(argument_names)
         if len(duplicate_argument_names) > 0:
             raise ValueError('Duplicate argument definitions found: ' + str(duplicate_argument_names))
@@ -80,8 +84,8 @@ class Command:
         return user_flags
 
     def _find_parameter_flags(self) -> List[str]:
-        return [flag.names[0] for flag in self._flag_definitions if flag.parameter is not None] + [flag.names[1] for
-                flag in self._flag_definitions if len(flag.names[1]) > 0 and flag.parameter is not None]
+        return [flag.names[0] for flag in self._flags if flag.parameter is not None] + [flag.names[1] for flag in
+                self._flags if len(flag.names[1]) > 0 and flag.parameter is not None]
 
     def _find_flag_index(self, input_flag) -> int:
         try:
@@ -99,8 +103,8 @@ class Command:
         return parameter
 
     def _find_flag_definition(self, user_input_flag) -> Flag:
-        return Finder.find_only([flag for flag in self._flag_definitions if
-                user_input_flag == flag.names[0] or user_input_flag == flag.names[1]])
+        return Finder.find_only(
+                [flag for flag in self._flags if user_input_flag == flag.names[0] or user_input_flag == flag.names[1]])
 
     def parse_arguments(self) -> Dict[str, str]:
         self._validate()
@@ -129,12 +133,12 @@ class Command:
 
     def _get_argument_definition(self, index: int, input_argument: str) -> Argument:
         try:
-            return self._argument_definitions[index]
+            return self._arguments[index]
         except IndexError:
             raise ValueError('Extra argument \'' + input_argument + '\' provided')
 
     def _validate_required_arguments(self, user_arguments: Dict[str, str]) -> None:
-        required_arguments: List[str] = [argument.name for argument in self._argument_definitions if argument.required]
+        required_arguments: List[str] = [argument.name for argument in self._arguments if argument.required]
         for required_argument in required_arguments:
             if required_argument not in user_arguments:
                 raise ValueError('Missing required argument \'' + required_argument + '\'')

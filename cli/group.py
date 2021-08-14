@@ -17,5 +17,4 @@ class Group:
         if user_input not in command_names:
             raise ValueError('Invalid command \'{0}\' given'.format(user_input))
         command: Command = Finder.find_only([command for command in self._commands if command.name == user_input])
-        command.set_user_inputs(sys.argv[2:])
-        return command
+        return Command(command.name, command.arguments, command.flags, sys.argv[2:])
