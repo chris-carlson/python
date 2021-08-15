@@ -7,41 +7,37 @@ from cac.cli.printer import Printer
 from cac.finder import Finder
 from cac.regex import Regex
 
+HELP_FLAGS: List[str] = ['--help', '-h']
 FLAG_REGEX: Regex = Regex(r'^--?(\w+)$')
 
 
-def validate_parameter(parameter: str, input_flag: str, flag_definition: Flag) -> None:
-    if flag_definition.values is not None and len(
-            flag_definition.values) > 0 and parameter not in flag_definition.values:
+def validate_parameter(parameter: str, input_flag: str, flag: Flag) -> None:
+    if flag.values is not None and len(flag.values) > 0 and parameter not in flag.values:
         raise ValueError('Input \'{0}\' provided for flag \'{1}\' does not match one of the expected values '
-                         '{2}'.format(parameter, input_flag, str(flag_definition.values)))
-    if flag_definition.regex is not None and not flag_definition.regex.matches(parameter):
+                         '{2}'.format(parameter, input_flag, str(flag.values)))
+    if flag.regex is not None and not flag.regex.matches(parameter):
         raise ValueError('Input \'{0}\' provided for flag \'{1}\' does not match the expected format '
-                         '{2}'.format(parameter, input_flag, str(flag_definition.regex)))
+                         '{2}'.format(parameter, input_flag, str(flag.regex)))
 
 
-def validate_argument(input_argument: str, argument_definition: Argument) -> None:
-    if argument_definition.values is not None and len(
-            argument_definition.values) > 0 and input_argument not in argument_definition.values:
+def validate_argument(input_argument: str, argument: Argument) -> None:
+    if argument.values is not None and len(argument.values) > 0 and input_argument not in argument.values:
         raise ValueError('Input \'{0}\' provided for argument \'{1}\' does not match one of the expected values '
-                         '{2}'.format(input_argument, argument_definition.name, str(argument_definition.values)))
-    if argument_definition.regex is not None and not argument_definition.regex.matches(input_argument):
+                         '{2}'.format(input_argument, argument.name, str(argument.values)))
+    if argument.regex is not None and not argument.regex.matches(input_argument):
         raise ValueError('Input \'{0}\' provided for argument \'{1}\' does not match the expected format '
-                         '{2}'.format(input_argument, argument_definition.name, str(argument_definition.regex)))
+                         '{2}'.format(input_argument, argument.name, str(argument.regex)))
 
 
 class Command:
 
-    def __init__(self, name: str, argument_definitions: List[Argument] = None, flag_definitions: List[Flag] = None,
+    def __init__(self, name: str, arguments: List[Argument] = None, flags: List[Flag] = None, description: str = None,
             user_inputs: List[str] = None) -> None:
         self._name: str = name
-        self._arguments: List[Argument] = argument_definitions if flag_definitions is not None else []
-        self._flags: List[Flag] = flag_definitions if flag_definitions is not None else []
+        self._arguments: List[Argument] = arguments if flags is not None else []
+        self._flags: List[Flag] = flags if flags is not None else []
         self._user_inputs: List[str] = user_inputs if user_inputs is not None else sys.argv[1:][:]
-        if '-h' in self._user_inputs or '--help' in self._user_inputs:
-            printer: Printer = Printer(name, argument_definitions, flag_definitions)
-            printer.print_help()
-            sys.exit()
+        self._description: str = description
 
     @property
     def name(self) -> str:
@@ -55,8 +51,15 @@ class Command:
     def flags(self) -> List[Flag]:
         return self._flags
 
+    @property
+    def description(self) -> str:
+        return self._description
+
     def _validate(self) -> None:
         flag_names: List[str] = [flag.names[0] for flag in self._flags] + [flag.names[1] for flag in self._flags]
+        if '--help' in sys.argv or '-h' in sys.argv:
+            self.print_help()
+            sys.exit()
         duplicate_flag_names: Set[str] = Finder.find_duplicates(flag_names)
         if len(duplicate_flag_names) > 0:
             raise ValueError('Duplicate flag definitions found: ' + str(duplicate_flag_names))
@@ -75,11 +78,11 @@ class Command:
             if input_flag in parameter_flags:
                 flag_index: int = self._find_flag_index(input_flag)
                 parameter: str = self._find_parameter(flag_index, input_flag)
-                flag_definition: Flag = self._find_flag_definition(input_flag)
+                flag_definition: Flag = self._find_flag(input_flag)
                 validate_parameter(parameter, input_flag, flag_definition)
                 user_flags[flag_definition.names[0]] = parameter
             else:
-                flag_definition: Flag = self._find_flag_definition(input_flag)
+                flag_definition: Flag = self._find_flag(input_flag)
                 user_flags[flag_definition.names[0]] = ''
         return user_flags
 
@@ -102,7 +105,7 @@ class Command:
             raise ValueError('No parameter provided for flag \'' + input_flag + '\'')
         return parameter
 
-    def _find_flag_definition(self, user_input_flag) -> Flag:
+    def _find_flag(self, user_input_flag) -> Flag:
         return Finder.find_only(
                 [flag for flag in self._flags if user_input_flag == flag.names[0] or user_input_flag == flag.names[1]])
 
@@ -112,7 +115,7 @@ class Command:
         input_arguments: List[str] = self._find_input_arguments()
         for index in range(0, len(input_arguments)):
             input_argument: str = input_arguments[index]
-            argument_definition: Argument = self._get_argument_definition(index, input_argument)
+            argument_definition: Argument = self._get_argument(index, input_argument)
             validate_argument(input_argument, argument_definition)
             if argument_definition.repeated:
                 user_arguments[argument_definition.name] = ','.join(input_arguments[index:])
@@ -131,7 +134,7 @@ class Command:
                 input_arguments.append(user_input)
         return input_arguments
 
-    def _get_argument_definition(self, index: int, input_argument: str) -> Argument:
+    def _get_argument(self, index: int, input_argument: str) -> Argument:
         try:
             return self._arguments[index]
         except IndexError:
@@ -142,3 +145,7 @@ class Command:
         for required_argument in required_arguments:
             if required_argument not in user_arguments:
                 raise ValueError('Missing required argument \'' + required_argument + '\'')
+
+    def print_help(self) -> None:
+        printer: Printer = Printer(self._name, self._arguments, self._flags)
+        printer.print_help()
