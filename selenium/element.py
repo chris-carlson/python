@@ -19,6 +19,10 @@ class Element:
     def text(self) -> str:
         return self._rep.text
 
+    @property
+    def html(self) -> str:
+        return self._rep.get_attribute('outerHTML')
+
     def has_element(self, by: By, search: str) -> bool:
         return len(self.find_elements(by, search)) > 0
 

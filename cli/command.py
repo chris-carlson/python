@@ -34,7 +34,7 @@ class Command:
     def __init__(self, name: str, arguments: List[Argument] = None, flags: List[Flag] = None, description: str = None,
             user_inputs: List[str] = None) -> None:
         self._name: str = name
-        self._arguments: List[Argument] = arguments if flags is not None else []
+        self._arguments: List[Argument] = arguments if arguments is not None else []
         self._flags: List[Flag] = flags if flags is not None else []
         self._user_inputs: List[str] = user_inputs if user_inputs is not None else sys.argv[1:][:]
         self._description: str = description
