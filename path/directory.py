@@ -91,7 +91,7 @@ class Directory:
         files: List[File] = self.get_files(regex)
         for sub_directory in self.get_directories():
             if ignore is None or sub_directory.name not in ignore:
-                files.extend(sub_directory.find_files(regex))
+                files.extend(sub_directory.find_files(regex, ignore))
         return files
 
     def has_directory(self, name) -> bool:

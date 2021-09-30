@@ -57,7 +57,7 @@ class Command:
 
     def _validate(self) -> None:
         flag_names: List[str] = [flag.names[0] for flag in self._flags] + [flag.names[1] for flag in self._flags]
-        if '--help' in sys.argv or '-h' in sys.argv:
+        if sys.argv in HELP_FLAGS and self._name != 'help':
             self.print_help()
             sys.exit()
         duplicate_flag_names: Set[str] = Finder.find_duplicates(flag_names)

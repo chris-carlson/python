@@ -5,13 +5,13 @@ from cac.finder import Finder
 
 class XmlElement:
 
-    def __init__(self, name: str, attributes: Dict[str, str] = None, parent: 'XmlElement' = None,
+    def __init__(self, name: str, attributes: Dict[str, str] = None, children: List['XmlElement'] = None, parent: 'XmlElement' = None,
             text: str = '') -> None:
         self._name: str = name
         self._attributes: Dict[str, str] = attributes if attributes is not None else {}
+        self._children: List[XmlElement] = children if children is not None else []
         self._parent: XmlElement = parent
         self._text: str = text
-        self._children: List[XmlElement] = []
 
     def __str__(self) -> str:
         return self._name
