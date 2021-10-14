@@ -4,7 +4,7 @@ from cac.io.text.text_reader import TextReader
 from cac.io.xml.xml_element import XmlElement
 from cac.string import String
 from lxml import etree
-from lxml.etree import Element, ElementTree
+from lxml.etree import Element, ElementTree, XMLParser
 
 
 class XmlReader:
@@ -49,5 +49,6 @@ class XmlReader:
         return len(lines) == 0
 
     def read_root(self) -> XmlElement:
-        tree: ElementTree = etree.parse(self._file_name)
+        parser: XMLParser = etree.XMLParser(remove_blank_text=True)
+        tree: ElementTree = etree.parse(self._file_name, parser)
         return XmlReader._convert_element(tree.getroot())

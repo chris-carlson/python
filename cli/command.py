@@ -7,7 +7,6 @@ from cac.cli.printer import Printer
 from cac.finder import Finder
 from cac.regex import Regex
 
-HELP_FLAGS: List[str] = ['--help', '-h']
 FLAG_REGEX: Regex = Regex(r'^--?(\w+)$')
 
 
@@ -57,7 +56,7 @@ class Command:
 
     def _validate(self) -> None:
         flag_names: List[str] = [flag.names[0] for flag in self._flags] + [flag.names[1] for flag in self._flags]
-        if sys.argv in HELP_FLAGS and self._name != 'help':
+        if ('--help' in sys.argv or '-h' in sys.argv) and self._name != 'help':
             self.print_help()
             sys.exit()
         duplicate_flag_names: Set[str] = Finder.find_duplicates(flag_names)
