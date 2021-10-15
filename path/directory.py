@@ -8,6 +8,25 @@ from cac.path.file import File
 from cac.regex import Regex
 
 
+def is_directory_valid(directory_name: str, ignored_directories: List[Regex], regex: Regex = None) -> bool:
+    ignore_matches: List[Regex] = []
+    if ignored_directories is not None:
+        ignore_matches = [directory_regex for directory_regex in ignored_directories if
+                directory_regex.matches(directory_name)]
+    not_ignored: bool = ignored_directories is None or len(ignore_matches) == 0
+    matches_regex: bool = regex is None or regex.matches(directory_name)
+    return not_ignored and matches_regex
+
+
+def is_file_valid(file_name: str, ignored_files: List[Regex], regex: Regex = None) -> bool:
+    ignore_matches: List[Regex] = []
+    if ignored_files is not None:
+        ignore_matches = [file_regex for file_regex in ignored_files if file_regex.matches(file_name)]
+    not_ignored: bool = ignored_files is None or len(ignore_matches) == 0
+    matches_regex: bool = regex is None or regex.matches(file_name)
+    return not_ignored and matches_regex
+
+
 class Directory:
 
     @staticmethod
@@ -23,6 +42,10 @@ class Directory:
     @staticmethod
     def _get_path(path: Path) -> str:
         return path.parts[0] + '\\'.join(path.parts[1:])
+
+    @staticmethod
+    def _get_name(path: Path) -> str:
+        return path.parts[-1]
 
     def __init__(self, path: str) -> None:
         self._rep: Path = Path(path)
@@ -75,23 +98,25 @@ class Directory:
     def get_file(self, name: str) -> File:
         return Finder.find_only([file_ for file_ in self.get_files() if file_.name == name])
 
-    def get_files(self, regex: Regex = None) -> List[File]:
+    def get_files(self, ignore_files: List[Regex] = None, regex: Regex = None) -> List[File]:
         files: List[File] = []
         for native_path in self._rep.iterdir():
             if not native_path.is_dir():
+                file_name: str = Directory._get_name(native_path)
                 wrapper_path: str = Directory._get_path(native_path)
-                if regex is None or regex.matches(wrapper_path):
+                if is_file_valid(file_name, ignore_files, regex):
                     files.append(File(wrapper_path))
         return files
 
-    def find_file(self, name: str, regex: Regex = None, ignore: List[str] = None) -> File:
-        return Finder.find_only([file_ for file_ in self.find_files(regex, ignore) if file_.name == name])
+    def find_file(self, name: str, ignored_directories: List[Regex] = None) -> File:
+        return Finder.find_only([file_ for file_ in self.find_files(ignored_directories) if file_.name == name])
 
-    def find_files(self, regex: Regex = None, ignore: List[str] = None) -> List[File]:
-        files: List[File] = self.get_files(regex)
+    def find_files(self, ignored_directories: List[Regex] = None, ignore_files: List[Regex] = None,
+            regex: Regex = None) -> List[File]:
+        files: List[File] = self.get_files(ignore_files, regex)
         for sub_directory in self.get_directories():
-            if ignore is None or sub_directory.name not in ignore:
-                files.extend(sub_directory.find_files(regex, ignore))
+            if is_directory_valid(sub_directory.name, ignored_directories):
+                files.extend(sub_directory.find_files(ignored_directories, ignore_files, regex))
         return files
 
     def has_directory(self, name) -> bool:
@@ -100,25 +125,25 @@ class Directory:
     def get_directory(self, name: str) -> 'Directory':
         return Finder.find_only([directory for directory in self.get_directories() if directory.name == name])
 
-    def get_directories(self, regex: Regex = None, ignore: List[str] = None) -> List['Directory']:
+    def get_directories(self, ignored_directories: List[Regex] = None, regex: Regex = None) -> List['Directory']:
         directories: List[Directory] = []
         for native_path in self._rep.iterdir():
             if native_path.is_dir():
+                directory_name: str = Directory._get_name(native_path)
                 wrapper_path: str = Directory._get_path(native_path)
-                if (regex is None or regex.matches(wrapper_path)) and (
-                        ignore is None or native_path.parts[-1] not in ignore):
+                if is_directory_valid(directory_name, ignored_directories, regex):
                     directories.append(Directory(wrapper_path))
         return directories
 
-    def find_directory(self, name: str, regex: Regex = None, ignore: List[str] = None) -> 'Directory':
-        return Finder.find_only(
-                [directory for directory in self.find_directories(regex, ignore) if directory.name == name])
+    def find_directory(self, name: str, ignored_directories: List[Regex] = None, regex: Regex = None) -> 'Directory':
+        return Finder.find_only([directory for directory in self.find_directories(ignored_directories, regex) if
+                directory.name == name])
 
-    def find_directories(self, regex: Regex = None, ignore: List[str] = None) -> List['Directory']:
-        directories: List[Directory] = self.get_directories(regex, ignore)
-        for sub_directory in self.get_directories():
-            if ignore is None or sub_directory.name not in ignore:
-                directories.extend(sub_directory.find_directories(regex))
+    def find_directories(self, ignored_directories: List[Regex] = None, regex: Regex = None) -> List['Directory']:
+        directories: List[Directory] = self.get_directories(ignored_directories, regex)
+        for sub_directory in directories:
+            if is_directory_valid(sub_directory.name, ignored_directories, regex):
+                directories.extend(sub_directory.find_directories(ignored_directories, regex))
         return directories
 
     def rename(self, name: str) -> None:
