@@ -1,6 +1,23 @@
+from typing import List
+
+from cac.regex import Regex
 from cac.string import String
 
+DURATION_REGEX: Regex = Regex(r'(\d+:)?\d+:\d+')
+NUMBER_REGEX: Regex = Regex(r'\d+')
+
+
 class Duration:
+
+    # noinspection PyArgumentEqualDefault
+    @staticmethod
+    def parse_duration(rep: str) -> 'Duration':
+        if not DURATION_REGEX.matches(rep):
+            raise ValueError('Duration must match the correct format')
+        matches: List[str] = NUMBER_REGEX.find_matches(rep)
+        if len(matches) == 2:
+            return Duration(0, int(matches[0]), int(matches[1]))
+        return Duration(int(matches[0]), int(matches[1]), int(matches[2]))
 
     def __init__(self, hours: int = 0, minutes: int = 0, seconds: int = 0) -> None:
         self._hours: int = hours
