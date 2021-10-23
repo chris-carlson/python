@@ -8,6 +8,14 @@ from cac.path.file import File
 from cac.regex import Regex
 
 
+def get_name(path: Path) -> str:
+    return path.parts[-1]
+
+
+def get_path(path: Path) -> str:
+    return path.parts[0] + '\\'.join(path.parts[1:])
+
+
 def is_directory_valid(directory_name: str, ignored_directories: List[Regex], regex: Regex = None) -> bool:
     ignore_matches: List[Regex] = []
     if ignored_directories is not None:
@@ -30,22 +38,12 @@ def is_file_valid(file_name: str, ignored_files: List[Regex], regex: Regex = Non
 class Directory:
 
     @staticmethod
-    def get_home() -> 'Directory':
-        drive: str = os.getenv('HOMEDRIVE')
-        home: str = os.getenv('HOMEPATH')
-        return Directory(drive + home)
-
-    @staticmethod
     def get_cwd() -> 'Directory':
         return Directory(os.getcwd())
 
     @staticmethod
-    def _get_path(path: Path) -> str:
-        return path.parts[0] + '\\'.join(path.parts[1:])
-
-    @staticmethod
-    def _get_name(path: Path) -> str:
-        return path.parts[-1]
+    def get_environment_directory(environment_variable: str) -> 'Directory':
+        return Directory(os.environ[environment_variable])
 
     def __init__(self, path: str) -> None:
         self._rep: Path = Path(path)
@@ -102,8 +100,8 @@ class Directory:
         files: List[File] = []
         for native_path in self._rep.iterdir():
             if not native_path.is_dir():
-                file_name: str = Directory._get_name(native_path)
-                wrapper_path: str = Directory._get_path(native_path)
+                file_name: str = get_name(native_path)
+                wrapper_path: str = get_path(native_path)
                 if is_file_valid(file_name, ignore_files, regex):
                     files.append(File(wrapper_path))
         return files
@@ -129,8 +127,8 @@ class Directory:
         directories: List[Directory] = []
         for native_path in self._rep.iterdir():
             if native_path.is_dir():
-                directory_name: str = Directory._get_name(native_path)
-                wrapper_path: str = Directory._get_path(native_path)
+                directory_name: str = get_name(native_path)
+                wrapper_path: str = get_path(native_path)
                 if is_directory_valid(directory_name, ignored_directories, regex):
                     directories.append(Directory(wrapper_path))
         return directories
