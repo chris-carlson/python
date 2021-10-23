@@ -144,12 +144,11 @@ class Directory:
                 directories.extend(sub_directory.find_directories(ignored_directories, regex))
         return directories
 
-    def rename(self, name: str) -> None:
-        new_path: str = self.parent_path + '\\' + name
-        os.rename(self.path, new_path)
-
-    def delete(self) -> None:
-        shutil.rmtree(self.path)
+    def rename(self, path: str) -> None:
+        os.rename(self.path, path)
 
     def copy(self, path: str) -> None:
         shutil.copytree(self.path, path)
+
+    def delete(self) -> None:
+        shutil.rmtree(self.path)
