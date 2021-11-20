@@ -128,6 +128,12 @@ class Date:
             return String.pad_number(self.month, 2) + separator + String.pad_number(self.day_of_month,
                     2) + separator + str(self.year)
 
+    def add_days(self, days: int) -> 'Date':
+        cloned_date: Date = self.clone()
+        for i in range(0, days):
+            cloned_date = cloned_date.add_day()
+        return cloned_date
+
     def add_day(self) -> 'Date':
         cloned_date: Date = self.clone()
         cloned_date._day_of_month += 1
@@ -140,10 +146,10 @@ class Date:
         cloned_date._day_of_week = DayOfWeek((cloned_date._day_of_week.value + 1) % DAYS_IN_WEEK)
         return cloned_date
 
-    def add_days(self, days: int) -> 'Date':
+    def subtract_days(self, days: int) -> 'Date':
         cloned_date: Date = self.clone()
         for i in range(0, days):
-            cloned_date = cloned_date.add_day()
+            cloned_date = cloned_date.subtract_day()
         return cloned_date
 
     def subtract_day(self) -> 'Date':
@@ -156,12 +162,6 @@ class Date:
                 cloned_date._year -= 1
             cloned_date._day_of_month = cloned_date._get_days_in_current_month()
         cloned_date._day_of_week = DayOfWeek((cloned_date._day_of_week.value - 1) % DAYS_IN_WEEK)
-        return cloned_date
-
-    def subtract_days(self, days: int) -> 'Date':
-        cloned_date: Date = self.clone()
-        for i in range(0, days):
-            cloned_date = cloned_date.subtract_day()
         return cloned_date
 
     def get_days_to(self, target_date) -> int:

@@ -1,30 +1,34 @@
-from typing import Dict
+
 
 from cac.string import String
 
 HOURS_IN_DAY: int = 24
 MINUTES_IN_HOUR: int = 60
-MERIDIEM: Dict[str, str] = {'AM': 'AM', 'PM': 'PM'}
 
 
 class Time:
 
-    def __init__(self, hour: int, minute: int, meridiem: str) -> None:
+    def __init__(self, hour: int, minute: int) -> None:
         assert 0 < hour <= HOURS_IN_DAY / 2
         assert 0 <= minute < MINUTES_IN_HOUR
-        assert meridiem in MERIDIEM
         self._hour: int = hour
         self._minute: int = minute
-        self._meridiem: str = meridiem
 
     def __eq__(self, other) -> bool:
-        return self._hour == other.hour and self._minute == other.minute and self._meridiem == other.meridiem
+        return self._hour == other.hour and self._minute == other.minute
 
     def __str__(self) -> str:
-        return String.pad_number(self._hour, 2) + ':' + String.pad_number(self._minute, 2) + ' ' + self._meridiem
+        return String.pad_number(self._hour, 2) + ':' + String.pad_number(self._minute, 2)
 
     def __repr__(self) -> str:
         return self.__str__()
+
+    def __lt__(self, other: 'Time') -> bool:
+        if self.hour == other.hour:
+            if self.minute == other.minute:
+                return False
+            return self.minute < other.minute
+        return self.hour < other.hour
 
     @property
     def hour(self) -> int:
@@ -34,66 +38,68 @@ class Time:
     def minute(self) -> int:
         return self._minute
 
-    @property
-    def meridiem(self) -> str:
-        return self._meridiem
-
-    def add_minutes(self, minutes: int) -> None:
+    def add_minutes(self, minutes: int) -> 'Time':
+        cloned_time: Time = self.clone()
         for i in range(0, minutes):
-            self.add_minute()
+            cloned_time = cloned_time.add_minute()
+        return cloned_time
 
-    def add_minute(self) -> None:
-        self._minute += 1
-        if self._minute == MINUTES_IN_HOUR:
-            self._minute = 0
-            self.add_hour()
+    def add_minute(self) -> 'Time':
+        cloned_time: Time = self.clone()
+        cloned_time._minute += 1
+        if cloned_time._minute == MINUTES_IN_HOUR:
+            cloned_time._minute = 0
+            cloned_time = cloned_time.add_hour()
+        return cloned_time
 
-    def subtract_minutes(self, minutes: int) -> None:
+    def subtract_minutes(self, minutes: int) -> 'Time':
+        cloned_time: Time = self.clone()
         for i in range(0, minutes):
-            self.subtract_minute()
+            cloned_time = cloned_time.subtract_minute()
+        return cloned_time
 
-    def subtract_minute(self) -> None:
-        self._minute -= 1
-        if self._minute == -1:
-            self._minute = MINUTES_IN_HOUR - 1
-            self.subtract_hour()
+    def subtract_minute(self) -> 'Time':
+        cloned_time: Time = self.clone()
+        cloned_time._minute -= 1
+        if cloned_time._minute == -1:
+            cloned_time._minute = MINUTES_IN_HOUR - 1
+            cloned_time = cloned_time.subtract_hour()
+        return cloned_time
 
-    def add_hours(self, hours: int) -> None:
+    def add_hours(self, hours: int) -> 'Time':
+        cloned_time: Time = self.clone()
         for i in range(0, hours):
-            self.add_hour()
+            cloned_time = cloned_time.add_hour()
+        return cloned_time
 
-    def add_hour(self) -> None:
-        self._hour += 1
-        if self._hour == HOURS_IN_DAY / 2:
-            self._toggle_meridiem()
-        if self._hour > HOURS_IN_DAY / 2:
-            self._hour = 1
+    def add_hour(self) -> 'Time':
+        cloned_time: Time = self.clone()
+        cloned_time._hour += 1
+        if cloned_time._hour == HOURS_IN_DAY:
+            cloned_time._hour = 0
+        return cloned_time
 
-    def subtract_hours(self, hours: int) -> None:
+    def subtract_hours(self, hours: int) -> 'Time':
+        cloned_time: Time = self.clone()
         for i in range(0, hours):
-            self.subtract_hour()
+            cloned_time = cloned_time.subtract_hour()
+        return cloned_time
 
-    def subtract_hour(self) -> None:
-        self._hour -= 1
-        if self._hour == HOURS_IN_DAY / 2 - 1:
-            self._toggle_meridiem()
+    def subtract_hour(self) -> 'Time':
+        cloned_time: Time = self.clone()
+        cloned_time._hour -= 1
+        if cloned_time._hour == -1:
+            cloned_time._hour = HOURS_IN_DAY - 1
+        return cloned_time
+
+    def clone(self) -> 'Time':
+        return Time(self._hour, self._minute)
+
+    def get_meridiem_string(self) -> str:
+        meridiem: str = 'AM' if self._hour < HOURS_IN_DAY / 2 else 'PM'
+        hour: int = self._hour
         if self._hour == 0:
-            self._hour = HOURS_IN_DAY // 2
-
-    def get_military_hour(self) -> int:
-        if self._meridiem == MERIDIEM['PM']:
-            if self._hour == HOURS_IN_DAY / 2:
-                return self._hour
-            return self._hour + int(HOURS_IN_DAY / 2)
-        return self._hour
-
-    def _calculate_meridiem(self) -> str:
-        if self._hour < HOURS_IN_DAY / 2:
-            return MERIDIEM['AM']
-        return MERIDIEM['PM']
-
-    def _toggle_meridiem(self) -> None:
-        if self._meridiem == MERIDIEM['AM']:
-            self._meridiem = MERIDIEM['PM']
-        else:
-            self._meridiem = MERIDIEM['AM']
+            hour = HOURS_IN_DAY // 2
+        if self._hour > HOURS_IN_DAY / 2:
+            hour = self._hour - HOURS_IN_DAY // 2
+        return String.pad_number(hour, 2) + ':' + String.pad_number(self._minute, 2) + ' ' + meridiem

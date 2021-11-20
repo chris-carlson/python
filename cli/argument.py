@@ -4,7 +4,6 @@ from cac.regex import Regex
 
 
 class Argument:
-
     FILE_PATH_REGEX: Regex = Regex(r'(C:\\)?(([A-z0-9 ])+\\)?([A-z0-9 ])+\.\w+')
 
     def __init__(self, name: str, description: str, values: List[str] = None, regex: Regex = None,
