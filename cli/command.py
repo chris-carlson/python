@@ -7,7 +7,7 @@ from cac.cli.printer import Printer
 from cac.finder import Finder
 from cac.regex import Regex
 
-FLAG_REGEX: Regex = Regex(r'^--?(\w+)$')
+FLAG_REGEX: Regex = Regex(r'^--?([A-z]\w+)$')
 
 
 def validate_parameter(parameter: str, input_flag: str, flag_definition: Flag) -> None:
