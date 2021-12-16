@@ -1,17 +1,17 @@
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from cac.finder import Finder
 
 
 class XmlElement:
 
-    def __init__(self, name: str, attributes: Dict[str, str] = None, parent: 'XmlElement' = None,
-            text: str = '') -> None:
+    def __init__(self, name: str, attributes: Dict[str, str] = None, children: List['XmlElement'] = None,
+            parent: 'XmlElement' = None, text: str = '') -> None:
         self._name: str = name
         self._attributes: Dict[str, str] = attributes if attributes is not None else {}
+        self._children: List[XmlElement] = children if children is not None else []
         self._parent: XmlElement = parent
         self._text: str = text
-        self._children: List[XmlElement] = []
 
     def __str__(self) -> str:
         return self._name
@@ -100,3 +100,11 @@ class XmlElement:
         for child in self._children:
             matching_children.extend(child.find_all_by_attribute(name, value))
         return matching_children
+
+    def get_optional_child(self, name: str) -> Optional['XmlElement']:
+        matching_children: List[XmlElement] = self.get_all_by_name(name)
+        if len(matching_children) == 0:
+            return None
+        if len(matching_children) > 1:
+            raise ValueError('Found multiple matching children')
+        return matching_children[0]

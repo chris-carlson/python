@@ -4,7 +4,7 @@ from cac.io.text.text_reader import TextReader
 from cac.io.xml.xml_element import XmlElement
 from cac.string import String
 from lxml import etree
-from lxml.etree import Element, ElementTree
+from lxml.etree import Element, ElementTree, XMLParser
 
 
 class XmlReader:
@@ -18,7 +18,7 @@ class XmlReader:
     def _convert_element(native_element: Element, parent: XmlElement = None) -> XmlElement:
         tag_name: str = XmlReader._get_tag_name(native_element)
         attributes: Dict[str, str] = XmlReader._get_attributes(native_element)
-        wrapper_element: XmlElement = XmlElement(tag_name, attributes, parent)
+        wrapper_element: XmlElement = XmlElement(tag_name, attributes, parent=parent)
         if len(list(native_element)) == 0:
             wrapper_element.text = native_element.text
         for child in list(native_element):
@@ -31,10 +31,7 @@ class XmlReader:
         if tag.startswith('{'):
             for abbreviation, expansion in native_element.nsmap.items():
                 if tag.startswith('{' + expansion + '}'):
-                    if abbreviation is None:
-                        return tag.substring_after('}')
-                    else:
-                        return abbreviation + ':' + tag.substring_after('}')
+                    return tag.substring_after('}')
         return tag
 
     @staticmethod
@@ -52,5 +49,6 @@ class XmlReader:
         return len(lines) == 0
 
     def read_root(self) -> XmlElement:
-        tree: ElementTree = etree.parse(self._file_name)
+        parser: XMLParser = etree.XMLParser(remove_blank_text=True)
+        tree: ElementTree = etree.parse(self._file_name, parser)
         return XmlReader._convert_element(tree.getroot())

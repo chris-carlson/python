@@ -7,8 +7,9 @@ from cac.math import Math
 from cac.regex import Regex
 from cac.string import String
 
-DATE_REGEX: Regex = Regex('\\d{4}\\D\\d{2}\\D\\d{2}')
-NUMBER_REGEX: Regex = Regex('\\d+')
+DATE_REGEX_1: Regex = Regex('\d{4}\D\d{2}\D\d{2}')
+DATE_REGEX_2: Regex = Regex('\d{2}\D\d{2}\D\d{4}')
+NUMBER_REGEX: Regex = Regex('\d+')
 NUM_MONTHS: int = 12
 DAYS_IN_MONTHS: List[int] = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 DAYS_IN_WEEK: int = 7
@@ -23,10 +24,14 @@ class Date:
 
     @staticmethod
     def parse_date(date_str: str) -> 'Date':
-        if not DATE_REGEX.matches(date_str):
-            raise ValueError('Date must match the format ####-##-##')
-        matches: List[str] = NUMBER_REGEX.find_matches(date_str)
-        return Date(int(matches[0]), int(matches[1]), int(matches[2]))
+        if not DATE_REGEX_1.matches(date_str) and not DATE_REGEX_2.matches(date_str):
+            raise ValueError('Date must match the format ####-##-## or ##-##-####')
+        if DATE_REGEX_1.matches(date_str):
+            matches: List[str] = NUMBER_REGEX.find_matches(date_str)
+            return Date(int(matches[0]), int(matches[1]), int(matches[2]))
+        elif DATE_REGEX_2.matches(date_str):
+            matches: List[str] = NUMBER_REGEX.find_matches(date_str)
+            return Date(int(matches[2]), int(matches[0]), int(matches[1]))
 
     @staticmethod
     def today() -> 'Date':
@@ -115,6 +120,20 @@ class Date:
     def day_of_week(self) -> IntEnum:
         return self._day_of_week
 
+    def format(self, order: 'DateFormat', separator: str) -> str:
+        if order == DateFormat.YMD:
+            return str(self.year) + separator + String.pad_number(self.month, 2) + separator + String.pad_number(
+                    self.day_of_month, 2)
+        elif order == DateFormat.MDY:
+            return String.pad_number(self.month, 2) + separator + String.pad_number(self.day_of_month,
+                    2) + separator + str(self.year)
+
+    def add_days(self, days: int) -> 'Date':
+        cloned_date: Date = self.clone()
+        for i in range(0, days):
+            cloned_date = cloned_date.add_day()
+        return cloned_date
+
     def add_day(self) -> 'Date':
         cloned_date: Date = self.clone()
         cloned_date._day_of_month += 1
@@ -127,10 +146,10 @@ class Date:
         cloned_date._day_of_week = DayOfWeek((cloned_date._day_of_week.value + 1) % DAYS_IN_WEEK)
         return cloned_date
 
-    def add_days(self, days: int) -> 'Date':
+    def subtract_days(self, days: int) -> 'Date':
         cloned_date: Date = self.clone()
         for i in range(0, days):
-            cloned_date = cloned_date.add_day()
+            cloned_date = cloned_date.subtract_day()
         return cloned_date
 
     def subtract_day(self) -> 'Date':
@@ -143,12 +162,6 @@ class Date:
                 cloned_date._year -= 1
             cloned_date._day_of_month = cloned_date._get_days_in_current_month()
         cloned_date._day_of_week = DayOfWeek((cloned_date._day_of_week.value - 1) % DAYS_IN_WEEK)
-        return cloned_date
-
-    def subtract_days(self, days: int) -> 'Date':
-        cloned_date: Date = self.clone()
-        for i in range(0, days):
-            cloned_date = cloned_date.subtract_day()
         return cloned_date
 
     def get_days_to(self, target_date) -> int:
@@ -195,3 +208,8 @@ class DayOfWeek(IntEnum):
     THURSDAY: int = 4
     FRIDAY: int = 5
     SATURDAY: int = 6
+
+
+class DateFormat(IntEnum):
+    YMD: int = 0
+    MDY: int = 1

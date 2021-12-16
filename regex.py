@@ -1,7 +1,7 @@
 import re
 
 from re import Match
-from typing import List, Tuple
+from typing import List, Sequence, Tuple
 
 
 class Regex:
@@ -46,7 +46,7 @@ class Regex:
         match: Match = self._rep.search(string)
         return len(match.groups())
 
-    def find_groups(self, string: str) -> List[str]:
+    def find_groups(self, string: str) -> Sequence[str]:
         match: Match = self._rep.search(string)
         return match.groups()
 

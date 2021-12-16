@@ -49,19 +49,16 @@ class File:
     def has_parent_directory(self, name: str) -> bool:
         return name in self._rep.parts[1:]
 
-    def rename(self, name: str) -> None:
-        new_path: str = self.directory_path + '\\' + name
-        os.rename(self.path, new_path)
-
-    def delete(self) -> None:
-        os.remove(self.path)
-
-    def copy(self, path: str, same_directory: bool = True) -> None:
-        if same_directory:
-            path = self.directory_path + '\\' + path
-        shutil.copyfile(self.path, path)
-
     def modified_date(self) -> Date:
         epoch_seconds: float = os.path.getmtime(self.path)
         modified_time: str = time.ctime(epoch_seconds)
         return Date.parse_time(modified_time)
+
+    def rename(self, path: str) -> None:
+        os.rename(self.path, path)
+
+    def delete(self) -> None:
+        os.remove(self.path)
+
+    def copy(self, path: str) -> None:
+        shutil.copyfile(self.path, path)
