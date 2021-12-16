@@ -115,10 +115,12 @@ class Command:
         for index in range(0, len(input_arguments)):
             input_argument: str = input_arguments[index]
             argument_definition: Argument = self._get_argument(index, input_argument)
-            validate_argument(input_argument, argument_definition)
             if argument_definition.repeated:
+                for repeated_argument in input_arguments[index:]:
+                    validate_argument(repeated_argument, argument_definition)
                 user_arguments[argument_definition.name] = ','.join(input_arguments[index:])
                 break
+            validate_argument(input_argument, argument_definition)
             user_arguments[argument_definition.name] = input_argument
         self._validate_required_arguments(user_arguments)
         return user_arguments
