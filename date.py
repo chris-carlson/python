@@ -25,7 +25,7 @@ class Date:
     @staticmethod
     def parse_date(date_str: str) -> 'Date':
         if not DATE_REGEX_1.matches(date_str) and not DATE_REGEX_2.matches(date_str):
-            raise ValueError('Date must match the format ####-##-## or ##-##-####')
+            raise ValueError('Date \'' + date_str + '\' must match the format ####-##-## or ##-##-####')
         if DATE_REGEX_1.matches(date_str):
             matches: List[str] = NUMBER_REGEX.find_matches(date_str)
             return Date(int(matches[0]), int(matches[1]), int(matches[2]))

@@ -9,7 +9,7 @@ MINUTES_IN_HOUR: int = 60
 class Time:
 
     def __init__(self, hour: int, minute: int) -> None:
-        assert 0 < hour <= HOURS_IN_DAY / 2
+        assert 0 <= hour < HOURS_IN_DAY
         assert 0 <= minute < MINUTES_IN_HOUR
         self._hour: int = hour
         self._minute: int = minute
@@ -29,6 +29,27 @@ class Time:
                 return False
             return self.minute < other.minute
         return self.hour < other.hour
+
+    def __le__(self, other: 'Time') -> bool:
+        if self.hour == other.hour:
+            if self.minute == other.minute:
+                return False
+            return self.minute <= other.minute
+        return self.hour <= other.hour
+
+    def __gt__(self, other: 'Time') -> bool:
+        if self.hour == other.hour:
+            if self.minute == other.minute:
+                return False
+            return self.minute > other.minute
+        return self.hour > other.hour
+
+    def __ge__(self, other: 'Time') -> bool:
+        if self.hour == other.hour:
+            if self.minute == other.minute:
+                return False
+            return self.minute >= other.minute
+        return self.hour >= other.hour
 
     @property
     def hour(self) -> int:

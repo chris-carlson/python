@@ -107,3 +107,13 @@ class HtmlTag:
         for child in self._children:
             matching_children.extend(child.find_all_by_class(class_name))
         return matching_children
+
+    def generate_source(self) -> str:
+        attributes: str = ' ' + ' '.join([key + '=\'' + value + '\'' for key, value in self._attributes.items()])
+        source: str = '<' + self._name + attributes + '>'
+        for child in self._children:
+            source += child.generate_source()
+        if len(self._text) > 0:
+            source += self._text
+        source += '</' + self._name + '>'
+        return source

@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, List
 
 from bs4 import BeautifulSoup
 from bs4.element import Tag
@@ -24,8 +24,9 @@ class HtmlReader:
         self._file_name: str = file_name
 
     def read_root(self) -> HtmlTag:
-        soup: BeautifulSoup = BeautifulSoup(open(self._file_name), features='lxml')
-        return self._convert_element(soup.find('html'))
+        soup: BeautifulSoup = BeautifulSoup(open(self._file_name), features='html.parser')
+        children: List[Tag] = soup.find_all()
+        return self._convert_element(children[0])
 
     def _convert_element(self, native_element: Tag) -> HtmlTag:
         wrapper_attributes: Dict[str, str] = _convert_attributes(native_element.attrs)
