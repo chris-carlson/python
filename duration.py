@@ -3,16 +3,16 @@ from typing import List
 from cac.regex import Regex
 from cac.string import String
 
-DURATION_REGEX: Regex = Regex(r'(\d+:)?\d+:\d+')
 NUMBER_REGEX: Regex = Regex(r'\d+')
 
 
 class Duration:
+    DURATION_REGEX: Regex = Regex(r'(\d+:)?\d+:\d+')
 
     # noinspection PyArgumentEqualDefault
     @staticmethod
     def parse_duration(rep: str) -> 'Duration':
-        if not DURATION_REGEX.matches(rep):
+        if not Duration.DURATION_REGEX.matches(rep):
             raise ValueError('Duration must match the correct format')
         matches: List[str] = NUMBER_REGEX.find_matches(rep)
         if len(matches) == 2:
@@ -28,7 +28,7 @@ class Duration:
         return self.hours == other.hours and self.minutes == other.minutes and self.seconds == other.seconds
 
     def __str__(self) -> str:
-        return str(self.hours) + ':' + String.pad_number(self.minutes, 2) + ':' + String.pad_number(self.seconds, 2)
+        return String.pad_number(self.hours, 2) + ':' + String.pad_number(self.minutes, 2) + ':' + String.pad_number(self.seconds, 2)
 
     def __repr__(self) -> str:
         return self.__str__()
