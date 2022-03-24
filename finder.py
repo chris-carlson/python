@@ -25,6 +25,12 @@ class Finder:
         return filtered_list[0]
 
     @staticmethod
+    def find_optional(filtered_list: List[E]) -> E:
+        if len(filtered_list) == 0:
+            return None
+        return filtered_list[0]
+
+    @staticmethod
     def find_duplicates(item_list: List[E]) -> Set[E]:
         search_list: List[E] = item_list[:]
         encountered_items: Set[E] = set()
