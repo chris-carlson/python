@@ -1,6 +1,6 @@
 from typing import List, TypeVar
 
-from regex import Regex
+from cac.regex import Regex
 
 E = TypeVar('E')
 
