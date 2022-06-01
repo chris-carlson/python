@@ -42,8 +42,8 @@ class Directory:
         return Directory(os.getcwd())
 
     @staticmethod
-    def get_environment_directory(environment_variable: str) -> 'Directory':
-        return Directory(os.environ[environment_variable])
+    def get_env(variable: str) -> 'Directory':
+        return Directory(os.environ[variable])
 
     def __init__(self, path: str) -> None:
         self._rep: Path = Path(path)
