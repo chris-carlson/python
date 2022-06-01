@@ -6,9 +6,9 @@ from cac.io.excel.row import Row
 
 class Worksheet:
 
-    def __init__(self, title: str, rows: List[Row[object]]) -> None:
+    def __init__(self, title: str, rows: List[Row]) -> None:
         self._title: str = title
-        self._rows: List[Row[object]] = rows
+        self._rows: List[Row] = rows
 
     def __str__(self) -> str:
         return str(self._rows)
@@ -19,11 +19,11 @@ class Worksheet:
     def __len__(self) -> int:
         return len(self._rows)
 
-    def __iter__(self) -> Row[object]:
+    def __iter__(self) -> Row:
         for row in self._rows:
             yield row
 
-    def __getitem__(self, index: int) -> Row[object]:
+    def __getitem__(self, index: int) -> Row:
         return self._rows[index]
 
     @property
@@ -31,7 +31,7 @@ class Worksheet:
         return self._title
 
     @property
-    def rows(self) -> List[Row[object]]:
+    def rows(self) -> List[Row]:
         return self._rows
 
     def get_columns(self) -> List[object]:

@@ -1,9 +1,10 @@
 from typing import List
 
-from cac.io.excel.letter_converter import LetterConverter
+from cac.io.excel.cell import Cell
 from cac.io.excel.row import Row
 from cac.io.excel.worksheet import Worksheet
 from openpyxl import Workbook as OpenpyxlWorkbook
+from openpyxl.cell import Cell as OpenpyxlCell
 from openpyxl.styles import Font
 from openpyxl.worksheet.worksheet import Worksheet as OpenpyxlWorksheet
 
@@ -23,15 +24,13 @@ class WorkbookWriter:
     def write_worksheet(self, worksheet: Worksheet) -> None:
         openpyxl_worksheet: OpenpyxlWorksheet = self._openpyxl_workbook.create_sheet(worksheet.title)
         for row_index in range(0, len(worksheet)):
-            row: Row[object] = worksheet[row_index]
+            row: Row = worksheet[row_index]
             for column_index in range(0, len(row)):
-                openpyxl_worksheet.cell(row=row_index + 1, column=column_index + 1, value=row[column_index])
-                if row.bold:
-                    openpyxl_worksheet.cell(row=row_index + 1, column=column_index + 1).font = Font(bold=True)
-                letter: str = LetterConverter.convert_number(column_index)
-                if letter in row.number_formats:
-                    openpyxl_worksheet.cell(row=row_index + 1, column=column_index + 1).number_format = \
-                        row.number_formats[letter]
+                cell: Cell = row[column_index]
+                openpyxl_cell: OpenpyxlCell = openpyxl_worksheet.cell(row=row_index + 1, column=column_index + 1,
+                        value=cell.value)
+                if cell.bold:
+                    openpyxl_cell.font = Font(bold=True)
         self._openpyxl_workbook.save(self._file_name)
 
     def close(self) -> None:
