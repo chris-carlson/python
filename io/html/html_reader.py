@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict, List, Mapping
 
 from bs4 import BeautifulSoup
 from bs4.element import Tag
@@ -6,7 +6,7 @@ from cac.io.html.html_tag import HtmlTag
 
 
 # noinspection PyTypeChecker
-def _convert_attributes(native_attributes: Dict[str, object]) -> Dict[str, str]:
+def _convert_attributes(native_attributes: Mapping[str, object]) -> Dict[str, str]:
     wrapper_attributes: Dict[str, str] = {}
     for name, value in native_attributes.items():
         if type(value) == str:
@@ -33,6 +33,7 @@ class HtmlReader:
         wrapper_element: HtmlTag = HtmlTag(native_element.name, wrapper_attributes)
         for child in native_element.contents:
             if type(child) == Tag:
+                # noinspection PyTypeChecker
                 wrapper_element.children.append(self._convert_element(child))
         if len(wrapper_element.children) == 0:
             wrapper_element.text = native_element.text

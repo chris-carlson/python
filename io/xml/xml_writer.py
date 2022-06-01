@@ -12,8 +12,8 @@ class XmlWriter:
         self._pretty_print: bool = pretty_print
 
     def write(self, element: XmlElement, namespace: Tuple[str, str] = None) -> None:
-        self._file.write(
-                tostring(self._convert_element(element, namespace), encoding='unicode', pretty_print=self._pretty_print))
+        self._file.write(tostring(self._convert_element(element, namespace), encoding='unicode',
+                pretty_print=self._pretty_print))
 
     def _convert_element(self, wrapper_element: XmlElement, namespace: Tuple[str, str] = None) -> Element:
         native_element: Element = Element(wrapper_element.name, wrapper_element.attributes)

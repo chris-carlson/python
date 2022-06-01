@@ -7,9 +7,9 @@ from cac.math import Math
 from cac.regex import Regex
 from cac.string import String
 
-DATE_REGEX_1: Regex = Regex('\d{4}\D\d{2}\D\d{2}')
-DATE_REGEX_2: Regex = Regex('\d{2}\D\d{2}\D\d{4}')
-NUMBER_REGEX: Regex = Regex('\d+')
+DATE_REGEX_1: Regex = Regex(r'\d{4}\D\d{2}\D\d{2}')
+DATE_REGEX_2: Regex = Regex(r'\d{2}\D\d{2}\D\d{4}')
+NUMBER_REGEX: Regex = Regex(r'\d+')
 NUM_MONTHS: int = 12
 DAYS_IN_MONTHS: List[int] = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 DAYS_IN_WEEK: int = 7

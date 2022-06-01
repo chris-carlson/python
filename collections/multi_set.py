@@ -6,6 +6,7 @@ E = TypeVar('E')
 class MultiSet(Dict[E, int]):
 
     def __init__(self, collection: List[E] = None) -> None:
+        super().__init__()
         if collection is not None:
             for item in collection:
                 self.add(item)

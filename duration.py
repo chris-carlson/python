@@ -28,7 +28,8 @@ class Duration:
         return self.hours == other.hours and self.minutes == other.minutes and self.seconds == other.seconds
 
     def __str__(self) -> str:
-        return String.pad_number(self.hours, 2) + ':' + String.pad_number(self.minutes, 2) + ':' + String.pad_number(self.seconds, 2)
+        return String.pad_number(self.hours, 2) + ':' + String.pad_number(self.minutes, 2) + ':' + String.pad_number(
+                self.seconds, 2)
 
     def __repr__(self) -> str:
         return self.__str__()
