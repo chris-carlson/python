@@ -4,6 +4,12 @@ class Cell:
         self._value: object = value
         self._bold: bool = bold
 
+    def __str__(self) -> str:
+        return str(self._value)
+
+    def __repr__(self) -> str:
+        return self.__str__()
+
     @property
     def value(self) -> object:
         return self._value

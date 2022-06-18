@@ -14,6 +14,22 @@ class Row(List[Cell]):
         super().__init__()
         self._rep: List[Cell] = rep
 
+    def __str__(self) -> str:
+        return str(self._rep)
+
+    def __repr__(self) -> str:
+        return self.__str__()
+
+    def __len__(self) -> int:
+        return len(self._rep)
+
+    def __iter__(self) -> Cell:
+        for cell in self._rep:
+            yield cell
+
+    def __getitem__(self, index: int) -> Cell:
+        return self._rep[index]
+
     def get_cells(self, starting_letter: str, ending_letter: str) -> List[Cell]:
         cells: List[Cell] = []
         starting_index: int = LetterConverter.convert_letter(starting_letter)
