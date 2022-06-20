@@ -31,12 +31,9 @@ class Row(List[Cell]):
         return self._rep[index]
 
     def get_cells(self, starting_letter: str, ending_letter: str) -> List[Cell]:
-        cells: List[Cell] = []
         starting_index: int = LetterConverter.convert_letter(starting_letter)
         ending_index: int = LetterConverter.convert_letter(ending_letter)
-        for index in range(starting_index, ending_index + 1):
-            cells.append(self._rep[index])
-        return cells
+        return [self._rep[index] for index in range(starting_index, ending_index + 1)]
 
     def get_cell(self, letter: str) -> Cell:
         index: int = LetterConverter.convert_letter(letter)
@@ -45,3 +42,10 @@ class Row(List[Cell]):
     def set_cell(self, letter: str, value: object) -> None:
         index: int = LetterConverter.convert_letter(letter)
         self._rep[index] = Cell(value)
+
+    def get_values(self, starting_letter: str, ending_letter: str) -> List[object]:
+        return [cell.value for cell in self.get_cells(starting_letter, ending_letter)]
+
+    def get_value(self, letter: str) -> object:
+        cell: Cell = self.get_cell(letter)
+        return cell.value
