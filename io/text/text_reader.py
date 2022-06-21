@@ -8,6 +8,9 @@ class TextReader:
     def __init__(self, file_name: str) -> None:
         self._file: TextIO = open(file_name, mode='r')
 
+    def read_string(self) -> str:
+        return '\n'.join([line for line in self._file])
+
     def read_raw_lines(self) -> List[str]:
         return [unidecode(line) for line in self._file]
 
