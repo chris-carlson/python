@@ -114,6 +114,10 @@ class Consumer:
         match_index: Tuple[str, int] = regex.find_match_index(self._rep)
         return self._remove_chars(match_index[1])
 
+    def consume_through_regex(self, regex: Regex) -> str:
+        match_index: Tuple[str, int] = regex.find_match_index(self._rep)
+        return self._remove_chars(match_index[1] + len(match_index[0]))
+
     def consume_to_end(self) -> str:
         consumed: str = ''
         while self.has_input():

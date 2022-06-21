@@ -1,6 +1,7 @@
 import re
 from typing import List, Tuple
 
+from cac.consumer import Consumer
 from cac.regex import Regex
 
 
@@ -127,6 +128,19 @@ class String(str):
             index: int = match_index[1]
             string = string[:index] + text + string[index + len(match):]
         return String(string)
+
+    def split_sections(self, regex: Regex, include_separator: bool = True) -> List[str]:
+        match_indexes: List[int] = [match_index[1] for match_index in regex.find_match_indexes(self._rep)]
+        section_indexes: List[Tuple[int, int]] = [
+                (match_indexes[index], match_indexes[index + 1]) if index < len(match_indexes) - 1 else (
+                        match_indexes[index], len(self._rep)) for index in range(0, len(match_indexes))]
+        sections: List[str] = []
+        for start_index, end_index in section_indexes:
+            consumer: Consumer = Consumer(self._rep[start_index:end_index])
+            if not include_separator:
+                consumer.consume_through_regex(regex)
+            sections.append(consumer.consume_to_end())
+        return sections
 
     def _find_pair_indexes(self, str1: str, str2: str, index: int = 0) -> Tuple[int, int]:
         index1: int = self._rep.find(str1, index)
