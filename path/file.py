@@ -1,8 +1,10 @@
 import os
 import shutil
-from pathlib import Path
-
 import time
+
+from pathlib import Path
+from typing import List
+
 from cac.date import Date
 
 
@@ -37,17 +39,25 @@ class File:
 
     @property
     def path(self) -> str:
-        return self._rep.parts[0] + '\\'.join(self._rep.parts[1:])
+        return self._rep.parts[0] + '/'.join(self._rep.parts[1:])
 
     @property
     def directory_path(self) -> str:
-        return self._rep.parts[0] + '\\'.join(self._rep.parts[1: len(self._rep.parts) - 1])
+        return self._rep.parts[0] + '/'.join(self._rep.parts[1: len(self._rep.parts) - 1])
+
+    @property
+    def parts(self) -> List[str]:
+        return self._rep.parts[1:]
+
+    @property
+    def directory_parts(self) -> List[str]:
+        return self._rep.parts[1:-1]
 
     def exists(self) -> bool:
         return self._rep.exists()
 
     def has_parent_directory(self, name: str) -> bool:
-        return name in self._rep.parts[1:]
+        return name in self.directory_parts
 
     def modified_date(self) -> Date:
         epoch_seconds: float = os.path.getmtime(self.path)

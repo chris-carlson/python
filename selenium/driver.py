@@ -1,9 +1,10 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By as SeleniumBy
 from typing import List
 
 from cac.selenium.by import By
 from cac.selenium.element import Element
 from cac.selenium.wait import Wait
-from selenium import webdriver
 
 
 class Driver:
@@ -39,4 +40,4 @@ class Driver:
         self._rep.quit()
 
     def _get_root(self) -> Element:
-        return Element(self._rep.find_element_by_tag_name('html'))
+        return Element(self._rep.find_element(SeleniumBy.TAG_NAME, 'html'))

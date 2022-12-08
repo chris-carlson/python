@@ -92,6 +92,18 @@ class Consumer:
         consumed += self._remove_chars(len(sequence))
         return consumed
 
+    def consume_through_match(self, open_char: str, close_char: str = open_char) -> str:
+        consumed: str = self.consume_char(open_char)
+        balance: int = 1
+        while balance != 0:
+            char: str = self.consume_char()
+            if char == open_char:
+                balance += 1
+            elif char == close_char:
+                balance -= 1
+            consumed += char
+        return consumed
+
     def consume_whitespace(self) -> str:
         consumed: str = ''
         while self.has_input() and WHITESPACE_REGEX.matches(self.peek()):

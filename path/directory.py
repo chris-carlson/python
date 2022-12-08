@@ -13,7 +13,7 @@ def get_name(path: Path) -> str:
 
 
 def get_path(path: Path) -> str:
-    return path.parts[0] + '\\'.join(path.parts[1:])
+    return path.parts[0] + '/'.join(path.parts[1:])
 
 
 def is_directory_valid(directory_name: str, ignored_directories: List[Regex], regex: Regex = None) -> bool:
@@ -66,11 +66,19 @@ class Directory:
 
     @property
     def path(self) -> str:
-        return self._rep.parts[0] + '\\'.join(self._rep.parts[1:])
+        return self._rep.parts[0] + '/'.join(self._rep.parts[1:])
 
     @property
     def parent_path(self) -> str:
-        return self._rep.parts[0] + '\\'.join(self._rep.parts[1: len(self._rep.parts) - 1])
+        return self._rep.parts[0] + '/'.join(self._rep.parts[1: len(self._rep.parts) - 1])
+
+    @property
+    def parts(self) -> List[str]:
+        return self._rep.parts[1:]
+
+    @property
+    def parent_parts(self) -> List[str]:
+        return self._rep.parts[1:-1]
 
     def exists(self) -> bool:
         return self._rep.exists()
@@ -79,7 +87,7 @@ class Directory:
         return directory_name in self._rep.parts
 
     def join_directory(self, path: str) -> 'Directory':
-        return Directory(self.path + '\\' + path)
+        return Directory(self.path + '/' + path)
 
     def join_directories(self, paths: List[str]) -> 'Directory':
         directory: Directory = Directory(self.path)
@@ -88,7 +96,7 @@ class Directory:
         return directory
 
     def join_file(self, path: str, extension: str = '') -> File:
-        return File(self.path + '\\' + path + extension)
+        return File(self.path + '/' + path + extension)
 
     def has_file(self, name: str) -> bool:
         return len([path for path in self.get_files() if path.name == name]) > 0

@@ -1,6 +1,7 @@
 from typing import List
 
 from cac.selenium.by import By
+from selenium.webdriver.common.by import By as SeleniumBy
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.ui import Select
@@ -36,19 +37,19 @@ class Element:
 
     def find_elements(self, by: By, search: str) -> List['Element']:
         if by == By.ID:
-            return Element._get_elements(self._rep.find_elements_by_id(search))
+            return Element._get_elements(self._rep.find_elements(SeleniumBy.ID, search))
         elif by == By.NAME:
-            return Element._get_elements(self._rep.find_elements_by_name(search))
+            return Element._get_elements(self._rep.find_elements(SeleniumBy.NAME, search))
         elif by == By.XPATH:
-            return Element._get_elements(self._rep.find_elements_by_xpath(search))
+            return Element._get_elements(self._rep.find_elements(SeleniumBy.XPATH, search))
         elif by == By.LINK:
-            return Element._get_elements(self._rep.find_elements_by_link_text(search))
+            return Element._get_elements(self._rep.find_elements(SeleniumBy.LINK_TEXT, search))
         elif by == By.TAG:
-            return Element._get_elements(self._rep.find_elements_by_tag_name(search))
+            return Element._get_elements(self._rep.find_elements(SeleniumBy.TAG_NAME, search))
         elif by == By.CLASS:
-            return Element._get_elements(self._rep.find_elements_by_class_name(search))
+            return Element._get_elements(self._rep.find_elements(SeleniumBy.CLASS_NAME, search))
         elif by == By.CSS:
-            return Element._get_elements(self._rep.find_elements_by_css_selector(search))
+            return Element._get_elements(self._rep.find_elements(SeleniumBy.CSS_SELECTOR, search))
         raise ValueError('Invalid by value \'' + str(by) + '\'')
 
     def click(self) -> None:

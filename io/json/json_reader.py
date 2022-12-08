@@ -6,6 +6,10 @@ from cac.io.text.text_reader import TextReader
 
 class JsonReader:
 
+    @staticmethod
+    def read_text(text: str) -> object:
+        return json.loads(text)
+
     def __init__(self, file_name: str) -> None:
         self._file: TextReader = TextReader(file_name)
 
@@ -19,30 +23,6 @@ class JsonReader:
         value: object = self._get_value()
         if not isinstance(value, list):
             raise ValueError('Could not read JSON: invalid array')
-        return value
-
-    def read_string(self) -> str:
-        value: object = self._get_value()
-        if not isinstance(value, str):
-            raise ValueError('Could not read JSON: invalid string')
-        return value
-
-    def read_integer_number(self) -> int:
-        value: object = self._get_value()
-        if not isinstance(value, int):
-            raise ValueError('Could not read JSON: invalid integer')
-        return value
-
-    def read_float_number(self) -> float:
-        value: object = self._get_value()
-        if not isinstance(value, float):
-            raise ValueError('Could not read JSON: invalid float')
-        return value
-
-    def read_boolean(self) -> bool:
-        value: object = self._get_value()
-        if not isinstance(value, bool):
-            raise ValueError('Could not read JSON: invalid boolean')
         return value
 
     def _get_value(self) -> object:

@@ -8,7 +8,7 @@ from cac.regex import Regex
 class String(str):
 
     @staticmethod
-    def pad_number(number: int, num_digits: int) -> str:
+    def pad_number(number: int, num_digits: int = 2) -> str:
         string_number: str = str(number)
         while len(string_number) < num_digits:
             string_number = '0' + string_number
