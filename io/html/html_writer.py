@@ -16,7 +16,7 @@ class HtmlWriter:
 
     def _convert_element(self, wrapper_element: HtmlTag, parent: Tag = None) -> Tag:
         native_element: Tag = Tag(name=wrapper_element.name, attrs=wrapper_element.attributes, parent=parent,
-                previous=NavigableString('\n'), builder=BUILDER)
+                                  previous=NavigableString('\n'), builder=BUILDER)
         for child in wrapper_element.children:
             native_element.contents.append(self._convert_element(child, native_element))
         if len(wrapper_element.text) > 0:

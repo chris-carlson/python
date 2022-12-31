@@ -22,7 +22,7 @@ class Group:
                 Command(command.name, command.arguments, command.flags, command.description, user_inputs=sys.argv[2:])
                 for command in commands]
         self._commands.append(Command('help', [Argument('command', 'Command name to print help for', required=False)],
-                user_inputs=sys.argv[2:]))
+                                      user_inputs=sys.argv[2:]))
 
     def get_user_command(self) -> Command:
         if should_print_group_help():
@@ -47,7 +47,7 @@ class Group:
         if 'command' in arguments:
             command_name: str = arguments['command']
             user_command: Command = Finder.find_only(
-                    [command for command in self._commands if command.name == command_name])
+                [command for command in self._commands if command.name == command_name])
             user_command.print_help()
         else:
             self._print_group_help()

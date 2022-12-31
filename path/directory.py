@@ -20,7 +20,7 @@ def is_directory_valid(directory_name: str, ignored_directories: List[Regex], re
     ignore_matches: List[Regex] = []
     if ignored_directories is not None:
         ignore_matches = [directory_regex for directory_regex in ignored_directories if
-                directory_regex.matches(directory_name)]
+                          directory_regex.matches(directory_name)]
     not_ignored: bool = ignored_directories is None or len(ignore_matches) == 0
     matches_regex: bool = regex is None or regex.matches(directory_name)
     return not_ignored and matches_regex
@@ -118,7 +118,7 @@ class Directory:
         return Finder.find_only([file_ for file_ in self.find_files(ignored_directories) if file_.name == name])
 
     def find_files(self, ignored_directories: List[Regex] = None, ignore_files: List[Regex] = None,
-            regex: Regex = None) -> List[File]:
+                   regex: Regex = None) -> List[File]:
         files: List[File] = self.get_files(ignore_files, regex)
         for sub_directory in self.get_directories():
             if is_directory_valid(sub_directory.name, ignored_directories):
@@ -142,8 +142,8 @@ class Directory:
         return directories
 
     def find_directory(self, name: str, ignored_directories: List[Regex] = None, regex: Regex = None) -> 'Directory':
-        return Finder.find_only([directory for directory in self.find_directories(ignored_directories, regex) if
-                directory.name == name])
+        return Finder.find_only(
+            [directory for directory in self.find_directories(ignored_directories, regex) if directory.name == name])
 
     def find_directories(self, ignored_directories: List[Regex] = None, regex: Regex = None) -> List['Directory']:
         directories: List[Directory] = self.get_directories(ignored_directories, regex)

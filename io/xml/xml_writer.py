@@ -12,11 +12,11 @@ class XmlWriter:
         return tostring(XmlWriter._convert_element(element, namespace), encoding='unicode', pretty_print=pretty_print)
 
     @staticmethod
-    def _convert_element(self, wrapper_element: XmlElement, namespace: Tuple[str, str] = None) -> Element:
+    def _convert_element(wrapper_element: XmlElement, namespace: Tuple[str, str] = None) -> Element:
         native_element: Element = Element(wrapper_element.name, wrapper_element.attributes)
         if namespace is not None:
             native_element = Element(QName(namespace[1], wrapper_element.name), wrapper_element.attributes,
-                    {namespace[0]: namespace[1]})
+                                     {namespace[0]: namespace[1]})
         native_element.text = wrapper_element.text
         for child in wrapper_element.children:
             native_element.append(XmlWriter._convert_element(child, namespace))

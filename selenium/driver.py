@@ -1,10 +1,10 @@
-from selenium import webdriver
-from selenium.webdriver.common.by import By as SeleniumBy
 from typing import List
 
 from cac.selenium.by import By
 from cac.selenium.element import Element
 from cac.selenium.wait import Wait
+from selenium import webdriver
+from selenium.webdriver.common.by import By as SeleniumBy
 
 
 class Driver:

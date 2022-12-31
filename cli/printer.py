@@ -36,9 +36,9 @@ class Printer:
     def _create_flag_help(self) -> str:
         command: str = ''
         standalone_flag_names: List[str] = [flag.names[1] for flag in self._flags if
-                len(flag.names[1]) > 0 and flag.parameter is None]
+                                            len(flag.names[1]) > 0 and flag.parameter is None]
         parameter_flags: List[Flag] = [flag for flag in self._flags if
-                len(flag.names[1]) > 0 and flag.parameter is not None]
+                                       len(flag.names[1]) > 0 and flag.parameter is not None]
         if len(standalone_flag_names) > 0 or len(parameter_flags) > 0:
             command += ' '
         if len(standalone_flag_names) > 0:
@@ -46,7 +46,7 @@ class Printer:
         if len(parameter_flags) > 0:
             command += ''.join([
                     '[' + Color.highlight_text('-' + flag.names[1], Color.FORE['Cyan']) + ' ' + create_flag_parameter(
-                            flag) + ']' for flag in parameter_flags])
+                        flag) + ']' for flag in parameter_flags])
         return command
 
     def _create_argument_help(self) -> str:
@@ -78,5 +78,5 @@ class Printer:
                 if flag.values is not None and len(flag.values) > 0:
                     long_name += '=' + Color.highlight_text('{' + '|'.join(flag.values) + '}', Color.FORE['Yellow'])
             short_name: str = Color.highlight_text('-' + flag.names[1], Color.FORE['Cyan']) + ', ' if len(
-                    flag.names[1]) > 0 else ''
+                flag.names[1]) > 0 else ''
             print(short_name + long_name + ': ' + flag.description)

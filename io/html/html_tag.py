@@ -6,7 +6,7 @@ from cac.finder import Finder
 class HtmlTag:
 
     def __init__(self, name: str, attributes: Dict[str, str] = None, children: List['HtmlTag'] = None,
-            text: str = '') -> None:
+                 text: str = '') -> None:
         self._name: str = name
         self._attributes: Dict[str, str] = attributes if attributes is not None else {}
         self._children: List[HtmlTag] = children if children is not None else []
@@ -51,7 +51,7 @@ class HtmlTag:
 
     def get_by_id(self, id_name: str) -> 'HtmlTag':
         return Finder.find_only(
-                [child for child in self._children if 'id' in child.attributes and child.attributes['id'] == id_name])
+            [child for child in self._children if 'id' in child.attributes and child.attributes['id'] == id_name])
 
     def get_one_by_name(self, name: str) -> 'HtmlTag':
         return Finder.find_only(self.get_all_by_name(name))
@@ -76,7 +76,7 @@ class HtmlTag:
 
     def _find_all_by_id(self, id_name: str) -> List['HtmlTag']:
         matching_children: List[HtmlTag] = [child for child in self._children if
-                'id' in child.attributes and child.attributes['id'] == id_name]
+                                            'id' in child.attributes and child.attributes['id'] == id_name]
         for child in self._children:
             matching_children.extend(child._find_all_by_id(id_name))
         return matching_children

@@ -29,7 +29,7 @@ class Duration:
 
     def __str__(self) -> str:
         return String.pad_number(self.hours, 2) + ':' + String.pad_number(self.minutes, 2) + ':' + String.pad_number(
-                self.seconds, 2)
+            self.seconds, 2)
 
     def __repr__(self) -> str:
         return self.__str__()

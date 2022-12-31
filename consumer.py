@@ -92,7 +92,9 @@ class Consumer:
         consumed += self._remove_chars(len(sequence))
         return consumed
 
-    def consume_through_match(self, open_char: str, close_char: str = open_char) -> str:
+    def consume_through_match(self, open_char: str, close_char: str = None) -> str:
+        if close_char is None:
+            close_char = open_char
         consumed: str = self.consume_char(open_char)
         balance: int = 1
         while balance != 0:

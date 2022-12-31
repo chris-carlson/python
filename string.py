@@ -147,8 +147,8 @@ class String(str):
         index2: int = self._rep.find(str2, index1 + 1)
         if index1 == -1 or index2 == -1:
             raise ValueError(
-                    'Could not find a pair of (\'' + str1 + '\', \'' + str2 + '\') in string starting at index ' + str(
-                            index))
+                'Could not find a pair of (\'' + str1 + '\', \'' + str2 + '\') in string starting at index ' + str(
+                    index))
         return index1, index2
 
     def _preceded_by(self, char: str, index: int) -> bool:

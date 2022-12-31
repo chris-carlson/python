@@ -44,7 +44,7 @@ class XmlReader:
     def is_empty(self) -> bool:
         reader: TextReader = TextReader(self._file_name)
         lines: List[str] = [line for line in reader.read_stripped_lines() if
-                len(line) > 0 and not line.startswith('<?xml')]
+                            len(line) > 0 and not line.startswith('<?xml')]
         reader.close()
         return len(lines) == 0
 

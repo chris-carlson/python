@@ -1,5 +1,3 @@
-
-
 from cac.string import String
 
 HOURS_IN_DAY: int = 24

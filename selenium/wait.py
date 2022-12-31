@@ -15,5 +15,5 @@ class Wait:
     def wait_for_element(self, package_by: By, search: str) -> Element:
         selenium_by: SeleniumBy = By.convert(package_by)
         selenium_element: WebElement = self._rep.until(
-                expected_conditions.visibility_of_element_located((selenium_by, search)))
+            expected_conditions.visibility_of_element_located((selenium_by, search)))
         return Element(selenium_element)

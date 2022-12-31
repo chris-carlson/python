@@ -17,7 +17,7 @@ LEAP_MONTH: int = 2
 LEAP_YEAR_FREQUENCY: int = 4
 
 MONTHS: Dict[str, int] = {'Jan': 1, 'Feb': 2, 'Mar': 3, 'Apr': 4, 'May': 5, 'Jun': 6, 'Jul': 7, 'Aug': 8, 'Sep': 9,
-        'Oct': 10, 'Nov': 11, 'Dec': 12}
+                          'Oct': 10, 'Nov': 11, 'Dec': 12}
 
 
 class Date:
@@ -123,10 +123,10 @@ class Date:
     def format(self, order: 'DateFormat', separator: str) -> str:
         if order == DateFormat.YMD:
             return str(self.year) + separator + String.pad_number(self.month, 2) + separator + String.pad_number(
-                    self.day_of_month, 2)
+                self.day_of_month, 2)
         elif order == DateFormat.MDY:
             return String.pad_number(self.month, 2) + separator + String.pad_number(self.day_of_month,
-                    2) + separator + str(self.year)
+                                                                                    2) + separator + str(self.year)
 
     def add_days(self, days: int) -> 'Date':
         cloned_date: Date = self.clone()
@@ -185,7 +185,7 @@ class Date:
         if new_month > 10:
             last_two_digits_of_year -= 1
         return DayOfWeek((self._day_of_month + int((13 * new_month - 1) / 5) + last_two_digits_of_year + int(
-                last_two_digits_of_year / 4) + int(first_two_digits_of_year / 4) - 2 * first_two_digits_of_year) % 7)
+            last_two_digits_of_year / 4) + int(first_two_digits_of_year / 4) - 2 * first_two_digits_of_year) % 7)
 
     def _get_days_in_current_month(self) -> int:
         if self._month == LEAP_MONTH and self._is_leap_year():

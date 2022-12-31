@@ -31,7 +31,7 @@ def validate_argument(input_argument: str, argument: Argument) -> None:
 class Command:
 
     def __init__(self, name: str, arguments: List[Argument] = None, flags: List[Flag] = None, description: str = None,
-            user_inputs: List[str] = None) -> None:
+                 user_inputs: List[str] = None) -> None:
         self._name: str = name
         self._arguments: List[Argument] = arguments if arguments is not None else []
         self._flags: List[Flag] = flags if flags is not None else []
@@ -71,7 +71,7 @@ class Command:
         self._validate()
         user_flags: Dict[str, str] = {}
         input_flags: List[str] = [FLAG_REGEX.find_group(user_input) for user_input in self._user_inputs if
-                user_input.startswith('-')]
+                                  user_input.startswith('-')]
         parameter_flags: List[str] = self._find_parameter_flags()
         for input_flag in input_flags:
             if input_flag in parameter_flags:
@@ -87,7 +87,8 @@ class Command:
 
     def _find_parameter_flags(self) -> List[str]:
         return [flag.names[0] for flag in self._flags if flag.parameter is not None] + [flag.names[1] for flag in
-                self._flags if len(flag.names[1]) > 0 and flag.parameter is not None]
+                                                                                        self._flags if len(
+                    flag.names[1]) > 0 and flag.parameter is not None]
 
     def _find_flag_index(self, input_flag) -> int:
         try:
@@ -106,7 +107,7 @@ class Command:
 
     def _find_flag(self, user_input_flag) -> Flag:
         return Finder.find_only(
-                [flag for flag in self._flags if user_input_flag == flag.names[0] or user_input_flag == flag.names[1]])
+            [flag for flag in self._flags if user_input_flag == flag.names[0] or user_input_flag == flag.names[1]])
 
     def parse_arguments(self) -> Dict[str, str]:
         self._validate()

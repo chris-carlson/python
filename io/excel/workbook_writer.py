@@ -28,7 +28,7 @@ class WorkbookWriter:
             for column_index in range(0, len(row)):
                 cell: Cell = row[column_index]
                 openpyxl_cell: OpenpyxlCell = openpyxl_worksheet.cell(row=row_index + 1, column=column_index + 1,
-                        value=cell.value)
+                                                                      value=cell.value)
                 if cell.bold:
                     openpyxl_cell.font = Font(bold=True)
         self._openpyxl_workbook.save(self._file_name)
