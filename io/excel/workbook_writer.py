@@ -5,7 +5,7 @@ from cac.io.excel.row import Row
 from cac.io.excel.worksheet import Worksheet
 from openpyxl import Workbook as OpenpyxlWorkbook
 from openpyxl.cell import Cell as OpenpyxlCell
-from openpyxl.styles import Font
+from openpyxl.styles import Font, PatternFill
 from openpyxl.worksheet.worksheet import Worksheet as OpenpyxlWorksheet
 
 
@@ -31,6 +31,8 @@ class WorkbookWriter:
                                                                       value=cell.value)
                 if cell.bold:
                     openpyxl_cell.font = Font(bold=True)
+                if cell.color:
+                    openpyxl_cell.fill = PatternFill(start_color=cell.color, end_color=cell.color, fill_type='solid')
         self._openpyxl_workbook.save(self._file_name)
 
     def close(self) -> None:
