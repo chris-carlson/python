@@ -33,6 +33,8 @@ class WorkbookWriter:
                     openpyxl_cell.font = Font(bold=True)
                 if cell.color:
                     openpyxl_cell.fill = PatternFill(start_color=cell.color, end_color=cell.color, fill_type='solid')
+                if cell.number_format:
+                    openpyxl_cell.number_format = cell.number_format
         self._openpyxl_workbook.save(self._file_name)
 
     def close(self) -> None:

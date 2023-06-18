@@ -7,12 +7,12 @@ from cac.io.excel.letter_converter import LetterConverter
 class Row(List[Cell]):
 
     @staticmethod
-    def raw_data(data: List[object], bold: bool = False) -> 'Row':
-        return Row([Cell(value, bold) for value in data])
+    def raw_data(data: List[object], bold: bool = False, color: str = None, number_format: str = None) -> 'Row':
+        return Row([Cell(value, bold, color, number_format) for value in data])
 
     @staticmethod
     def create_header(data: List[object]) -> 'Row':
-        return Row.raw_data(data, True)
+        return Row.raw_data(data, bold=True)
 
     def __init__(self, rep: List[Cell]) -> None:
         super().__init__()
@@ -33,6 +33,9 @@ class Row(List[Cell]):
 
     def __getitem__(self, index: int) -> Cell:
         return self._rep[index]
+
+    def __add__(self, row: 'Row') -> 'Row':
+        return Row(self._rep + row._rep)
 
     def get_cells(self, starting_letter: str, ending_letter: str) -> List[Cell]:
         starting_index: int = LetterConverter.convert_letter(starting_letter)
