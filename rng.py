@@ -4,7 +4,6 @@ from typing import List, TypeVar
 
 E = TypeVar('E')
 
-
 class Random:
 
     @staticmethod
@@ -37,7 +36,6 @@ class Random:
     def flip_coin(weight: float = 50.0) -> int:
         percent: float = Random.get_random_percent()
         return CoinSide.HEADS if percent < weight else CoinSide.TAILS
-
 
 class CoinSide(IntEnum):
     HEADS: int = 0

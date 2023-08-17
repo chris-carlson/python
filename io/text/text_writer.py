@@ -2,7 +2,6 @@ from typing import TextIO
 
 from unidecode import unidecode
 
-
 class TextWriter:
 
     def __init__(self, file_name: str, tab_size: int = 0, append: bool = False) -> None:

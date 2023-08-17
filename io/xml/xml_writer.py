@@ -4,7 +4,6 @@ from cac.io.text.text_writer import TextWriter
 from cac.io.xml.xml_element import XmlElement
 from lxml.etree import Element, QName, tostring
 
-
 class XmlWriter:
 
     @staticmethod
@@ -16,7 +15,7 @@ class XmlWriter:
         native_element: Element = Element(wrapper_element.name, wrapper_element.attributes)
         if namespace is not None:
             native_element = Element(QName(namespace[1], wrapper_element.name), wrapper_element.attributes,
-                                     {namespace[0]: namespace[1]})
+                {namespace[0]: namespace[1]})
         native_element.text = wrapper_element.text
         for child in wrapper_element.children:
             native_element.append(XmlWriter._convert_element(child, namespace))

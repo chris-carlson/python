@@ -3,7 +3,6 @@ import re
 from re import Match
 from typing import List, Sequence, Tuple
 
-
 class Regex:
 
     def __init__(self, regex: str, case_sensitive=True) -> None:

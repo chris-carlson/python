@@ -4,10 +4,8 @@ from cac.io.excel.row import Row
 from cac.io.excel.worksheet import Worksheet
 from openpyxl import Workbook as OpenpyxlWorkbook, load_workbook
 
-
 def row_is_blank(row_data: List[object]) -> bool:
     return len([cell for cell in row_data if cell is not None]) == 0
-
 
 class WorkbookReader:
 

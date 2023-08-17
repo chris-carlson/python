@@ -2,7 +2,6 @@ from typing import List, Tuple, TypeVar
 
 E = TypeVar('E')
 
-
 class Comparer:
 
     def __init__(self, list1: List[E], list2: List[E]) -> None:

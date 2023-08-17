@@ -8,7 +8,6 @@ from openpyxl.cell import Cell as OpenpyxlCell
 from openpyxl.styles import Font, PatternFill
 from openpyxl.worksheet.worksheet import Worksheet as OpenpyxlWorksheet
 
-
 class WorkbookWriter:
 
     def __init__(self, file_name: str) -> None:
@@ -28,7 +27,7 @@ class WorkbookWriter:
             for column_index in range(0, len(row)):
                 cell: Cell = row[column_index]
                 openpyxl_cell: OpenpyxlCell = openpyxl_worksheet.cell(row=row_index + 1, column=column_index + 1,
-                                                                      value=cell.value)
+                    value=cell.value)
                 if cell.bold:
                     openpyxl_cell.font = Font(bold=True)
                 if cell.color:

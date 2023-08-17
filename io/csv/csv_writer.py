@@ -1,7 +1,6 @@
 from csv import writer
 from typing import List, TextIO
 
-
 class CsvWriter:
 
     def __init__(self, file_name: str, append: bool = False) -> None:

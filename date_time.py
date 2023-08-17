@@ -1,7 +1,6 @@
 from cac.date import Date
 from cac.time import Time
 
-
 class DateTime:
 
     def __init__(self, date: Date, time: Time) -> None:

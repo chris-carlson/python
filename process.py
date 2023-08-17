@@ -3,7 +3,6 @@ import subprocess
 from subprocess import CompletedProcess
 from typing import List
 
-
 class Process:
 
     @staticmethod

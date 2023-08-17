@@ -2,7 +2,6 @@ import json
 
 from cac.io.text.text_writer import TextWriter
 
-
 class JsonWriter:
 
     def __init__(self, file_name: str) -> None:

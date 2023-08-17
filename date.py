@@ -17,8 +17,7 @@ LEAP_MONTH: int = 2
 LEAP_YEAR_FREQUENCY: int = 4
 
 MONTHS: Dict[str, int] = {'Jan': 1, 'Feb': 2, 'Mar': 3, 'Apr': 4, 'May': 5, 'Jun': 6, 'Jul': 7, 'Aug': 8, 'Sep': 9,
-                          'Oct': 10, 'Nov': 11, 'Dec': 12}
-
+        'Oct': 10, 'Nov': 11, 'Dec': 12}
 
 class Date:
 
@@ -126,7 +125,7 @@ class Date:
                 self.day_of_month, 2)
         elif order == DateFormat.MDY:
             return String.pad_number(self.month, 2) + separator + String.pad_number(self.day_of_month,
-                                                                                    2) + separator + str(self.year)
+                2) + separator + str(self.year)
 
     def add_days(self, days: int) -> 'Date':
         cloned_date: Date = self.clone()
@@ -199,7 +198,6 @@ class Date:
     def _day_is_valid(self) -> bool:
         return 1 <= self._day_of_month <= self._get_days_in_current_month()
 
-
 class DayOfWeek(IntEnum):
     SUNDAY: int = 0
     MONDAY: int = 1
@@ -208,7 +206,6 @@ class DayOfWeek(IntEnum):
     THURSDAY: int = 4
     FRIDAY: int = 5
     SATURDAY: int = 6
-
 
 class DateFormat(IntEnum):
     YMD: int = 0

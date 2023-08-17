@@ -1,6 +1,5 @@
 from selenium.webdriver.common.by import By as SeleniumBy
 
-
 class By:
     ID = 0
     NAME = 1

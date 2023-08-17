@@ -3,7 +3,6 @@ from cac.string import String
 HOURS_IN_DAY: int = 24
 MINUTES_IN_HOUR: int = 60
 
-
 class Time:
 
     def __init__(self, hour: int, minute: int) -> None:

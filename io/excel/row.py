@@ -3,7 +3,6 @@ from typing import List
 from cac.io.excel.cell import Cell
 from cac.io.excel.letter_converter import LetterConverter
 
-
 class Row(List[Cell]):
 
     @staticmethod

@@ -4,13 +4,11 @@ from cac.cli.argument import Argument
 from cac.cli.flag import Flag
 from cac.color import Color
 
-
 def create_flag_parameter(flag: Flag) -> str:
     parameter: str = Color.highlight_text('<' + flag.parameter + '>', Color.FORE['Green'])
     if flag.values is not None and len(flag.values) > 0:
         parameter += '=' + Color.highlight_text('{' + '|'.join(flag.values) + '}', Color.FORE['Yellow'])
     return parameter
-
 
 class Printer:
 
@@ -36,9 +34,9 @@ class Printer:
     def _create_flag_help(self) -> str:
         command: str = ''
         standalone_flag_names: List[str] = [flag.names[1] for flag in self._flags if
-                                            len(flag.names[1]) > 0 and flag.parameter is None]
+                len(flag.names[1]) > 0 and flag.parameter is None]
         parameter_flags: List[Flag] = [flag for flag in self._flags if
-                                       len(flag.names[1]) > 0 and flag.parameter is not None]
+                len(flag.names[1]) > 0 and flag.parameter is not None]
         if len(standalone_flag_names) > 0 or len(parameter_flags) > 0:
             command += ' '
         if len(standalone_flag_names) > 0:

@@ -3,10 +3,8 @@ import shutil
 from pathlib import Path
 from typing import List
 
-from cac.date import Date
-
 import time
-
+from cac.date import Date
 
 class File:
 

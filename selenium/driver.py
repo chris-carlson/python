@@ -6,7 +6,6 @@ from cac.selenium.wait import Wait
 from selenium import webdriver
 from selenium.webdriver.common.by import By as SeleniumBy
 
-
 class Driver:
 
     def __init__(self, headless: bool = False, wait_time: int = 10) -> None:

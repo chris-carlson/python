@@ -5,7 +5,6 @@ from cac.string import String
 
 NUMBER_REGEX: Regex = Regex(r'\d+')
 
-
 class Duration:
     DURATION_REGEX: Regex = Regex(r'(\d+:)?\d+:\d+')
 

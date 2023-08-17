@@ -4,7 +4,6 @@ from cac.regex import Regex
 
 WHITESPACE_REGEX: Regex = Regex(r'\s')
 
-
 class Consumer:
 
     def __init__(self, rep: str) -> None:

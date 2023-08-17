@@ -2,7 +2,6 @@ from typing import Dict, List, TypeVar
 
 E = TypeVar('E')
 
-
 class MultiSet(Dict[E, int]):
 
     def __init__(self, collection: List[E] = None) -> None:

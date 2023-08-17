@@ -6,7 +6,6 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.ui import Select
 
-
 class Element:
 
     def __init__(self, element: WebElement) -> None:

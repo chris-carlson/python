@@ -1,6 +1,5 @@
 import locale
 
-
 class Currency:
 
     @staticmethod

@@ -2,10 +2,9 @@ from typing import List
 
 from math import floor
 
-
 class LetterConverter:
     LETTERS: List[str] = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
-                          'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+            'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 
     @staticmethod
     def convert_letter(letter: str) -> int:

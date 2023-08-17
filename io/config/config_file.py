@@ -1,6 +1,5 @@
 from typing import Dict
 
-
 # noinspection PyUnresolvedReferences
 class ConfigFile:
 

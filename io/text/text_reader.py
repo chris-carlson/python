@@ -2,7 +2,6 @@ from typing import List, TextIO
 
 from unidecode import unidecode
 
-
 class TextReader:
 
     def __init__(self, file_name: str) -> None:

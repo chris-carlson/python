@@ -4,7 +4,6 @@ from cac.regex import Regex
 
 E = TypeVar('E')
 
-
 class Filter:
 
     @staticmethod

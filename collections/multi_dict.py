@@ -3,7 +3,6 @@ from typing import Dict, List, Tuple, TypeVar
 K = TypeVar('K')
 V = TypeVar('V')
 
-
 class MultiDict(Dict[K, List[V]]):
 
     def __init__(self, collection: List[Tuple[K, V]] = None) -> None:

@@ -6,7 +6,6 @@ from cac.time import Time
 from dateutil import tz
 from dateutil.tz import tzutc
 
-
 class TimeZone:
 
     @staticmethod

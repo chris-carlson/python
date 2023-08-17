@@ -4,7 +4,6 @@ from typing import List, Tuple
 from cac.consumer import Consumer
 from cac.regex import Regex
 
-
 class String(str):
 
     @staticmethod

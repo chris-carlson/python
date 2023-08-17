@@ -9,10 +9,8 @@ from cac.finder import Finder
 HELP_ARGS: List[str] = ['help', '--help', '-h']
 NO_DESCRIPTION: str = '[No description provided]'
 
-
 def should_print_group_help() -> bool:
     return len(sys.argv) > 1 and sys.argv[1] in HELP_ARGS
-
 
 class Group:
 
@@ -22,7 +20,7 @@ class Group:
                 Command(command.name, command.arguments, command.flags, command.description, user_inputs=sys.argv[2:])
                 for command in commands]
         self._commands.append(Command('help', [Argument('command', 'Command name to print help for', required=False)],
-                                      user_inputs=sys.argv[2:]))
+            user_inputs=sys.argv[2:]))
 
     def get_user_command(self) -> Command:
         if should_print_group_help():

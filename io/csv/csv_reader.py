@@ -1,7 +1,6 @@
 from csv import reader
 from typing import List, TextIO
 
-
 class CsvReader:
 
     def __init__(self, file_name: str) -> None:

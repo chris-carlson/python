@@ -2,11 +2,10 @@ from typing import List, Tuple
 
 from cac.regex import Regex
 
-
 class Flag:
 
     def __init__(self, names: Tuple[str, str], description: str, parameter: str = None, values: List[str] = None,
-                 regex: Regex = None) -> None:
+            regex: Regex = None) -> None:
         self._names: Tuple[str, str] = names
         self._description: str = description
         self._parameter: str = parameter

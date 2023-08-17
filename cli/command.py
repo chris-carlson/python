@@ -9,7 +9,6 @@ from cac.regex import Regex
 
 FLAG_REGEX: Regex = Regex(r'^--?([A-z]\w*)$')
 
-
 def validate_parameter(parameter: str, input_flag: str, flag: Flag) -> None:
     if flag.values is not None and len(flag.values) > 0 and parameter not in flag.values:
         raise ValueError('Input \'{0}\' provided for flag \'{1}\' does not match one of the expected values '
@@ -17,7 +16,6 @@ def validate_parameter(parameter: str, input_flag: str, flag: Flag) -> None:
     if flag.regex is not None and not flag.regex.matches(parameter):
         raise ValueError('Input \'{0}\' provided for flag \'{1}\' does not match the expected format '
                          '{2}'.format(parameter, input_flag, str(flag.regex)))
-
 
 def validate_argument(input_argument: str, argument: Argument) -> None:
     if argument.values is not None and len(argument.values) > 0 and input_argument not in argument.values:
@@ -27,11 +25,10 @@ def validate_argument(input_argument: str, argument: Argument) -> None:
         raise ValueError('Input \'{0}\' provided for argument \'{1}\' does not match the expected format '
                          '{2}'.format(input_argument, argument.name, str(argument.regex)))
 
-
 class Command:
 
     def __init__(self, name: str, arguments: List[Argument] = None, flags: List[Flag] = None, description: str = None,
-                 user_inputs: List[str] = None) -> None:
+            user_inputs: List[str] = None) -> None:
         self._name: str = name
         self._arguments: List[Argument] = arguments if arguments is not None else []
         self._flags: List[Flag] = flags if flags is not None else []
@@ -71,7 +68,7 @@ class Command:
         self._validate()
         user_flags: Dict[str, str] = {}
         input_flags: List[str] = [FLAG_REGEX.find_group(user_input) for user_input in self._user_inputs if
-                                  user_input.startswith('-')]
+                user_input.startswith('-')]
         parameter_flags: List[str] = self._find_parameter_flags()
         for input_flag in input_flags:
             if input_flag in parameter_flags:
@@ -87,8 +84,7 @@ class Command:
 
     def _find_parameter_flags(self) -> List[str]:
         return [flag.names[0] for flag in self._flags if flag.parameter is not None] + [flag.names[1] for flag in
-                                                                                        self._flags if len(
-                    flag.names[1]) > 0 and flag.parameter is not None]
+                self._flags if len(flag.names[1]) > 0 and flag.parameter is not None]
 
     def _find_flag_index(self, input_flag) -> int:
         try:
