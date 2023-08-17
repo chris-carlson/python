@@ -2,7 +2,6 @@ from typing import List, Set, TypeVar
 
 E = TypeVar('E')
 
-
 class Finder:
 
     @staticmethod
@@ -28,6 +27,8 @@ class Finder:
     def find_optional(filtered_list: List[E]) -> E:
         if len(filtered_list) == 0:
             return None
+        if len(filtered_list) > 1:
+            raise ValueError('Found multiple matches in the list')
         return filtered_list[0]
 
     @staticmethod

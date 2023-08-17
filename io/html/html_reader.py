@@ -4,7 +4,6 @@ from bs4 import BeautifulSoup
 from bs4.element import Tag
 from cac.io.html.html_tag import HtmlTag
 
-
 # noinspection PyTypeChecker
 def _convert_attributes(native_attributes: Mapping[str, object]) -> Dict[str, str]:
     wrapper_attributes: Dict[str, str] = {}
@@ -13,10 +12,7 @@ def _convert_attributes(native_attributes: Mapping[str, object]) -> Dict[str, st
             wrapper_attributes[name] = value
         elif type(value) == list:
             wrapper_attributes[name] = ' '.join(value)
-        else:
-            raise ValueError('Unexpected attribute type \'' + str(type(value)) + '\'')
     return wrapper_attributes
-
 
 class HtmlReader:
 
@@ -36,5 +32,5 @@ class HtmlReader:
                 # noinspection PyTypeChecker
                 wrapper_element.children.append(self._convert_element(child))
         if len(wrapper_element.children) == 0:
-            wrapper_element.text = native_element.text
+            wrapper_element.text = native_element.string
         return wrapper_element

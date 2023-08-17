@@ -1,10 +1,11 @@
+from bs4 import BeautifulSoup
 from bs4.builder import HTMLTreeBuilder
-from bs4.element import NavigableString, Tag
+from bs4.element import Tag
 from cac.io.html.html_tag import HtmlTag
 from cac.io.text.text_writer import TextWriter
 
 BUILDER: HTMLTreeBuilder = HTMLTreeBuilder()
-
+SOUP: BeautifulSoup = BeautifulSoup()
 
 class HtmlWriter:
 
@@ -15,12 +16,11 @@ class HtmlWriter:
         self._file.write_line(str(self._convert_element(tag)))
 
     def _convert_element(self, wrapper_element: HtmlTag, parent: Tag = None) -> Tag:
-        native_element: Tag = Tag(name=wrapper_element.name, attrs=wrapper_element.attributes, parent=parent,
-                                  previous=NavigableString('\n'), builder=BUILDER)
+        native_element: Tag = SOUP.new_tag(wrapper_element.name, attrs=wrapper_element.attributes)
         for child in wrapper_element.children:
-            native_element.contents.append(self._convert_element(child, native_element))
+            native_element.append(self._convert_element(child, native_element))
         if len(wrapper_element.text) > 0:
-            native_element.contents = [NavigableString(wrapper_element.text)]
+            native_element.string = wrapper_element.text
         return native_element
 
     def close(self) -> None:

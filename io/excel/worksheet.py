@@ -3,7 +3,6 @@ from typing import List
 from cac.io.excel.letter_converter import LetterConverter
 from cac.io.excel.row import Row
 
-
 class Worksheet:
 
     def __init__(self, title: str, rows: List[Row]) -> None:
@@ -33,6 +32,10 @@ class Worksheet:
     @property
     def rows(self) -> List[Row]:
         return self._rows
+
+    @property
+    def data_rows(self) -> List[Row]:
+        return self._rows[1:]
 
     def get_columns(self) -> List[object]:
         longest_row: int = max([len(row) for row in self._rows])
