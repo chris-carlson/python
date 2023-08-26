@@ -1,4 +1,4 @@
-class Math:
+class Calculator:
 
     @staticmethod
     def one_based_mod(num: int, offset: int, mod: int) -> int:
