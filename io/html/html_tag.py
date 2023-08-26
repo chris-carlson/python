@@ -1,130 +1,79 @@
 from typing import Dict, List
 
+from bs4 import BeautifulSoup, Tag
 from cac.finder import Finder
+
+SOUP: BeautifulSoup = BeautifulSoup()
+
+# noinspection PyTypeChecker
+def convert_attributes(native_attributes: Dict[str, object]) -> Dict[str, str]:
+    wrapper_attributes: Dict[str, str] = {}
+    for name, value in native_attributes.items():
+        if type(value) == str:
+            wrapper_attributes[name] = value
+        elif type(value) == list:
+            wrapper_attributes[name] = ' '.join(value)
+    return wrapper_attributes
+
+def create_tag(name: str, attributes: Dict[str, str] = None, children: List['HtmlTag'] = None,
+        text: str = '') -> 'HtmlTag':
+    attributes = attributes if attributes is not None else {}
+    native_element: Tag = SOUP.new_tag(name, attrs=attributes)
+    children = children if children is not None else []
+    for child in children:
+        native_element.append(convert_tag(child))
+    if len(text) > 0:
+        native_element.string = text
+    return HtmlTag(native_element)
+
+def convert_tag(wrapper_element: 'HtmlTag') -> Tag:
+    native_element: Tag = SOUP.new_tag(wrapper_element.name, attrs=wrapper_element.attributes)
+    for child in wrapper_element.children:
+        native_element.append(convert_tag(child))
+    if len(wrapper_element.text) > 0:
+        native_element.string = wrapper_element.text
+    return native_element
 
 class HtmlTag:
 
-    def __init__(self, name: str, attributes: Dict[str, str] = None, children: List['HtmlTag'] = None,
-            text: str = '') -> None:
-        self._name: str = name
-        self._attributes: Dict[str, str] = attributes if attributes is not None else {}
-        self._children: List[HtmlTag] = children if children is not None else []
-        self._text: str = text
+    def __init__(self, rep: Tag) -> None:
+        self._rep = rep
 
     def __str__(self) -> str:
-        return self._name
+        return self._rep.name
 
     def __repr__(self) -> str:
         return self.__str__()
 
     @property
     def name(self) -> str:
-        return self._name
+        return self._rep.name
 
     @property
     def text(self) -> str:
-        return self._text
+        return str(self._rep.string) if self._rep.string is not None else ''
 
     @property
     def attributes(self) -> Dict[str, str]:
-        return self._attributes
+        return convert_attributes(self._rep.attrs)
 
     @property
     def children(self) -> List['HtmlTag']:
-        return self._children
+        # noinspection PyTypeChecker
+        return [HtmlTag(child) for child in self._rep.contents if type(child) == Tag]
 
-    @text.setter
-    def text(self, text) -> None:
-        self._text = text
-
-    def can_get_name(self, name: str) -> bool:
-        return len(self.get_all_by_name(name)) > 0
-
-    def can_find_name(self, name: str) -> bool:
-        return len(self.find_all_by_name(name)) > 0
-
-    def can_get_text(self, name: str) -> bool:
-        return len(self.get_all_by_text(name)) > 0
-
-    def can_find_text(self, name: str) -> bool:
-        return len(self.find_all_by_text(name)) > 0
-
-    def can_get_class(self, name: str) -> bool:
-        return len(self.get_all_by_class(name)) > 0
-
-    def can_find_class(self, name: str) -> bool:
-        return len(self.find_all_by_class(name)) > 0
+    def has_child(self, selector: str) -> bool:
+        matching_children: List[Tag] = self._rep.select(selector)
+        return len(matching_children) > 0
 
     def get_classes(self) -> List[str]:
-        if 'class' in self._attributes:
-            return self._attributes['class'].split(' ')
+        if 'class' in self._rep.attrs:
+            return self._rep.attrs['class'].split(' ')
         return []
 
-    def get_by_id(self, id_name: str) -> 'HtmlTag':
-        return Finder.find_only(
-            [child for child in self._children if 'id' in child.attributes and child.attributes['id'] == id_name])
+    def find_child(self, selector: str) -> 'HtmlTag':
+        matching_children: List[HtmlTag] = self.find_children(selector)
+        return Finder.find_only(matching_children)
 
-    def get_one_by_name(self, name: str) -> 'HtmlTag':
-        return Finder.find_only(self.get_all_by_name(name))
-
-    def get_one_by_text(self, text: str) -> 'HtmlTag':
-        return Finder.find_only(self.get_all_by_text(text))
-
-    def get_one_by_class(self, class_name: str) -> 'HtmlTag':
-        return Finder.find_only(self.get_all_by_class(class_name))
-
-    def get_all_by_name(self, name: str) -> List['HtmlTag']:
-        return [child for child in self._children if child.name == name]
-
-    def get_all_by_text(self, text: str) -> List['HtmlTag']:
-        return [child for child in self._children if child.text == text]
-
-    def get_all_by_class(self, class_name: str) -> List['HtmlTag']:
-        return [child for child in self._children if class_name in child.get_classes()]
-
-    def find_by_id(self, id_name: str) -> 'HtmlTag':
-        return Finder.find_only(self._find_all_by_id(id_name))
-
-    def _find_all_by_id(self, id_name: str) -> List['HtmlTag']:
-        matching_children: List[HtmlTag] = [child for child in self._children if
-                'id' in child.attributes and child.attributes['id'] == id_name]
-        for child in self._children:
-            matching_children.extend(child._find_all_by_id(id_name))
-        return matching_children
-
-    def find_one_by_name(self, name: str) -> 'HtmlTag':
-        return Finder.find_only(self.find_all_by_name(name))
-
-    def find_one_by_text(self, text: str) -> 'HtmlTag':
-        return Finder.find_only(self.find_all_by_text(text))
-
-    def find_one_by_class(self, class_name: str) -> 'HtmlTag':
-        return Finder.find_only(self.find_all_by_class(class_name))
-
-    def find_all_by_name(self, name: str) -> List['HtmlTag']:
-        matching_children: List[HtmlTag] = self.get_all_by_name(name)
-        for child in self._children:
-            matching_children.extend(child.find_all_by_name(name))
-        return matching_children
-
-    def find_all_by_text(self, text: str) -> List['HtmlTag']:
-        matching_children: List[HtmlTag] = self.get_all_by_text(text)
-        for child in self._children:
-            matching_children.extend(child.find_all_by_text(text))
-        return matching_children
-
-    def find_all_by_class(self, class_name: str) -> List['HtmlTag']:
-        matching_children: List[HtmlTag] = self.get_all_by_class(class_name)
-        for child in self._children:
-            matching_children.extend(child.find_all_by_class(class_name))
-        return matching_children
-
-    def generate_source(self) -> str:
-        attributes: str = ' ' + ' '.join([key + '=\'' + value + '\'' for key, value in self._attributes.items()])
-        source: str = '<' + self._name + attributes + '>'
-        for child in self._children:
-            source += child.generate_source()
-        if len(self._text) > 0:
-            source += self._text
-        source += '</' + self._name + '>'
-        return source
+    def find_children(self, selector: str) -> List['HtmlTag']:
+        return [HtmlTag(child) for child in self._rep.select(selector)]
