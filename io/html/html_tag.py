@@ -37,11 +37,23 @@ class HtmlTag:
     def text(self, text) -> None:
         self._text = text
 
-    def can_get_child(self, name: str) -> bool:
+    def can_get_name(self, name: str) -> bool:
         return len(self.get_all_by_name(name)) > 0
 
-    def can_find_child(self, name: str) -> bool:
+    def can_find_name(self, name: str) -> bool:
         return len(self.find_all_by_name(name)) > 0
+
+    def can_get_text(self, name: str) -> bool:
+        return len(self.get_all_by_text(name)) > 0
+
+    def can_find_text(self, name: str) -> bool:
+        return len(self.find_all_by_text(name)) > 0
+
+    def can_get_class(self, name: str) -> bool:
+        return len(self.get_all_by_class(name)) > 0
+
+    def can_find_class(self, name: str) -> bool:
+        return len(self.find_all_by_class(name)) > 0
 
     def get_classes(self) -> List[str]:
         if 'class' in self._attributes:
