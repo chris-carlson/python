@@ -1,7 +1,7 @@
 from functools import reduce
 from typing import Any, Callable, List, TypeVar
 
-from finder import Finder
+from cac.finder import Finder
 
 E = TypeVar('E')
 
