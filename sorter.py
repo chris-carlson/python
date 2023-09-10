@@ -1,4 +1,6 @@
-from typing import Any, Callable, Dict, List, Tuple, TypeVar
+from typing import Any, Callable, Dict, List, TypeVar
+
+from cac.collections.pair import Pair
 
 E = TypeVar('E')
 K = TypeVar('K')
@@ -18,9 +20,9 @@ class ListSorter:
 class DictSorter:
 
     @staticmethod
-    def sort(collection: Dict[K, V], lambda_function: Callable[[Tuple[K, V]], Any] = lambda item: item,
-            reverse: bool = False) -> List[Tuple[K, V]]:
-        sorted_list: List[Tuple[K, V]] = list(collection.items())
+    def sort(collection: Dict[K, V], lambda_function: Callable[[Pair[K, V]], Any] = lambda item: item,
+            reverse: bool = False) -> List[Pair[K, V]]:
+        sorted_list: List[Pair[K, V]] = [Pair((key, value)) for key, value in collection.items()]
         sorted_list.sort(key=lambda_function)
         if reverse:
             sorted_list.reverse()
