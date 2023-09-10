@@ -3,8 +3,8 @@ from typing import List
 from cac.regex import Regex
 
 class Ignore:
-    DIRECTORIES: List[Regex] = [Regex(r'.ebextensions'), Regex(r'.git'), Regex(r'.idea'), Regex(r'.settings'),
-            Regex(r'.vscode'), Regex(r'My Music'), Regex(r'My Pictures'), Regex(r'My Videos'), Regex(r'__pycache__'),
+    DIRECTORIES: List[Regex] = [Regex(r'\.ebextensions'), Regex(r'\.git'), Regex(r'\.idea'), Regex(r'\.settings'),
+            Regex(r'\.vscode'), Regex(r'My Music'), Regex(r'My Pictures'), Regex(r'My Videos'), Regex(r'__pycache__'),
             Regex(r'bin'), Regex(r'build'), Regex(r'bundle'), Regex(r'dist'), Regex(r'node_modules'), Regex(r'out'),
             Regex(r'out-tsc'), Regex(r'target'), Regex(r'venv')]
     FILES: List[Regex] = [Regex(r'\.class$'), Regex(r'\.classpath$'), Regex(r'\.d.ts$'), Regex(r'\.DS_Store$'),
