@@ -2,6 +2,7 @@ from typing import Dict, List
 
 from bs4 import BeautifulSoup, Tag
 from cac.finder import Finder
+from cac.text import Text
 
 SOUP: BeautifulSoup = BeautifulSoup()
 
@@ -51,7 +52,7 @@ class HtmlTag:
 
     @property
     def text(self) -> str:
-        return str(self._rep.string) if self._rep.string is not None else ''
+        return Text(self._rep.text).remove_excessive_whitespace() if self._rep.text is not None else ''
 
     @property
     def attributes(self) -> Dict[str, str]:
@@ -77,3 +78,9 @@ class HtmlTag:
 
     def find_children(self, selector: str) -> List['HtmlTag']:
         return [HtmlTag(child) for child in self._rep.select(selector)]
+
+    def find_optional(self, selector: str) -> 'HtmlTag | None':
+        matching_children: List[HtmlTag] = self.find_children(selector)
+        if len(matching_children) == 0:
+            return None
+        return Finder.find_only(matching_children)

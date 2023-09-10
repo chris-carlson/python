@@ -24,7 +24,7 @@ class Finder:
         return filtered_list[0]
 
     @staticmethod
-    def find_optional(filtered_list: List[E]) -> E:
+    def find_optional(filtered_list: List[E]) -> E | None:
         if len(filtered_list) == 0:
             return None
         if len(filtered_list) > 1:

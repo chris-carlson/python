@@ -106,7 +106,7 @@ class Text(str):
         return Text(string)
 
     def remove_excessive_whitespace(self) -> 'Text':
-        return Text(re.sub(r'\s{2,}', ' ', self._rep))
+        return Text(re.sub(r'\s{2,}', ' ', self._rep)).strip()
 
     def insert_text(self, index: int, text: str) -> 'Text':
         return Text(self._rep[:index] + text + self._rep[index:])
