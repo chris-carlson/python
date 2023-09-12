@@ -13,7 +13,7 @@ class Driver:
         if headless:
             chrome_options.add_argument('headless')
             chrome_options.add_argument('disable-gpu')
-        self._rep: webdriver.Chrome = webdriver.Chrome(chrome_options=chrome_options)
+        self._rep: webdriver.Chrome = webdriver.Chrome(chrome_options)
         self._wait: Wait = Wait(self._rep, wait_time)
 
     @property
