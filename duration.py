@@ -111,7 +111,7 @@ class Duration:
             raise ValueError('Hours cannot be negative')
         return full_duration.reduce()
 
-    def divide(self, number: int) -> 'Duration':
+    def divide(self, number: float) -> 'Duration':
         expanded_duration: Duration = self._expand()
         divided_seconds: int = round(expanded_duration.seconds / number)
         divided_duration: Duration = Duration(0, 0, divided_seconds)

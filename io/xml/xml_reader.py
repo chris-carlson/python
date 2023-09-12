@@ -18,8 +18,7 @@ class XmlReader:
         tag_name: str = XmlReader._get_tag_name(native_element)
         attributes: Dict[str, str] = XmlReader._get_attributes(native_element)
         wrapper_element: XmlElement = XmlElement(tag_name, attributes, parent=parent)
-        if len(list(native_element)) == 0:
-            wrapper_element.text = native_element.text
+        wrapper_element.text = native_element.text
         for child in list(native_element):
             wrapper_element.children.append(XmlReader._convert_element(child, wrapper_element))
         return wrapper_element

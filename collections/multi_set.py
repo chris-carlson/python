@@ -17,3 +17,8 @@ class MultiSet(Dict[E, int]):
             self[element] = count
         else:
             self[element] = 1
+
+    def extend(self, multi_set: 'MultiSet[E]') -> None:
+        for key, count in multi_set.items():
+            for _ in range(0, count):
+                self.add(key)

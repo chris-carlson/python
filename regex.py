@@ -1,13 +1,13 @@
 import re
 
-from re import Match
-from typing import List, Sequence, Tuple
+from re import Match, Pattern
+from typing import List, Tuple
 
 class Regex:
 
     def __init__(self, regex: str, case_sensitive=True) -> None:
         flags: int = 0 if case_sensitive else re.I
-        self._rep = re.compile(regex, flags)
+        self._rep: Pattern = re.compile(regex, flags)
 
     def __str__(self) -> str:
         return self._rep.pattern
@@ -45,10 +45,11 @@ class Regex:
         match: Match = self._rep.search(string)
         return len(match.groups())
 
-    def find_groups(self, string: str) -> Sequence[str]:
-        match: Match = self._rep.search(string)
-        return match.groups()
-
     def find_group(self, string: str, index: int = 1) -> str:
-        match: Match = self._rep.search(string)
-        return match.group(index)
+        matches: List[str] = self.find_groups(string)
+        if len(matches) < index:
+            raise ValueError('Could not find group {index} for string {string}'.format(index=str(index), string=string))
+        return matches[index - 1]
+
+    def find_groups(self, string: str) -> List[str]:
+        return [match.groups()[0] for match in self._rep.finditer(string)]
