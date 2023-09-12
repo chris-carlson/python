@@ -1,7 +1,7 @@
 from typing import List
 
 from cac.regex import Regex
-from cac.string import String
+from cac.text import Text
 
 NUMBER_REGEX: Regex = Regex(r'\d+')
 
@@ -27,7 +27,7 @@ class Duration:
         return self.hours == other.hours and self.minutes == other.minutes and self.seconds == other.seconds
 
     def __str__(self) -> str:
-        return String.pad_number(self.hours, 2) + ':' + String.pad_number(self.minutes, 2) + ':' + String.pad_number(
+        return Text.pad_number(self.hours, 2) + ':' + Text.pad_number(self.minutes, 2) + ':' + Text.pad_number(
             self.seconds, 2)
 
     def __repr__(self) -> str:

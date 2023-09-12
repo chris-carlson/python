@@ -2,7 +2,7 @@ from typing import Dict, List
 
 from cac.io.text.text_reader import TextReader
 from cac.io.xml.xml_element import XmlElement
-from cac.string import String
+from cac.text import Text
 from lxml import etree
 from lxml.etree import Element, ElementTree, XMLParser
 
@@ -26,7 +26,7 @@ class XmlReader:
 
     @staticmethod
     def _get_tag_name(native_element: Element) -> str:
-        tag: String = String(native_element.tag)
+        tag: Text = Text(native_element.tag)
         if tag.startswith('{'):
             for abbreviation, expansion in native_element.nsmap.items():
                 if tag.startswith('{' + expansion + '}'):

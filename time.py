@@ -1,4 +1,4 @@
-from cac.string import String
+from cac.text import Text
 
 HOURS_IN_DAY: int = 24
 MINUTES_IN_HOUR: int = 60
@@ -15,7 +15,7 @@ class Time:
         return self._hour == other.hour and self._minute == other.minute
 
     def __str__(self) -> str:
-        return String.pad_number(self._hour, 2) + ':' + String.pad_number(self._minute, 2)
+        return Text.pad_number(self._hour, 2) + ':' + Text.pad_number(self._minute, 2)
 
     def __repr__(self) -> str:
         return self.__str__()
@@ -120,4 +120,4 @@ class Time:
             hour = HOURS_IN_DAY // 2
         if self._hour > HOURS_IN_DAY / 2:
             hour = self._hour - HOURS_IN_DAY // 2
-        return String.pad_number(hour, 2) + ':' + String.pad_number(self._minute, 2) + ' ' + meridiem
+        return Text.pad_number(hour, 2) + ':' + Text.pad_number(self._minute, 2) + ' ' + meridiem

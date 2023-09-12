@@ -2,10 +2,10 @@ from datetime import date
 from enum import IntEnum
 from typing import Dict, List
 
+from cac.calculator import Calculator
 from cac.consumer import Consumer
-from cac.math import Math
 from cac.regex import Regex
-from cac.string import String
+from cac.text import Text
 
 DATE_REGEX_1: Regex = Regex(r'\d{4}\D\d{2}\D\d{2}')
 DATE_REGEX_2: Regex = Regex(r'\d{2}\D\d{2}\D\d{4}')
@@ -62,7 +62,7 @@ class Date:
         return self.year == other.year and self.month == other.month and self.day_of_month == other.day_of_month
 
     def __str__(self) -> str:
-        return str(self.year) + '-' + String.pad_number(self.month, 2) + '-' + String.pad_number(self.day_of_month, 2)
+        return str(self.year) + '-' + Text.pad_number(self.month, 2) + '-' + Text.pad_number(self.day_of_month, 2)
 
     def __repr__(self) -> str:
         return self.__str__()
@@ -121,11 +121,11 @@ class Date:
 
     def format(self, order: 'DateFormat', separator: str) -> str:
         if order == DateFormat.YMD:
-            return str(self.year) + separator + String.pad_number(self.month, 2) + separator + String.pad_number(
+            return str(self.year) + separator + Text.pad_number(self.month, 2) + separator + Text.pad_number(
                 self.day_of_month, 2)
         elif order == DateFormat.MDY:
-            return String.pad_number(self.month, 2) + separator + String.pad_number(self.day_of_month,
-                2) + separator + str(self.year)
+            return Text.pad_number(self.month, 2) + separator + Text.pad_number(self.day_of_month, 2) + separator + str(
+                self.year)
 
     def add_days(self, days: int) -> 'Date':
         cloned_date: Date = self.clone()
@@ -178,7 +178,7 @@ class Date:
         return Date(self._year, self._month, self._day_of_month)
 
     def _get_day_of_week(self) -> IntEnum:
-        new_month: int = Math.one_based_mod(self._month, -2, 12)
+        new_month: int = Calculator.one_based_mod(self._month, -2, 12)
         first_two_digits_of_year: int = int(str(self._year)[:2])
         last_two_digits_of_year: int = int(str(self._year)[2:])
         if new_month > 10:
